@@ -2,7 +2,7 @@ package com.example.openglesdemo1
 
 import android.app.Activity
 import android.os.Bundle
-import com.example.openglesdemo1.ui.Test1Activity
+import com.example.openglesdemo1.ui.t1.TriangleActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -15,7 +15,7 @@ class MainActivity : Activity() {
     private fun initView() {
         rv_list.adapter = MainAdapter(
             listOf(
-                MainBean("三角形", Test1Activity::class.java)
+                MainBean("三角形", TriangleActivity::class.java)
             )
         )
     }

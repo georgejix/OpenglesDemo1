@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.openglesdemo1">
 
+    <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" />
+    <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Test1Activity"
+            android:name=".ui.t1.TriangleActivity"
             android:screenOrientation="fullSensor" />
     </application>
 

@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.openglesdemo1.ui.Test1Activity
+import com.example.openglesdemo1.ui.t1.TriangleActivity
 import kotlinx.android.synthetic.main.item_main.view.*
 
-class MainAdapter(private val list: List<MainBean<Test1Activity>>) :
+class MainAdapter(private val list: List<MainBean<TriangleActivity>>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
