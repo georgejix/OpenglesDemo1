@@ -25,6 +25,9 @@
         <activity
             android:name=".ui.t1.TriangleActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t2.ColorActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

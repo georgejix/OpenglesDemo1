@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.openglesdemo1.ui.t1.TriangleActivity
+import com.example.openglesdemo1.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.item_main.view.*
 
-class MainAdapter(private val list: List<MainBean<TriangleActivity>>) :
+class MainAdapter(private val list: List<MainBean<out BaseActivity>>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -28,6 +28,12 @@ class MainAdapter(private val list: List<MainBean<TriangleActivity>>) :
                 )
             )
         }
+        holder.itemView.tv_content.setTextColor(
+            holder.itemView.context.resources.getColor(
+                R.color.color_31d77b,
+                null
+            )
+        )
     }
 
     override fun getItemCount(): Int = list.size
