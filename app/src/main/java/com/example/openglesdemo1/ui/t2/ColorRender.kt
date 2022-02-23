@@ -6,7 +6,7 @@ import android.opengl.GLSurfaceView
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class ColorRender(val color: Int) : GLSurfaceView.Renderer {
+class ColorRender(private val color: Int) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         val redF: Float = Color.red(color) / 255.0f
         val greenF: Float = Color.green(color) / 255.0f
