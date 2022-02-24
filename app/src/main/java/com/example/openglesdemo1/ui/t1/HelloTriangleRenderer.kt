@@ -13,8 +13,6 @@ import javax.microedition.khronos.opengles.GL10
 class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
     // Member variables
     private var mProgramObject: Int = 0
-    private var mWidth: Int = 0
-    private var mHeight: Int = 0
     private var mVertices: FloatBuffer
     private val TAG = "HelloTriangleRenderer"
     private val mVerticesData =
@@ -60,10 +58,11 @@ class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
     //
     override fun onSurfaceCreated(gl: GL10?, config: javax.microedition.khronos.egl.EGLConfig?) {
         val vShaderStr = """#version 300 es 			  
-        in vec4 vPosition;           
+        layout (location = 0) in vec4 vPosition;          
         void main()                  
         {                            
            gl_Position = vPosition;  
+           gl_PointSize = 10.0;
         }                            
         """
         val fShaderStr = """#version 300 es		 			          	
@@ -71,7 +70,7 @@ class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
         out vec4 fragColor;	 			 		  	
         void main()                                  
         {                                            
-          fragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );	
+          fragColor = vec4 ( 0.5, 0.5, 0.5, 1.0 );	
         }                                            
         """
         val linked = IntArray(1)
@@ -85,10 +84,13 @@ class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
         if (programObject == 0) {
             return
         }
+        //将顶点着色器加入到程序
         GLES30.glAttachShader(programObject, vertexShader)
+        //将片元着色器加入到程序中
         GLES30.glAttachShader(programObject, fragmentShader)
 
         // Bind vPosition to attribute 0
+        //将vPosition变量与输入属性位置0绑定
         GLES30.glBindAttribLocation(programObject, 0, "vPosition")
 
         // Link the program
@@ -112,8 +114,6 @@ class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
     // Draw a triangle using the shader pair created in onSurfaceCreated()
     //
     override fun onDrawFrame(glUnused: GL10?) {
-        // Set the viewport
-        GLES30.glViewport(0, 0, mWidth, mHeight)
 
         // Clear the color buffer
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
@@ -121,17 +121,24 @@ class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
         // Use the program object
         GLES30.glUseProgram(mProgramObject)
 
-        // Load the vertex data
+        //准备坐标数据
         GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, mVertices)
+        //启用顶点的句柄
         GLES30.glEnableVertexAttribArray(0)
+        //绘制三角形
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
+        //绘制三个点
+        //GLES30.glDrawArrays(GLES30.GL_POINTS, 0, 3)
+        //绘制直线
+        /*GLES30.glDrawArrays(GLES30.GL_LINE_STRIP, 0, 2)
+        GLES30.glLineWidth(10f);*/
     }
 
     // /
     // Handle surface changes
     //
     override fun onSurfaceChanged(glUnused: GL10?, width: Int, height: Int) {
-        mWidth = width
-        mHeight = height
+        // Set the viewport
+        GLES30.glViewport(0, 0, width, height)
     }
 }
