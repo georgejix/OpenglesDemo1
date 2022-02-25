@@ -92,6 +92,36 @@ class RectangleRender : GLSurfaceView.Renderer {
             mVertexBuf
         )
         GLES30.glEnableVertexAttribArray(mAColorLocation)
+
+        var maxLength = IntArray(1)
+        GLES30.glGetProgramiv(mProgram, GLES30.GL_ACTIVE_UNIFORM_MAX_LENGTH, maxLength, 0)
+        var size = IntArray(1)
+        GLES30.glGetProgramiv(mProgram, GLES30.GL_ACTIVE_UNIFORMS, size, 0)
+        println("RectangleRender  maxlength=${maxLength[0]},size=${size[0]}")
+
+        //遍历uniform
+        var length = IntArray(1)
+        var size2 = IntArray(1)
+        var type = IntArray(1)
+        var nameBuffer = ByteArray(maxLength[0] - 1)
+        for (index in 0..(size[0] - 1)) {
+            GLES30.glGetActiveUniform(
+                mProgram,
+                index,
+                maxLength[0],
+                length,
+                0,
+                size2,
+                0,
+                type,
+                0,
+                nameBuffer,
+                0
+            )
+            var name = String(nameBuffer)
+            var location = GLES30.glGetUniformLocation(mProgram, name)
+            println("RectangleRender  length=${length[0]},size2=${size2[0]},type=${type[0]},name=${name},location=${location}")
+        }
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
