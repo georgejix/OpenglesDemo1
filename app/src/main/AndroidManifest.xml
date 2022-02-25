@@ -28,6 +28,9 @@
         <activity
             android:name=".ui.t2.ColorActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t3.RectangleActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

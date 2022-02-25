@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import com.example.openglesdemo1.ui.t1.TriangleActivity
 import com.example.openglesdemo1.ui.t2.ColorActivity
+import com.example.openglesdemo1.ui.t3.RectangleActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -17,7 +18,8 @@ class MainActivity : Activity() {
         rv_list.adapter = MainAdapter(
             listOf(
                 MainBean("三角形", TriangleActivity::class.java),
-                MainBean("纯色", ColorActivity::class.java)
+                MainBean("纯色", ColorActivity::class.java),
+                MainBean("矩形", RectangleActivity::class.java),
             )
         )
     }
