@@ -22,5 +22,14 @@ class MainActivity : Activity() {
                 MainBean("矩形", RectangleActivity::class.java),
             )
         )
+        test(6, { a, b -> println("a+b=${a + b}") })
+    }
+
+    private fun test(num: Int, f1: (a: Int, b: Int) -> Unit) {
+        if (num > 5) {
+            f1(5, num)
+        } else {
+            f1(1, num)
+        }
     }
 }
