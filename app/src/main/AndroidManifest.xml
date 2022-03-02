@@ -6,6 +6,7 @@
     <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,6 +31,9 @@
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".ui.t3.RectangleActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t4.VertexBufferActivity"
             android:screenOrientation="fullSensor" />
     </application>
 
