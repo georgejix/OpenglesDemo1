@@ -43,7 +43,7 @@ class VertexBufferRenderer : GLSurfaceView.Renderer {
         //1. 生成1个缓冲ID
         GLES30.glGenBuffers(1, vboIds, 0)
 
-        //2. 绑定到顶点坐标数据缓冲
+        //2. 绑定到顶点坐标数据缓冲，切换当前缓冲区到刚刚生成的缓冲区上
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vboIds[0])
         //3. 向顶点坐标数据缓冲送入数据
         GLES30.glBufferData(
@@ -62,6 +62,8 @@ class VertexBufferRenderer : GLSurfaceView.Renderer {
             VERTEX_STRIDE,
             0
         )
+        //切换到无用缓冲区
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
         //5. 启用顶点位置属性
         GLES30.glEnableVertexAttribArray(VERTEX_POS_INDEX)
     }
@@ -74,6 +76,5 @@ class VertexBufferRenderer : GLSurfaceView.Renderer {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
         GLES30.glUseProgram(mProgram)
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
     }
 }
