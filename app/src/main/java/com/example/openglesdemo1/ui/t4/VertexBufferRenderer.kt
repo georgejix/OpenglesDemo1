@@ -62,7 +62,7 @@ class VertexBufferRenderer : GLSurfaceView.Renderer {
             VERTEX_STRIDE,
             0
         )
-        //切换到无用缓冲区
+        //解绑VBO,切换到无用缓冲区
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
         //5. 启用顶点位置属性
         GLES30.glEnableVertexAttribArray(VERTEX_POS_INDEX)

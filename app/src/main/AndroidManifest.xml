@@ -35,6 +35,9 @@
         <activity
             android:name=".ui.t4.VertexBufferActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t5.VertexArrayActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>
