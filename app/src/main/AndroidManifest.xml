@@ -41,6 +41,9 @@
         <activity
             android:name=".ui.t6.SquareActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t7.SquareActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@ class MainActivity : Activity() {
                 MainBean("顶点缓冲区", VertexBufferActivity::class.java),
                 MainBean("顶点数组", VertexArrayActivity::class.java),
                 MainBean("立方体", SquareActivity::class.java),
+                MainBean("索引法立方体", SquareActivity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
