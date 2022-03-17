@@ -11,7 +11,7 @@ import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class VertexArrayRenderer : GLSurfaceView.Renderer {
+class VertexArrayRender2 : GLSurfaceView.Renderer {
     private val VERTEX_POS_INDEX = 0
     private val mVertexBuffer: FloatBuffer
     private val VERTEX_POS_SIZE = 3
@@ -62,9 +62,19 @@ class VertexArrayRenderer : GLSurfaceView.Renderer {
         GLES30.glBufferData(
             GLES30.GL_ARRAY_BUFFER,
             mVertexPoints.size * 4,
-            mVertexBuffer,
+            null,
             GLES30.GL_STATIC_DRAW
         )
+        ////3. 映射缓冲区对象
+        val buffer: ByteBuffer = GLES30.glMapBufferRange(
+            GLES30.GL_ARRAY_BUFFER,
+            0,
+            mVertexPoints.size * 4,
+            GLES30.GL_MAP_WRITE_BIT or
+                    GLES30.GL_MAP_INVALIDATE_BUFFER_BIT
+        ) as ByteBuffer
+        //4. 填充数据
+        buffer.order(ByteOrder.nativeOrder()).asFloatBuffer().put(mVertexPoints).position(0)
         //3. 将顶点位置数据送入渲染管线
         GLES30.glVertexAttribPointer(
             VERTEX_POS_INDEX,
@@ -78,6 +88,8 @@ class VertexArrayRenderer : GLSurfaceView.Renderer {
         GLES30.glEnableVertexAttribArray(VERTEX_POS_INDEX)
         //4. 解绑VAO
         GLES30.glBindVertexArray(0)
+        //解除映射
+        GLES30.glUnmapBuffer(GLES30.GL_ARRAY_BUFFER);
 
     }
 

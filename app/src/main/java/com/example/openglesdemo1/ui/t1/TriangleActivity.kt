@@ -4,5 +4,5 @@ import android.opengl.GLSurfaceView
 import com.example.openglesdemo1.ui.base.BaseActivity
 
 class TriangleActivity : BaseActivity() {
-    override fun getRender(): GLSurfaceView.Renderer = HelloTriangleRenderer(this)
+    override fun getRender(): GLSurfaceView.Renderer = HelloTriangleRender(this)
 }

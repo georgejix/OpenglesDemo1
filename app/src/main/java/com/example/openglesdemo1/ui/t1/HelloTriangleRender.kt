@@ -10,7 +10,7 @@ import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
 
 
-class HelloTriangleRenderer(var context: Context) : GLSurfaceView.Renderer {
+class HelloTriangleRender(var context: Context) : GLSurfaceView.Renderer {
     // Member variables
     private var mProgramObject: Int = 0
     private var mVertices: FloatBuffer

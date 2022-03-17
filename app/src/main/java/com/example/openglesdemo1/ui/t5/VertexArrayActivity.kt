@@ -5,6 +5,6 @@ import com.example.openglesdemo1.ui.base.BaseActivity
 
 class VertexArrayActivity : BaseActivity() {
     override fun getRender(): GLSurfaceView.Renderer {
-        return VertexArrayRenderer()
+        return VertexArrayRender()
     }
 }

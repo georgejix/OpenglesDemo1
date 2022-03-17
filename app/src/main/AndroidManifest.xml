@@ -38,6 +38,9 @@
         <activity
             android:name=".ui.t5.VertexArrayActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t6.SquareActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

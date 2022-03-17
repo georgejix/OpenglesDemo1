@@ -7,6 +7,7 @@ import com.example.openglesdemo1.ui.t2.ColorActivity
 import com.example.openglesdemo1.ui.t3.RectangleActivity
 import com.example.openglesdemo1.ui.t4.VertexBufferActivity
 import com.example.openglesdemo1.ui.t5.VertexArrayActivity
+import com.example.openglesdemo1.ui.t6.SquareActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -24,6 +25,7 @@ class MainActivity : Activity() {
                 MainBean("矩形", RectangleActivity::class.java),
                 MainBean("顶点缓冲区", VertexBufferActivity::class.java),
                 MainBean("顶点数组", VertexArrayActivity::class.java),
+                MainBean("立方体", SquareActivity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })

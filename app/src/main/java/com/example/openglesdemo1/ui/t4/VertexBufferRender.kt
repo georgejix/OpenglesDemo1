@@ -11,7 +11,7 @@ import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class VertexBufferRenderer : GLSurfaceView.Renderer {
+class VertexBufferRender : GLSurfaceView.Renderer {
     private val mVertexPoints = floatArrayOf(
         0.0f, 0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f,
