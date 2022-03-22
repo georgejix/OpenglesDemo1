@@ -44,6 +44,9 @@
         <activity
             android:name=".ui.t7.SquareActivity"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.t8.TextureActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>
