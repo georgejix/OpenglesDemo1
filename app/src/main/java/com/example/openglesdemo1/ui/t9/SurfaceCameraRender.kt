@@ -63,7 +63,7 @@ class SurfaceCameraRender(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Rend
     private var mCamera: Camera? = null
     private var mSurfaceTexture: SurfaceTexture? = null
     private var mMatrixLocation = 0
-    private var mTexttureSamplerLocation = 0
+    private var mTextureSamplerLocation = 0
 
     init {
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
@@ -144,7 +144,7 @@ class SurfaceCameraRender(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Rend
             ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.fragment_camera_shader))
         mProgram = ShaderUtils.linkProgram(shaderId, fragShader)
         mMatrixLocation = GLES30.glGetUniformLocation(mProgram, "uTextureMatrix")
-        mTexttureSamplerLocation = GLES30.glGetUniformLocation(mProgram, "yuvTexSampler")
+        mTextureSamplerLocation = GLES30.glGetUniformLocation(mProgram, "yuvTexSampler")
         //加载纹理
         mTextureId = loadTexture()
         //加载SurfaceTexture
@@ -166,7 +166,7 @@ class SurfaceCameraRender(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Rend
         //绑定外部纹理到纹理单元0
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureId)
         //将此纹理单元床位片段着色器的uTextureSampler外部纹理采样器
-        GLES30.glUniform1i(mTexttureSamplerLocation, 0)
+        GLES30.glUniform1i(mTextureSamplerLocation, 0)
         //将纹理矩阵传给片段着色器
         GLES30.glUniformMatrix4fv(mMatrixLocation, 1, false, mMatrix, 0)
 
