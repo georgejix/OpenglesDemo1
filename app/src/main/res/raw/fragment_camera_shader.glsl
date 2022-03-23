@@ -7,6 +7,7 @@ in vec2 yuvTexCoords;
 out vec4 vFragColor;
 void main(){
     vec4 vCameraColor=texture(yuvTexSampler,yuvTexCoords);
-    float fGrayColor=(0.3*vCameraColor.r + 0.59*vCameraColor.g + 0.11*vCameraColor.b);
-    vFragColor = vec4(fGrayColor, fGrayColor, fGrayColor, 1.0);
+    //float fGrayColor=(0.3*vCameraColor.r + 0.59*vCameraColor.g + 0.11*vCameraColor.b);
+    //vFragColor = vec4(fGrayColor, fGrayColor, fGrayColor, 1.0);
+    vFragColor = vCameraColor;
 }
