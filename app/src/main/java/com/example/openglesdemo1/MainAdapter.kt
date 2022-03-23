@@ -1,5 +1,6 @@
 package com.example.openglesdemo1
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.openglesdemo1.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.item_main.view.*
 
-class MainAdapter(private val list: List<MainBean<out BaseActivity>>) :
+class MainAdapter(private val list: List<MainBean<out Activity>>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 

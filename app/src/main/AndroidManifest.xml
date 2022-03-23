@@ -5,6 +5,12 @@
     <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" />
     <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -16,7 +22,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,28 +31,31 @@
         </activity>
         <activity
             android:name=".ui.t1.TriangleActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t2.ColorActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t3.RectangleActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t4.VertexBufferActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t5.VertexArrayActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t6.SquareActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t7.SquareActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t8.TextureActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.t9.SurfaceCameraActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
