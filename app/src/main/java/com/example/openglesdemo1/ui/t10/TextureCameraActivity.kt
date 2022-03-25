@@ -31,9 +31,6 @@ class TextureCameraActivity : BaseActivity2() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mCameraPick != null) {
-            mCameraPick!!.onDestroy()
-            mCameraPick = null
-        }
+        mCameraPick?.onDestroy()
     }
 }
