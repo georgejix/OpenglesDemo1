@@ -11,7 +11,7 @@ import android.os.Looper
 import android.os.Message
 import android.view.TextureView
 
-class TextureEGLHelper : HandlerThread("TextureEGLHelper"),
+class TextureEGLHelper :
     SurfaceTexture.OnFrameAvailableListener {
 
     private var mHandlerThread: HandlerThread? = null
@@ -100,7 +100,7 @@ class TextureEGLHelper : HandlerThread("TextureEGLHelper"),
         ) {
             throw RuntimeException("eglChooseConfig error: " + EGL14.eglGetError())
         }
-        val surfaceTexture = mTextureView!!.surfaceTexture
+        val surfaceTexture = mTextureView?.surfaceTexture
             ?: throw RuntimeException("surfaceTexture is null")
         //创建EGL显示窗口
         val surfaceAttributes = intArrayOf(EGL14.EGL_NONE)
