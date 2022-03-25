@@ -3,6 +3,7 @@ package com.example.openglesdemo1
 import android.app.Activity
 import android.os.Bundle
 import com.example.openglesdemo1.ui.t1.TriangleActivity
+import com.example.openglesdemo1.ui.t10.TextureCameraActivity
 import com.example.openglesdemo1.ui.t2.ColorActivity
 import com.example.openglesdemo1.ui.t3.RectangleActivity
 import com.example.openglesdemo1.ui.t4.VertexBufferActivity
@@ -31,6 +32,7 @@ class MainActivity : Activity() {
                 MainBean("索引法立方体", SquareActivity::class.java),
                 MainBean("2d纹理显示bitmap", TextureActivity::class.java),
                 MainBean("surface camera", SurfaceCameraActivity::class.java),
+                MainBean("texture camera", TextureCameraActivity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
