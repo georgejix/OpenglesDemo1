@@ -30,14 +30,14 @@ class CameraV1Pick : SurfaceTextureListener {
         val textureId: Int = TextureUtils.loadOESTexture()
         //初始化操作
         //初始化操作
-        mTextureEglHelper!!.initEgl(mTextureView!!, textureId)
+        mTextureEglHelper?.initEgl(mTextureView!!, textureId)
         //自定义的SurfaceTexture
         //自定义的SurfaceTexture
         val surfaceTexture = mTextureEglHelper!!.loadOESTexture()
         //前置摄像头
         //前置摄像头
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
-        mCamera = CameraV1((mTextureView!!.context as Activity))
+        mCamera = CameraV1((mTextureView?.context as Activity))
         if (mCamera?.openCamera(mCameraId)!!) {
             mCamera?.setPreviewTexture(surfaceTexture)
             mCamera?.enablePreview(true)
@@ -47,7 +47,7 @@ class CameraV1Pick : SurfaceTextureListener {
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-        mTextureEglHelper!!.onSurfaceChanged(width, height)
+        mTextureEglHelper?.onSurfaceChanged(width, height)
 
     }
 

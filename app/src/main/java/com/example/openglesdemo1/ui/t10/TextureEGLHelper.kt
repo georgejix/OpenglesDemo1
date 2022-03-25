@@ -57,9 +57,9 @@ class TextureEGLHelper : HandlerThread("TextureEGLHelper"),
         mTextureView = textureView
         mOESTextureId = textureId
         mHandlerThread = HandlerThread("Renderer Thread")
-        mHandlerThread!!.start()
+        mHandlerThread?.start()
         mHandler = TextureHandler(mHandlerThread!!.looper)
-        mHandler!!.sendEmptyMessage(EGLMessage.MSG_INIT)
+        mHandler?.sendEmptyMessage(EGLMessage.MSG_INIT)
     }
 
     private fun initEGLContext(clientVersion: Int) {
