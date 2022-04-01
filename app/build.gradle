@@ -45,4 +45,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    //WindowInsetsController
+    implementation 'androidx.core:core:1.6.0'
 }

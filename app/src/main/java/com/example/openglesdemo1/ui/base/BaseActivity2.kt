@@ -2,8 +2,13 @@ package com.example.openglesdemo1.ui.base
 
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.os.Build
+import android.view.View
+import android.view.WindowInsets
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 open class BaseActivity2 : Activity() {
     fun requestPermission(permissions: List<String>, requestCode: Int) {
@@ -38,5 +43,24 @@ open class BaseActivity2 : Activity() {
 
     open fun getPermissions(get: Boolean, requestCode: Int) {
 
+    }
+
+    //隐藏状态栏
+    fun changeStatusBars(isShow: Boolean, view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (isShow) {
+                window?.insetsController?.show(WindowInsets.Type.statusBars())
+            } else {
+                window?.insetsController?.hide(WindowInsets.Type.statusBars())
+            }
+        } else {
+            ViewCompat.getWindowInsetsController(view).let { controller ->
+                if (isShow) {
+                    controller?.show(WindowInsetsCompat.Type.statusBars())
+                } else {
+                    controller?.hide(WindowInsetsCompat.Type.statusBars())
+                }
+            }
+        }
     }
 }

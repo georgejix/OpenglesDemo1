@@ -59,6 +59,9 @@
         <activity
             android:name=".ui.t10.TextureCameraActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.t11.Camera2Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

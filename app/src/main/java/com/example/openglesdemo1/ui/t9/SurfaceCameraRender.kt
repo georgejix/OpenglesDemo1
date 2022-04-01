@@ -194,4 +194,9 @@ class SurfaceCameraRender(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Rend
         mCamera?.startPreview()
         return true
     }
+
+    fun release() {
+        mCamera?.release()
+        mCamera = null
+    }
 }

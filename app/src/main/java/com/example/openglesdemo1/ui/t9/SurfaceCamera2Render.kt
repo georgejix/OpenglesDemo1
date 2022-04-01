@@ -241,4 +241,9 @@ class SurfaceCamera2Render(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Ren
             mVertexIndexBuffer
         )
     }
+
+    fun release() {
+        mCamera?.close()
+        mCamera = null
+    }
 }
