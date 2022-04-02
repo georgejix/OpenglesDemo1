@@ -61,6 +61,8 @@ class Camera2Activity : BaseActivity2() {
             }
 
             override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+                mSession?.stopRepeating()
+                mSession = null
                 mCameraDevice?.close()
                 mCameraDevice = null
                 return true
@@ -106,12 +108,13 @@ class Camera2Activity : BaseActivity2() {
                 }
             }
         }
-        textureView
     }
 
     private fun showSize(sizes: Array<Size>) {
         rv_size.adapter = SizeAdapter(sizes.asList(), object : SizeAdapter.Listener {
             override fun onClicked(size: Size) {
+                mSession?.stopRepeating()
+                mSession = null
                 mCameraDevice?.close()
                 mCameraDevice = null
                 open(size)
