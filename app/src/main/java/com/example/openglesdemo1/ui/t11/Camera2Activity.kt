@@ -37,6 +37,7 @@ class Camera2Activity : BaseActivity2() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera2)
         changeStatusBars(false, btn_take_photo)
+        //textureview可用时，申请权限
         textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(
                 surface: SurfaceTexture,
@@ -84,7 +85,7 @@ class Camera2Activity : BaseActivity2() {
     override fun getPermissions(get: Boolean, requestCode: Int) {
         super.getPermissions(get, requestCode)
         if (get) {
-            startPreview()
+            getSupportSize()
         }
     }
 
@@ -94,7 +95,8 @@ class Camera2Activity : BaseActivity2() {
         return Handler(mHandlerThread.looper)
     }
 
-    private fun startPreview() {
+    //获取支持分辨率
+    private fun getSupportSize() {
         mCameraManager.cameraIdList.forEach { cameraId ->
             var cameraCharacteristics = mCameraManager.getCameraCharacteristics(cameraId)
             if (cameraCharacteristics.isHardwareLevelSupported(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL)) {
@@ -103,27 +105,29 @@ class Camera2Activity : BaseActivity2() {
                         cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                     map?.getOutputSizes(SurfaceTexture::class.java)?.apply {
                         mCameraId = cameraId
-                        showSize(this)
+                        showSupportSize(this)
                     }
                 }
             }
         }
     }
 
-    private fun showSize(sizes: Array<Size>) {
+    //显示支持分辨率
+    private fun showSupportSize(sizes: Array<Size>) {
         rv_size.adapter = SizeAdapter(sizes.asList(), object : SizeAdapter.Listener {
             override fun onClicked(size: Size) {
                 mSession?.stopRepeating()
                 mSession = null
                 mCameraDevice?.close()
                 mCameraDevice = null
-                open(size)
+                openCamera(size)
             }
 
         })
     }
 
-    private fun open(size: Size) {
+    //打开相机
+    private fun openCamera(size: Size) {
         println("test $size")
         if (ActivityCompat.checkSelfPermission(
                 this@Camera2Activity,
@@ -140,7 +144,7 @@ class Camera2Activity : BaseActivity2() {
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
                     mCameraDevice = camera
-                    openPreview()
+                    getCameraSession()
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
@@ -155,27 +159,32 @@ class Camera2Activity : BaseActivity2() {
         )
     }
 
-    private fun openPreview() {
+    //获取session对象
+    private fun getCameraSession() {
         mCameraDevice?.createCaptureSession(
             listOf(mSurface),
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mSession = session
-                    val builder = mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-                    builder?.addTarget(mSurface!!)
-                    val request = builder?.build()
-                    mSession?.setRepeatingRequest(
-                        request!!,
-                        object : CameraCaptureSession.CaptureCallback() {
-
-                        },
-                        mSecondHandler
-                    )
+                    getCaptureRequest()
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
                 }
             }, mSecondHandler
+        )
+    }
+
+    private fun getCaptureRequest() {
+        val builder = mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+        builder?.addTarget(mSurface!!)
+        val request = builder?.build()
+        mSession?.setRepeatingRequest(
+            request!!,
+            object : CameraCaptureSession.CaptureCallback() {
+
+            },
+            mSecondHandler
         )
     }
 
