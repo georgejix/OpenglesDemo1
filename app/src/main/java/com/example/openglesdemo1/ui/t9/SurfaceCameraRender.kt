@@ -52,6 +52,10 @@ class SurfaceCameraRender(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Rend
      * 索引
      */
     private val mVertexIndexData = shortArrayOf(
+        /**
+         * 1, 3, 2,
+         * 1, 3, 4,
+         */
         0, 1, 2,  //V0,V1,V2 三个顶点组成一个三角形
         0, 2, 3,  //V0,V2,V3 三个顶点组成一个三角形
         0, 3, 4,  //V0,V3,V4 三个顶点组成一个三角形
