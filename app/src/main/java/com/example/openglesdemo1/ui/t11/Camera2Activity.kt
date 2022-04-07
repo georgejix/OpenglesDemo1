@@ -144,7 +144,7 @@ class Camera2Activity : BaseActivity2() {
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
                     mCameraDevice = camera
-                    getCameraSession()
+                    getPreviewSession()
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
@@ -160,13 +160,13 @@ class Camera2Activity : BaseActivity2() {
     }
 
     //获取session对象
-    private fun getCameraSession() {
+    private fun getPreviewSession() {
         mCameraDevice?.createCaptureSession(
             listOf(mSurface),
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mSession = session
-                    getCaptureRequest()
+                    getPreviewRequest()
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
@@ -175,7 +175,7 @@ class Camera2Activity : BaseActivity2() {
         )
     }
 
-    private fun getCaptureRequest() {
+    private fun getPreviewRequest() {
         val builder = mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         builder?.addTarget(mSurface!!)
         val request = builder?.build()
