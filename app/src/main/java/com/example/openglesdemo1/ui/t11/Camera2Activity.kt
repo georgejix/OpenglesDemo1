@@ -1,15 +1,14 @@
 package com.example.openglesdemo1.ui.t11
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.graphics.*
+import android.hardware.camera2.*
+import android.media.ExifInterface
+import android.media.ImageReader
+import android.os.*
+import android.provider.MediaStore
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
@@ -20,6 +19,14 @@ import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_camera2.*
+import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingDeque
 
 /**
  * https://www.jianshu.com/u/1bda0082f088
@@ -32,6 +39,11 @@ class Camera2Activity : BaseActivity2() {
     private var mSurface: Surface? = null
     private var mSession: CameraCaptureSession? = null
     private var mCameraId = ""
+    private var mCapImageReader: ImageReader? = null
+    private var mCapSurface: Surface? = null
+    private var mCapBuilder: CaptureRequest.Builder? = null
+    private val mCaptureResults: BlockingQueue<CaptureResult> = LinkedBlockingDeque()
+    private val mSaveImageExecutor: Executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +78,8 @@ class Camera2Activity : BaseActivity2() {
                 mSession = null
                 mCameraDevice?.close()
                 mCameraDevice = null
+                mCapImageReader?.close()
+                mCapImageReader = null
                 return true
             }
 
@@ -78,6 +92,7 @@ class Camera2Activity : BaseActivity2() {
         when (view.id) {
             R.id.btn_take_photo -> {
                 ToastUtil.showToast("take photo")
+                getCapRequest()
             }
         }
     }
@@ -144,6 +159,7 @@ class Camera2Activity : BaseActivity2() {
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
                     mCameraDevice = camera
+                    createCapImageReader(size)
                     getPreviewSession()
                 }
 
@@ -159,10 +175,27 @@ class Camera2Activity : BaseActivity2() {
         )
     }
 
+    private fun createCapImageReader(size: Size) {
+        mCapImageReader = ImageReader.newInstance(size.width, size.height, ImageFormat.JPEG, 3)
+        mCapImageReader?.setOnImageAvailableListener(object : ImageReader.OnImageAvailableListener {
+            override fun onImageAvailable(reader: ImageReader?) {
+                savePic(reader)
+            }
+        }, mSecondHandler)
+        mCapSurface = mCapImageReader?.surface
+
+        mCapBuilder = mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+        mCapBuilder!![CaptureRequest.JPEG_THUMBNAIL_SIZE] = size
+        mCapBuilder!![CaptureRequest.JPEG_ORIENTATION] = 90
+        mCapBuilder!![CaptureRequest.JPEG_QUALITY] = 100
+        mCapBuilder!!.addTarget(mSurface!!)
+        mCapBuilder!!.addTarget(mCapSurface!!)
+    }
+
     //获取session对象
     private fun getPreviewSession() {
         mCameraDevice?.createCaptureSession(
-            listOf(mSurface),
+            listOf(mSurface, mCapSurface),
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mSession = session
@@ -182,10 +215,128 @@ class Camera2Activity : BaseActivity2() {
         mSession?.setRepeatingRequest(
             request!!,
             object : CameraCaptureSession.CaptureCallback() {
-
             },
             mSecondHandler
         )
+    }
+
+    private fun getCapRequest() {
+        mCapBuilder?.let {
+            mSession?.capture(
+                mCapBuilder!!.build(),
+                object : CameraCaptureSession.CaptureCallback() {
+                    override fun onCaptureCompleted(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        result: TotalCaptureResult
+                    ) {
+                        super.onCaptureCompleted(session, request, result)
+                        mCaptureResults.put(result)
+                    }
+                },
+                mSecondHandler
+            )
+        }
+    }
+
+    private fun savePic(reader: ImageReader?) {
+        val dateFormat: DateFormat = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
+        val cameraDir =
+            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)}/Camera"
+
+        reader?.let {
+            val image = reader.acquireNextImage()
+            val captureResult = mCaptureResults.take()
+            if (image != null && captureResult != null) {
+                image.let {
+                    val jpegByteBuffer =
+                        it.planes[0].buffer// Jpeg image data only occupy the planes[0].
+                    val jpegByteArray = ByteArray(jpegByteBuffer.remaining())
+                    jpegByteBuffer.get(jpegByteArray)
+                    val width = it.width
+                    val height = it.height
+                    mSaveImageExecutor.execute {
+                        val date = System.currentTimeMillis()
+                        val title = "IMG_${dateFormat.format(date)}"// e.g. IMG_20190211100833786
+                        val displayName = "$title.jpeg"// e.g. IMG_20190211100833786.jpeg
+                        val path =
+                            "$cameraDir/$displayName"// e.g. /sdcard/DCIM/Camera/IMG_20190211100833786.jpeg
+                        val orientation = captureResult[CaptureResult.JPEG_ORIENTATION]
+                        val location = captureResult[CaptureResult.JPEG_GPS_LOCATION]
+                        val longitude = location?.longitude ?: 0.0
+                        val latitude = location?.latitude ?: 0.0
+                        println(path)
+
+                        // Write the jpeg data into the specified file.
+                        File(path).writeBytes(jpegByteArray)
+
+                        // Insert the image information into the media store.
+                        val values = ContentValues()
+                        values.put(MediaStore.Images.ImageColumns.TITLE, title)
+                        values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, displayName)
+                        values.put(MediaStore.Images.ImageColumns.DATA, path)
+                        values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, date)
+                        values.put(MediaStore.Images.ImageColumns.WIDTH, width)
+                        values.put(MediaStore.Images.ImageColumns.HEIGHT, height)
+                        values.put(MediaStore.Images.ImageColumns.ORIENTATION, orientation)
+                        values.put(MediaStore.Images.ImageColumns.LONGITUDE, longitude)
+                        values.put(MediaStore.Images.ImageColumns.LATITUDE, latitude)
+                        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+                        // Refresh the thumbnail of image.
+                        val thumbnail = getThumbnail(path)
+                        if (thumbnail != null) {
+                            runOnUiThread {
+                                thumbnail_view.setImageBitmap(thumbnail)
+                                thumbnail_view.scaleX = 0.8F
+                                thumbnail_view.scaleY = 0.8F
+                                thumbnail_view.animate().setDuration(50).scaleX(1.0F).scaleY(1.0F)
+                                    .start()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getThumbnail(jpegPath: String): Bitmap? {
+        val exifInterface = ExifInterface(jpegPath)
+        val orientationFlag = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        val orientation = when (orientationFlag) {
+            ExifInterface.ORIENTATION_NORMAL -> 0.0F
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90.0F
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180.0F
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270.0F
+            else -> 0.0F
+        }
+
+        var thumbnail = if (exifInterface.hasThumbnail() && Build.VERSION.SDK_INT >= 26) {
+            exifInterface.thumbnailBitmap
+        } else {
+            val options = BitmapFactory.Options()
+            options.inSampleSize = 16
+            BitmapFactory.decodeFile(jpegPath, options)
+        }
+
+        if (orientation != 0.0F && thumbnail != null) {
+            val matrix = Matrix()
+            matrix.setRotate(orientation)
+            thumbnail = Bitmap.createBitmap(
+                thumbnail,
+                0,
+                0,
+                thumbnail.width,
+                thumbnail.height,
+                matrix,
+                true
+            )
+        }
+
+        return thumbnail
     }
 
     /**
