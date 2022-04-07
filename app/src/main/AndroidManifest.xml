@@ -68,6 +68,9 @@
         <activity
             android:name=".ui.t11.Camera2Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.t12.RecordByCamera2Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

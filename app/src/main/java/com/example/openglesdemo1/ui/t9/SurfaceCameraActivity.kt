@@ -7,7 +7,7 @@ import com.example.openglesdemo1.ui.base.BaseActivity2
 
 class SurfaceCameraActivity : BaseActivity2() {
     private lateinit var mGLSurfaceView: GLSurfaceView
-    private var mRender:SurfaceCameraRender?=null
+    private var mRender: SurfaceCameraRender? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class SurfaceCameraActivity : BaseActivity2() {
     private fun setupView() {
         mGLSurfaceView = GLSurfaceView(this)
         mGLSurfaceView.setEGLContextClientVersion(3)
-        mRender=SurfaceCameraRender(mGLSurfaceView)
+        mRender = SurfaceCameraRender(mGLSurfaceView)
         mGLSurfaceView.setRenderer(mRender)
         setContentView(mGLSurfaceView)
     }
