@@ -12,15 +12,10 @@ class RecordByCamera2Activity : BaseActivity2() {
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
     private var mRecordByCameraRender: RecordByCameraRender? = null
     private var mIsPreview: AtomicBoolean? = null
+    private var mHasInit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mGlSurface.setEGLContextClientVersion(3)
-        mRecordByCameraRender = RecordByCameraRender(mGlSurface)
-
-        mGlSurface.setRenderer(mRecordByCameraRender)
-        setContentView(mGlSurface)
-
         requestPermission(
             listOf(
                 Manifest.permission.CAMERA,
@@ -33,6 +28,13 @@ class RecordByCamera2Activity : BaseActivity2() {
         super.getPermissions(get, requestCode)
         if (0 == requestCode && get) {
             println("$TAG get permission")
+            if (!mHasInit) {
+                mHasInit = true
+                mGlSurface.setEGLContextClientVersion(3)
+                mRecordByCameraRender = RecordByCameraRender(mGlSurface)
+                mGlSurface.setRenderer(mRecordByCameraRender)
+                setContentView(mGlSurface)
+            }
             mIsPreview = AtomicBoolean(false)
             startPreview()
         } else {
