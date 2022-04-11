@@ -16,20 +16,17 @@ class RecordByCamera2Activity : BaseActivity2() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGlSurface.setEGLContextClientVersion(3)
-        mRecordByCameraRender =
-            RecordByCameraRender(mGlSurface, object : RecordByCameraRender.Listener {
-                override fun onSurfaceCreated() {
-                    requestPermission(
-                        listOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), 0
-                    )
-                }
-            })
+        mRecordByCameraRender = RecordByCameraRender(mGlSurface)
 
         mGlSurface.setRenderer(mRecordByCameraRender)
         setContentView(mGlSurface)
+
+        requestPermission(
+            listOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ), 0
+        )
     }
 
     override fun getPermissions(get: Boolean, requestCode: Int) {
