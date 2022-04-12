@@ -8,7 +8,7 @@ import com.example.openglesdemo1.utils.ToastUtil
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RecordByCameraActivity : BaseActivity2() {
-    private val TAG = "RecordByCamera2Activity"
+    private val TAG = "RecordByCameraActivity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
     private var mRecordByCameraRender: RecordByCameraRender? = null
     private var mIsPreview = AtomicBoolean(false)
