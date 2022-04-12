@@ -1,21 +1,25 @@
-package com.example.openglesdemo1.ui.t12
+package com.example.openglesdemo1.ui.t13
 
 import android.Manifest
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
+import kotlinx.android.synthetic.main.activity_record_by_camera2.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RecordByCamera2Activity : BaseActivity2() {
     private val TAG = "RecordByCamera2Activity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
-    private var mRecordByCameraRender: RecordByCameraRender? = null
+    private var mRecordByCameraRender: RecordByCamera2Render? = null
     private var mIsPreview = AtomicBoolean(false)
     private var mIsRenderCreated = AtomicBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_record_by_camera2)
         requestPermission(
             listOf(
                 Manifest.permission.CAMERA,
@@ -31,14 +35,19 @@ class RecordByCamera2Activity : BaseActivity2() {
             mRecordByCameraRender ?: let {
                 mGlSurface.setEGLContextClientVersion(3)
                 mRecordByCameraRender =
-                    RecordByCameraRender(mGlSurface, object : RecordByCameraRender.Listener {
+                    RecordByCamera2Render(mGlSurface, object : RecordByCamera2Render.Listener {
                         override fun onSurfaceCreated() {
                             mIsRenderCreated.set(true)
                             startPreview()
                         }
                     })
+                mRecordByCameraRender?.mSize?.apply {
+                    val param = layout_preview.layoutParams as ConstraintLayout.LayoutParams
+                    param.dimensionRatio = "w,${width}:${height}"
+                }
                 mGlSurface.setRenderer(mRecordByCameraRender)
-                setContentView(mGlSurface)
+                layout_preview.removeAllViews()
+                layout_preview.addView(mGlSurface)
             }
         } else {
             ToastUtil.showToast("no permission")
