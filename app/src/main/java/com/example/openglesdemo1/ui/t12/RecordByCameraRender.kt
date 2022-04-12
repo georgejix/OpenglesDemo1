@@ -15,8 +15,12 @@ import java.nio.ShortBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class RecordByCameraRender(val mGLSurfaceView: GLSurfaceView) :
+class RecordByCameraRender(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
     GLSurfaceView.Renderer {
+
+    interface Listener {
+        fun onSurfaceCreated()
+    }
 
     private var mVertexBuffer: FloatBuffer
     private var mTextureBuffer: FloatBuffer
@@ -77,6 +81,7 @@ class RecordByCameraRender(val mGLSurfaceView: GLSurfaceView) :
         mTextureId = loadTexture()
         //加载SurfaceTexture
         loadSurfaceTexture(mTextureId)
+        mListener?.onSurfaceCreated()
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -112,15 +117,15 @@ class RecordByCameraRender(val mGLSurfaceView: GLSurfaceView) :
     }
 
     fun start() {
-
+        mCamera?.startPreview()
     }
 
     fun stop() {
-
+        mCamera?.stopPreview()
     }
 
     fun release() {
-
+        mCamera?.release()
     }
 
     private fun loadTexture(): Int {
@@ -164,7 +169,6 @@ class RecordByCameraRender(val mGLSurfaceView: GLSurfaceView) :
         }
         //设置SurfaceTexture作为相机预览输出
         mCamera?.setPreviewTexture(mSurfaceTexture)
-        mCamera?.startPreview()
         return true
     }
 }

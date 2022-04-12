@@ -11,8 +11,8 @@ class RecordByCamera2Activity : BaseActivity2() {
     private val TAG = "RecordByCamera2Activity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
     private var mRecordByCameraRender: RecordByCameraRender? = null
-    private var mIsPreview: AtomicBoolean? = null
-    private var mHasInit = false
+    private var mIsPreview = AtomicBoolean(false)
+    private var mIsRenderCreated = AtomicBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +28,18 @@ class RecordByCamera2Activity : BaseActivity2() {
         super.getPermissions(get, requestCode)
         if (0 == requestCode && get) {
             println("$TAG get permission")
-            if (!mHasInit) {
-                mHasInit = true
+            mRecordByCameraRender ?: let {
                 mGlSurface.setEGLContextClientVersion(3)
-                mRecordByCameraRender = RecordByCameraRender(mGlSurface)
+                mRecordByCameraRender =
+                    RecordByCameraRender(mGlSurface, object : RecordByCameraRender.Listener {
+                        override fun onSurfaceCreated() {
+                            mIsRenderCreated.set(true)
+                            startPreview()
+                        }
+                    })
                 mGlSurface.setRenderer(mRecordByCameraRender)
                 setContentView(mGlSurface)
             }
-            mIsPreview = AtomicBoolean(false)
-            startPreview()
         } else {
             ToastUtil.showToast("no permission")
         }
@@ -59,20 +62,20 @@ class RecordByCamera2Activity : BaseActivity2() {
     }
 
     private fun startPreview() {
-        mIsPreview?.apply {
-            if (get()) {
-                println("$TAG start preview return")
-                return
-            }
-            println("$TAG start preview")
-            mRecordByCameraRender?.start()
-            set(true)
+        if (!mIsRenderCreated.get() || mIsPreview.get() || isFinishing || isDestroyed) {
+            return
         }
+        println("$TAG start preview")
+        mRecordByCameraRender?.start()
+        mIsPreview.set(true)
     }
 
     private fun stopPreview() {
+        if (!mIsRenderCreated.get() || !mIsPreview.get() || isFinishing || isDestroyed) {
+            return
+        }
         println("$TAG stop preview")
         mRecordByCameraRender?.stop()
-        mIsPreview?.set(false)
+        mIsPreview.set(false)
     }
 }
