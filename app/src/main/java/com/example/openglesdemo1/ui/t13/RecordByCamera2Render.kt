@@ -69,6 +69,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mCaptureBuilder: CaptureRequest.Builder? = null
     private var mSurface: Surface? = null
     private val mSupportWith = 1080;
+    private var mHandlerThread = HandlerThread("second")
 
     init {
         for (id in mCameraManager.cameraIdList) {
@@ -196,14 +197,14 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     }
 
     fun release() {
+        mHandlerThread.quitSafely()
         mCamera?.close()
         mCamera = null
     }
 
     private fun openCamera() {
-        val handlerThread = HandlerThread("second")
-        handlerThread.start()
-        mSecondHandler = Handler(handlerThread.looper)
+        mHandlerThread.start()
+        mSecondHandler = Handler(mHandlerThread.looper)
         if (ActivityCompat.checkSelfPermission(
                 mGLSurfaceView.context,
                 Manifest.permission.CAMERA
