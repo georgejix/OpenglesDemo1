@@ -12,6 +12,7 @@
 
 #define LOGI(format, ...)  __android_log_print(ANDROID_LOG_INFO,  "ffmpegtest", format, ##__VA_ARGS__)
 
+
 JNIEXPORT jint JNICALL
 Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
         (JNIEnv *env, jclass cls, jstring jstring_output_path) {

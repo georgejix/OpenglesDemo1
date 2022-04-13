@@ -12,6 +12,7 @@ import android.opengl.GLSurfaceView
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
+import android.util.Range
 import android.util.Size
 import android.view.Surface
 import androidx.core.app.ActivityCompat
@@ -71,10 +72,12 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mSecondHandler: Handler? = null
     private var mCameraInfo: CameraCharacteristics? = null
     public var mSize: Size? = null
+    private val mSupportWith = 1080;
+    private var mFps: Range<Int>? = null
+    private val mSupportFps = 24;
     private var mCameraSession: CameraCaptureSession? = null
     private var mCaptureBuilder: CaptureRequest.Builder? = null
     private var mSurface: Surface? = null
-    private val mSupportWith = 1080;
     private var mHandlerThread = HandlerThread("second")
     private var mImageReader: ImageReader? = null
     private var mImageSurface: Surface? = null
@@ -90,7 +93,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
             ) {
                 mCameraId = id
                 mCameraInfo = cameraInfo
-                getCameraSize()
+                getCameraParams()
                 openCamera()
                 break
             }
@@ -257,7 +260,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         }
     }
 
-    private fun getCameraSize() {
+    private fun getCameraParams() {
         mCameraInfo?.apply {
             val map = get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
             map?.getOutputSizes(SurfaceTexture::class.java)?.apply {
@@ -268,6 +271,19 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
                         }
                     } ?: let {
                         mSize = size
+                    }
+                }
+            }
+
+            val fpsList = get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
+            fpsList?.forEach { fps ->
+                if (fps.lower == fps.upper) {
+                    mFps?.apply {
+                        if (abs(fps.upper - mSupportFps) < abs(upper - mSupportFps)) {
+                            mFps = fps
+                        }
+                    } ?: let {
+                        mFps = fps
                     }
                 }
             }
@@ -316,6 +332,9 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private fun setCaptureRequest() {
         mCaptureBuilder ?: let {
             mCaptureBuilder = mCamera?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+            mFps?.apply {
+                mCaptureBuilder?.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, this)
+            }
             mCaptureBuilder?.addTarget(mSurface!!)
             mCaptureBuilder?.addTarget(mImageSurface!!)
         }
