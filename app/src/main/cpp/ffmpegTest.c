@@ -354,13 +354,6 @@ open_video(AVFormatContext *oc, AVCodec *codec, OutputStream *ost) {
      * picture is needed too. It is then converted to the required
      * output format. */
     ost->tmp_frame = NULL;
-    if (c->pix_fmt != AV_PIX_FMT_YUV420P) {
-        ost->tmp_frame = alloc_picture(AV_PIX_FMT_YUV420P, c->width, c->height);
-        if (!ost->tmp_frame) {
-            LOGI("Could not allocate temporary picture\n");
-            exit(1);
-        }
-    }
 
     /* copy the stream parameters to the muxer */
     ret = avcodec_parameters_from_context(ost->st->codecpar, c);
