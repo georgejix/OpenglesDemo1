@@ -3,6 +3,7 @@ package com.example.openglesdemo1.ui.t13
 import android.Manifest
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
@@ -71,6 +72,22 @@ class RecordByCamera2Activity : BaseActivity2() {
         super.onDestroy()
         mRecordByCameraRender?.release()
         println("$TAG release preview")
+    }
+
+    fun onClick(view: View) {
+        when (view.id) {
+            R.id.tv_record -> {
+                mRecordByCameraRender?.apply {
+                    if (!mIsRecord.get()) {
+                        startRecord()
+                        tv_record.text = "stop"
+                    } else {
+                        stopRecord()
+                        tv_record.text = "start"
+                    }
+                }
+            }
+        }
     }
 
     private fun startPreview() {

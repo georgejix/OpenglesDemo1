@@ -16,6 +16,19 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //声明so文件夹支持的平台
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+
+        //声明cpp生成的平台
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+        }
     }
 
     buildTypes {
@@ -30,6 +43,40 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    //引入其他so位置
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
+    //make文件位置
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libavcodec.so'
+        pickFirst 'lib/arm64-v8a/libavdevice.so'
+        pickFirst 'lib/arm64-v8a/libavfilter.so'
+        pickFirst 'lib/arm64-v8a/libavformat.so'
+        pickFirst 'lib/arm64-v8a/libavutil.so'
+        pickFirst 'lib/arm64-v8a/libpostproc.so'
+        pickFirst 'lib/arm64-v8a/libswresample.so'
+        pickFirst 'lib/arm64-v8a/libswscale.so'
+
+        pickFirst 'lib/armeabi-v7a/libavcodec.so'
+        pickFirst 'lib/armeabi-v7a/libavdevice.so'
+        pickFirst 'lib/armeabi-v7a/libavfilter.so'
+        pickFirst 'lib/armeabi-v7a/libavformat.so'
+        pickFirst 'lib/armeabi-v7a/libavutil.so'
+        pickFirst 'lib/armeabi-v7a/libpostproc.so'
+        pickFirst 'lib/armeabi-v7a/libswresample.so'
+        pickFirst 'lib/armeabi-v7a/libswscale.so'
     }
 }
 

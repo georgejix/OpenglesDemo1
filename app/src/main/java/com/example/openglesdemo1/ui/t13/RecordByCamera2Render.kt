@@ -16,12 +16,14 @@ import android.util.Size
 import android.view.Surface
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
+import com.example.openglesdemo1.ffmpeg.FfmpegUtil
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.abs
@@ -76,6 +78,8 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mImageReader: ImageReader? = null
     private var mImageSurface: Surface? = null
     private var mFrameCount = 0
+    var mIsRecord = AtomicBoolean(false)
+    private val mFfmpegUtil by lazy { FfmpegUtil() }
 
     init {
         for (id in mCameraManager.cameraIdList) {
@@ -206,6 +210,22 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         mHandlerThread.quitSafely()
         mCamera?.close()
         mCamera = null
+    }
+
+    fun startRecord() {
+        if (mIsRecord.get()) {
+            return
+        }
+        mFfmpegUtil.initVideo("abcdefg")
+        mIsRecord.set(true)
+    }
+
+    fun stopRecord() {
+        if (!mIsRecord.get()) {
+            return
+        }
+        mFfmpegUtil.stopVideo()
+        mIsRecord.set(false)
     }
 
     private fun openCamera() {
