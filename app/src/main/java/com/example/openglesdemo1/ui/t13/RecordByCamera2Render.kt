@@ -2,13 +2,16 @@ package com.example.openglesdemo1.ui.t13
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
+import android.media.ImageReader
 import android.opengl.GLES11Ext
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import android.util.Size
 import android.view.Surface
 import androidx.core.app.ActivityCompat
@@ -70,6 +73,9 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mSurface: Surface? = null
     private val mSupportWith = 1080;
     private var mHandlerThread = HandlerThread("second")
+    private var mImageReader: ImageReader? = null
+    private var mImageSurface: Surface? = null
+    private var mFrameCount = 0
 
     init {
         for (id in mCameraManager.cameraIdList) {
@@ -254,9 +260,24 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         mSurfaceTexture?.let {
             mSurface = Surface(mSurfaceTexture)
         }
+        //imagereader
+        mImageReader =
+            ImageReader.newInstance(mSize?.width!!, mSize?.height!!, ImageFormat.YUV_420_888, 5)
+        mImageReader?.setOnImageAvailableListener(object : ImageReader.OnImageAvailableListener {
+            override fun onImageAvailable(reader: ImageReader?) {
+                val image = reader?.acquireLatestImage()
+                Log.d(
+                    "test",
+                    "planes.size=${image?.planes?.size},width=${image?.width},height=${image?.height},frames=${mFrameCount++}"
+                )
+                image?.close()
+            }
+        }, mSecondHandler)
+        mImageSurface = mImageReader?.surface
+
         mCamera?.apply {
             createCaptureSession(
-                listOf(mSurface),
+                listOf(mSurface, mImageSurface),
                 object : CameraCaptureSession.StateCallback() {
                     override fun onConfigured(session: CameraCaptureSession) {
                         mCameraSession = session
@@ -275,6 +296,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         mCaptureBuilder ?: let {
             mCaptureBuilder = mCamera?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
             mCaptureBuilder?.addTarget(mSurface!!)
+            mCaptureBuilder?.addTarget(mImageSurface!!)
         }
         mCameraSession?.setRepeatingRequest(
             mCaptureBuilder!!.build(),
