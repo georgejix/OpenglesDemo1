@@ -11,13 +11,13 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-        ffmpegTest
+        ffmpegSaveVideo
 
         # Sets the library as a shared library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/ffmpegTest.c)
+        src/main/cpp/ffmpegSaveVideo.c)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -90,7 +90,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 # 链接库
 target_link_libraries( # Specifies the target library.
-        ffmpegTest
+        ffmpegSaveVideo
 
         avcodec
         avfilter

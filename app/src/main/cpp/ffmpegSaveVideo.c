@@ -1,4 +1,4 @@
-#include "ffmpegTest.h"
+#include "ffmpegSaveVideo.h"
 #include <android/log.h>
 
 #include "libavutil/avassert.h"
@@ -459,7 +459,7 @@ int encode_video = 0, encode_audio = 0;
 int i;
 
 JNIEXPORT jint JNICALL
-Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
+Java_com_example_openglesdemo1_ffmpeg_FfmpegSaveVideoUtil_initVideo
         (JNIEnv *env, jclass cls, jstring jstring_output_path) {
     //输入地址
     const char *output_path = (*env)->GetStringUTFChars(env, jstring_output_path, 0);
@@ -533,14 +533,14 @@ Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
 }
 
 JNIEXPORT jint JNICALL
-Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_writeVideo
+Java_com_example_openglesdemo1_ffmpeg_FfmpegSaveVideoUtil_writeVideo
         (JNIEnv *env, jclass cls) {
     //write_video_frame(oc, &video_st);
     //write_audio_frame(oc, &audio_st);
 }
 
 JNIEXPORT jint JNICALL
-Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_stopVideo
+Java_com_example_openglesdemo1_ffmpeg_FfmpegSaveVideoUtil_stopVideo
         (JNIEnv *env, jclass cls) {
     /* Write the trailer, if any. The trailer must be written before you
      * close the CodecContexts open when you wrote the header; otherwise

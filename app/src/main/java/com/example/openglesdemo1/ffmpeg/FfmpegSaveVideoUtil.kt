@@ -1,8 +1,8 @@
 package com.example.openglesdemo1.ffmpeg
 
-class FfmpegUtil {
+class FfmpegSaveVideoUtil {
     init {
-        System.loadLibrary("ffmpegTest")
+        System.loadLibrary("ffmpegSaveVideo")
         System.loadLibrary("avcodec")
         System.loadLibrary("avfilter")
         System.loadLibrary("avformat")

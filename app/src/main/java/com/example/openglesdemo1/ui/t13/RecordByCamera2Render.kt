@@ -17,7 +17,7 @@ import android.util.Size
 import android.view.Surface
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
-import com.example.openglesdemo1.ffmpeg.FfmpegUtil
+import com.example.openglesdemo1.ffmpeg.FfmpegSaveVideoUtil
 import com.example.openglesdemo1.utils.AppCore
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
@@ -83,7 +83,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mImageSurface: Surface? = null
     private var mFrameCount = 0
     var mIsRecord = AtomicBoolean(false)
-    private val mFfmpegUtil by lazy { FfmpegUtil() }
+    private val mSaveVideoUtil by lazy { FfmpegSaveVideoUtil() }
 
     init {
         for (id in mCameraManager.cameraIdList) {
@@ -222,7 +222,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
             return
         }
         val ret =
-            mFfmpegUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
+            mSaveVideoUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
         if (0 == ret) {
             mIsRecord.set(true)
         }
@@ -232,7 +232,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         if (!mIsRecord.get()) {
             return
         }
-        val ret = mFfmpegUtil.stopVideo()
+        val ret = mSaveVideoUtil.stopVideo()
         if (0 == ret) {
             mIsRecord.set(false)
         }
@@ -314,7 +314,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
                     "planes.size=${image?.planes?.size},width=${image?.width},height=${image?.height},frames=${mFrameCount++}"
                 )
                 if (mIsRecord.get()) {
-                    mFfmpegUtil.writeVideo()
+                    mSaveVideoUtil.writeVideo()
                 }
                 image?.close()
             }
