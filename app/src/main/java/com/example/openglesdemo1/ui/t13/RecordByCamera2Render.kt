@@ -17,6 +17,7 @@ import android.view.Surface
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ffmpeg.FfmpegUtil
+import com.example.openglesdemo1.utils.AppCore
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
 import java.nio.ByteBuffer
@@ -216,7 +217,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         if (mIsRecord.get()) {
             return
         }
-        mFfmpegUtil.initVideo("abcdefg")
+        mFfmpegUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
         mIsRecord.set(true)
     }
 

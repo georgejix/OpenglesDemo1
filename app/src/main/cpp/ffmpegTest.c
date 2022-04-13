@@ -17,8 +17,10 @@ Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
         (JNIEnv *env, jclass cls, jstring jstring_output_path) {
     //输入地址
     const char *output_path = (*env)->GetStringUTFChars(env, jstring_output_path, 0);
-    //(*env)->ReleaseStringUTFChars(env, jstring_input_path, input_path);
     LOGI("output_path= %s \n", output_path);
+
+
+
     (*env)->ReleaseStringUTFChars(env, jstring_output_path, output_path);
     return 0;
 }

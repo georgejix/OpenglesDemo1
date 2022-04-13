@@ -2,6 +2,9 @@ package com.example.openglesdemo1.utils;
 
 import android.app.Application;
 import android.content.res.Resources;
+import android.os.Environment;
+
+import java.io.File;
 
 /**
  * @anchor: andy
@@ -13,6 +16,8 @@ public class AppCore {
     private static AppCore sInstance;
 
     private Application application;
+    private static String path;
+    private static File projectFile;
 
     public static AppCore getInstance() {
         if (sInstance == null) {
@@ -23,6 +28,7 @@ public class AppCore {
 
     public void init(Application application) {
         this.application = application;
+        initDir();
     }
 
     public Application getContext() {
@@ -31,6 +37,18 @@ public class AppCore {
 
     public Resources getResources() {
         return application.getResources();
+    }
+
+    public void initDir() {
+        path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "androidDemo";
+        projectFile = new File(path);
+        if (!projectFile.exists()) {
+            projectFile.mkdirs();
+        }
+    }
+
+    public String getFile() {
+        return null == path ? Environment.getExternalStorageDirectory().getAbsolutePath() : path;
     }
 
 }
