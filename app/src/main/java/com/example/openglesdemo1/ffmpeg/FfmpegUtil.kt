@@ -13,5 +13,6 @@ class FfmpegUtil {
     }
 
     external fun initVideo(outputPath: String?): Int
+    external fun writeVideo(): Int
     external fun stopVideo(): Int
 }

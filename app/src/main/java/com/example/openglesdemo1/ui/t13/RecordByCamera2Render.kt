@@ -216,20 +216,26 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         mCamera = null
     }
 
+
     fun startRecord() {
         if (mIsRecord.get()) {
             return
         }
-        mFfmpegUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
-        mIsRecord.set(true)
+        val ret =
+            mFfmpegUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
+        if (0 == ret) {
+            mIsRecord.set(true)
+        }
     }
 
     fun stopRecord() {
         if (!mIsRecord.get()) {
             return
         }
-        mFfmpegUtil.stopVideo()
-        mIsRecord.set(false)
+        val ret = mFfmpegUtil.stopVideo()
+        if (0 == ret) {
+            mIsRecord.set(false)
+        }
     }
 
     private fun openCamera() {
@@ -307,6 +313,9 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
                     "test",
                     "planes.size=${image?.planes?.size},width=${image?.width},height=${image?.height},frames=${mFrameCount++}"
                 )
+                if (mIsRecord.get()) {
+                    mFfmpegUtil.writeVideo()
+                }
                 image?.close()
             }
         }, mSecondHandler)

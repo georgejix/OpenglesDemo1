@@ -80,10 +80,10 @@ class RecordByCamera2Activity : BaseActivity2() {
                 mRecordByCameraRender?.apply {
                     if (!mIsRecord.get()) {
                         startRecord()
-                        tv_record.text = "stop"
+                        tv_record.text = if (mIsRecord.get()) "stop" else "start"
                     } else {
                         stopRecord()
-                        tv_record.text = "start"
+                        tv_record.text = if (mIsRecord.get()) "stop" else "start"
                     }
                 }
             }
