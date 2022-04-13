@@ -3,7 +3,6 @@
 
 #include "libavutil/avassert.h"
 #include "libavutil/channel_layout.h"
-#include "libavutil/opt.h"
 #include "libavutil/mathematics.h"
 #include "libavutil/timestamp.h"
 #include "libavformat/avformat.h"
@@ -34,7 +33,6 @@ write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st,
     /* rescale output packet timestamp values from codec to stream timebase */
     av_packet_rescale_ts(pkt, *time_base, st->time_base);
     pkt->stream_index = st->index;
-
     return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
@@ -159,18 +157,14 @@ static AVFrame *alloc_audio_frame(enum AVSampleFormat sample_fmt,
 }
 
 static void
-open_audio(AVFormatContext *oc, AVCodec *codec, OutputStream *ost, AVDictionary *opt_arg) {
+open_audio(AVFormatContext *oc, AVCodec *codec, OutputStream *ost) {
     AVCodecContext *c;
     int nb_samples;
     int ret;
-    AVDictionary *opt = NULL;
-
     c = ost->enc;
 
     /* open it */
-    av_dict_copy(&opt, opt_arg, 0);
-    ret = avcodec_open2(c, codec, &opt);
-    av_dict_free(&opt);
+    ret = avcodec_open2(c, codec, NULL);
     if (ret < 0) {
         LOGI("Could not open audio codec\n");
         exit(1);
@@ -338,16 +332,12 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
 }
 
 static void
-open_video(AVFormatContext *oc, AVCodec *codec, OutputStream *ost, AVDictionary *opt_arg) {
+open_video(AVFormatContext *oc, AVCodec *codec, OutputStream *ost) {
     int ret;
     AVCodecContext *c = ost->enc;
-    AVDictionary *opt = NULL;
-
-    av_dict_copy(&opt, opt_arg, 0);
 
     /* open the codec */
-    ret = avcodec_open2(c, codec, &opt);
-    av_dict_free(&opt);
+    ret = avcodec_open2(c, codec, NULL);
     if (ret < 0) {
         LOGI("Could not open video codec\n");
         exit(1);
@@ -473,7 +463,6 @@ AVCodec *audio_codec, *video_codec;
 int ret;
 int have_video = 0, have_audio = 0;
 int encode_video = 0, encode_audio = 0;
-AVDictionary *opt = NULL;
 int i;
 
 JNIEXPORT jint JNICALL
@@ -513,10 +502,10 @@ Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
     /* Now that all the parameters are set, we can open the audio and
      * video codecs and allocate the necessary encode buffers. */
     if (have_video)
-        open_video(oc, video_codec, &video_st, opt);
+        open_video(oc, video_codec, &video_st);
 
     if (have_audio)
-        open_audio(oc, audio_codec, &audio_st, opt);
+        open_audio(oc, audio_codec, &audio_st);
 
     /* open the output file, if needed */
     if (!(fmt->flags & AVFMT_NOFILE)) {
@@ -528,7 +517,7 @@ Java_com_example_openglesdemo1_ffmpeg_FfmpegUtil_initVideo
     }
 
     /* Write the stream header, if any. */
-    ret = avformat_write_header(oc, &opt);
+    ret = avformat_write_header(oc, NULL);
     if (ret < 0) {
         LOGI("Error occurred when opening output file\n");
         return -1;
