@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.TextureView
 import com.example.openglesdemo1.ui.base.BaseActivity2
 
+/**
+ * texture + camera1 + opengl
+ */
 class TextureCameraActivity : BaseActivity2() {
     private var mTextureView: TextureView? = null
 

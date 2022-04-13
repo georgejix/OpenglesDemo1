@@ -30,6 +30,7 @@ import java.util.concurrent.LinkedBlockingDeque
 
 /**
  * https://www.jianshu.com/u/1bda0082f088
+ * camera2
  */
 class Camera2Activity : BaseActivity2() {
     private val mCameraManager by lazy { getSystemService(CameraManager::class.java) }

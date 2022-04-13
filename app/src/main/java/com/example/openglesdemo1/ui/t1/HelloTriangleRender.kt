@@ -9,7 +9,6 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
 
-
 class HelloTriangleRender(var context: Context) : GLSurfaceView.Renderer {
     // Member variables
     private var mProgramObject: Int = 0

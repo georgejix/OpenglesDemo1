@@ -5,6 +5,9 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import com.example.openglesdemo1.ui.base.BaseActivity2
 
+/**
+ * camera1 + glsurface + opengl
+ */
 class SurfaceCameraActivity : BaseActivity2() {
     private lateinit var mGLSurfaceView: GLSurfaceView
     private var mRender: SurfaceCameraRender? = null

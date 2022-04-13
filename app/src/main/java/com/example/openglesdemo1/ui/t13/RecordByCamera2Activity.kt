@@ -10,6 +10,9 @@ import com.example.openglesdemo1.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_record_by_camera2.*
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * camera2 + opengl
+ */
 class RecordByCamera2Activity : BaseActivity2() {
     private val TAG = "RecordByCamera2Activity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
