@@ -21,6 +21,7 @@ import com.example.openglesdemo1.ffmpeg.FfmpegSaveVideoUtil
 import com.example.openglesdemo1.utils.AppCore
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
+import java.lang.Math.abs
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -28,7 +29,6 @@ import java.nio.ShortBuffer
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import kotlin.math.abs
 
 class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
     GLSurfaceView.Renderer {

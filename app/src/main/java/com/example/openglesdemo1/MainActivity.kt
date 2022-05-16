@@ -26,6 +26,7 @@ class MainActivity : Activity() {
     private fun initView() {
         rv_list.adapter = MainAdapter(
             listOf(
+                //opengl
                 MainBean("三角形", TriangleActivity::class.java),
                 MainBean("纯色", ColorActivity::class.java),
                 MainBean("矩形", RectangleActivity::class.java),
@@ -36,9 +37,10 @@ class MainActivity : Activity() {
                 MainBean("2d纹理显示bitmap", TextureActivity::class.java),
                 MainBean("surface camera", SurfaceCameraActivity::class.java),
                 MainBean("texture camera", TextureCameraActivity::class.java),
+                //camera
                 MainBean("camera2", Camera2Activity::class.java),
-                MainBean("recordByCamera", RecordByCameraActivity::class.java),
-                MainBean("recordByCamera2", RecordByCamera2Activity::class.java),
+                MainBean("recordByCamera", RecordByCameraActivity::class.java), //camera1
+                MainBean("recordByCamera2", RecordByCamera2Activity::class.java),//camera2
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
