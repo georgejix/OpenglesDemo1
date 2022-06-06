@@ -8,6 +8,7 @@ import com.example.openglesdemo1.ui.t11.Camera2Activity
 import com.example.openglesdemo1.ui.t12.RecordByCameraActivity
 import com.example.openglesdemo1.ui.t13.RecordByCamera2Activity
 import com.example.openglesdemo1.ui.t14.NativeOpenGlesActivity
+import com.example.openglesdemo1.ui.t15.FilterActivity
 import com.example.openglesdemo1.ui.t2.ColorActivity
 import com.example.openglesdemo1.ui.t3.RectangleActivity
 import com.example.openglesdemo1.ui.t4.VertexBufferActivity
@@ -39,6 +40,8 @@ class MainActivity : Activity() {
                 MainBean("surface camera", SurfaceCameraActivity::class.java),
                 MainBean("texture camera", TextureCameraActivity::class.java),
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
+                MainBean("滤镜", FilterActivity::class.java),
+
                 //camera
                 MainBean("camera2", Camera2Activity::class.java),
                 MainBean("recordByCamera", RecordByCameraActivity::class.java), //camera1

@@ -77,6 +77,9 @@
         <activity
             android:name=".ui.t14.NativeOpenGlesActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.t15.FilterActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
