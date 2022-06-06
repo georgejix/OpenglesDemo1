@@ -19,6 +19,15 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         src/main/cpp/ffmpegSaveVideo.c)
 
+add_library( # Sets the name of the library.
+        native-window
+
+        # Sets the library as a shared library.
+        SHARED
+
+        # Provides a relative path to your source file(s).
+        src/main/cpp/nativeWindow.cpp)
+
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
 # default, you only need to specify the name of the public NDK library
@@ -34,8 +43,8 @@ include_directories(
 #添加库 动态库为SHARED  静态库就是STATIC
 add_library(avcodec SHARED IMPORTED)
 set_target_properties(avcodec
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavcodec.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavcodec.so)
 
 #add_library(avdevice SHARED IMPORTED)
 #set_target_properties(avdevice
@@ -44,28 +53,28 @@ set_target_properties(avcodec
 
 add_library(avfilter SHARED IMPORTED)
 set_target_properties(avfilter
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavfilter.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavfilter.so)
 
 add_library(avformat SHARED IMPORTED)
 set_target_properties(avformat
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavformat.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavformat.so)
 
 add_library(avutil SHARED IMPORTED)
 set_target_properties(avutil
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavutil.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavutil.so)
 
 add_library(postproc SHARED IMPORTED)
 set_target_properties(postproc
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libpostproc.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libpostproc.so)
 
 add_library(swresample SHARED IMPORTED)
 set_target_properties(swresample
-  PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libswresample.so)
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libswresample.so)
 
 add_library(swscale SHARED IMPORTED)
 set_target_properties(swscale
@@ -102,3 +111,12 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
+
+target_link_libraries(
+        native-window
+
+        ${OPENGL_LIB}
+        android
+        jnigraphics
+        ${log-lib}
+)
