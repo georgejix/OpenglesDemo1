@@ -100,7 +100,7 @@ open class BaseFilter : RendererFilter {
         mProgram = ShaderUtils.linkProgram(vertexShaderId, fragmentShaderId)
         uMatrixLocation = GLES30.glGetUniformLocation(mProgram, "u_Matrix")
         //加载纹理
-        mTextureId = TextureUtils.loadTexture(AppCore.getInstance().context, R.mipmap.main)
+        mTextureId = TextureUtils.loadTexture(AppCore.getContext(), R.mipmap.main)
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {

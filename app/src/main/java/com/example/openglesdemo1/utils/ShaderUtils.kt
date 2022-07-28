@@ -28,7 +28,8 @@ object ShaderUtils {
     /**
      * 编译
      *
-     * @param type       顶点着色器:GLES30.GL_VERTEX_SHADER
+     * @param type
+     * 顶点着色器:GLES30.GL_VERTEX_SHADER
      * 片段着色器:GLES30.GL_FRAGMENT_SHADER
      * @param shaderCode
      * @return

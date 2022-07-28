@@ -83,7 +83,7 @@ class TextureRender : GLSurfaceView.Renderer {
 
         uMatrixLocation = GLES30.glGetUniformLocation(mProgram, "u_Matrix")
         //加载纹理
-        mTextureId = TextureUtils.loadTexture(AppCore.getInstance().context, R.mipmap.main)
+        mTextureId = TextureUtils.loadTexture(AppCore.getContext(), R.mipmap.main)
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

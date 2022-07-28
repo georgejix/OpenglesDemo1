@@ -140,7 +140,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
         //绑定外部纹理到纹理单元0
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureId)
-        //将此纹理单元床位片段着色器的uTextureSampler外部纹理采样器
+        //将此纹理单元传给片段着色器的uTextureSampler外部纹理采样器
         GLES30.glUniform1i(mTextureSamplerLocation, 0)
         //将纹理矩阵传给片段着色器
         GLES30.glUniformMatrix4fv(mMatrixLocation, 1, false, mMatrix, 0)
@@ -222,7 +222,7 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
             return
         }
         val ret =
-            mSaveVideoUtil.initVideo("${AppCore.getInstance().file}/${System.currentTimeMillis()}.mp4")
+            mSaveVideoUtil.initVideo("${AppCore.path}/${System.currentTimeMillis()}.mp4")
         if (0 == ret) {
             mIsRecord.set(true)
         }

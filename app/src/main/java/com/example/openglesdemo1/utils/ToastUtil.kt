@@ -18,12 +18,12 @@ object ToastUtil {
 
     fun showToast(context: Context?, msg: String?) {
         if (null == toast || mLastThreadId != Thread.currentThread().id) {
-            toast = Toast(AppCore.getInstance().context)
+            toast = Toast(AppCore.getContext())
             try {
                 toast?.setText("")
             } catch (e: Exception) {
                 mNeedCancel = false
-                toast = Toast.makeText(AppCore.getInstance().context, "", Toast.LENGTH_SHORT)
+                toast = Toast.makeText(AppCore.getContext(), "", Toast.LENGTH_SHORT)
             }
             mLastThreadId = Thread.currentThread().id
         }
