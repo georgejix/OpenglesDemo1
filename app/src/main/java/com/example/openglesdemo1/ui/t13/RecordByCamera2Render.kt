@@ -124,6 +124,12 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         //加载SurfaceTexture
         loadSurfaceTexture(mTextureId)
         mListener.onSurfaceCreated()
+        /**
+         * 刷新方式:注意必须在setRenderer 后面设置
+         * RENDERMODE_WHEN_DIRTY 手动刷新，調用requestRender()回调一次渲染器的onDraw方法
+         * RENDERMODE_CONTINUOUSLY 自动刷新，大概16ms自動回調一次渲染器的onDraw方法
+         */
+        mGLSurfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
