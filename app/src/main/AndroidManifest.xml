@@ -66,13 +66,13 @@
             android:name=".ui.t10.TextureCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.t11.Camera2Activity"
+            android:name=".ui.t11.TextureViewPreviewCamera2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.t12.RecordByCameraActivity"
+            android:name=".ui.t12.GlPreviewCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.t13.RecordByCamera2Activity"
+            android:name=".ui.t13.GlPreviewCameraActivity2Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.t14.NativeOpenGlesActivity"

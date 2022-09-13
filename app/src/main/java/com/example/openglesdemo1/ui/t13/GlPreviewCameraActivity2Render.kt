@@ -17,8 +17,6 @@ import android.util.Size
 import android.view.Surface
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
-import com.example.openglesdemo1.ffmpeg.FfmpegSaveVideoUtil
-import com.example.openglesdemo1.utils.AppCore
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
 import java.lang.Math.abs
@@ -26,11 +24,10 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
+class GlPreviewCameraActivity2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
     GLSurfaceView.Renderer {
 
     interface Listener {
@@ -82,8 +79,6 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mImageReader: ImageReader? = null
     private var mImageSurface: Surface? = null
     private var mFrameCount = 0
-    var mIsRecord = AtomicBoolean(false)
-    private val mSaveVideoUtil by lazy { FfmpegSaveVideoUtil() }
 
     init {
         for (id in mCameraManager.cameraIdList) {
@@ -222,28 +217,6 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         mCamera = null
     }
 
-
-    fun startRecord() {
-        if (mIsRecord.get()) {
-            return
-        }
-        val ret =
-            mSaveVideoUtil.initVideo("${AppCore.path}/${System.currentTimeMillis()}.mp4")
-        if (0 == ret) {
-            mIsRecord.set(true)
-        }
-    }
-
-    fun stopRecord() {
-        if (!mIsRecord.get()) {
-            return
-        }
-        val ret = mSaveVideoUtil.stopVideo()
-        if (0 == ret) {
-            mIsRecord.set(false)
-        }
-    }
-
     private fun openCamera() {
         mHandlerThread.start()
         mSecondHandler = Handler(mHandlerThread.looper)
@@ -319,9 +292,6 @@ class RecordByCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Li
                     "test",
                     "planes.size=${image?.planes?.size},width=${image?.width},height=${image?.height},frames=${mFrameCount++}"
                 )
-                if (mIsRecord.get()) {
-                    mSaveVideoUtil.writeVideo()
-                }
                 image?.close()
             }
         }, mSecondHandler)

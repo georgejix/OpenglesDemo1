@@ -4,9 +4,9 @@ import android.app.Activity
 import android.os.Bundle
 import com.example.openglesdemo1.ui.t1.TriangleActivity
 import com.example.openglesdemo1.ui.t10.TextureCameraActivity
-import com.example.openglesdemo1.ui.t11.Camera2Activity
-import com.example.openglesdemo1.ui.t12.RecordByCameraActivity
-import com.example.openglesdemo1.ui.t13.RecordByCamera2Activity
+import com.example.openglesdemo1.ui.t11.TextureViewPreviewCamera2Activity
+import com.example.openglesdemo1.ui.t12.GlPreviewCameraActivity
+import com.example.openglesdemo1.ui.t13.GlPreviewCameraActivity2Activity
 import com.example.openglesdemo1.ui.t14.NativeOpenGlesActivity
 import com.example.openglesdemo1.ui.t15.FilterActivity
 import com.example.openglesdemo1.ui.t2.ColorActivity
@@ -43,9 +43,9 @@ class MainActivity : Activity() {
                 MainBean("滤镜", FilterActivity::class.java),
 
                 //camera
-                MainBean("camera2", Camera2Activity::class.java),
-                MainBean("recordByCamera", RecordByCameraActivity::class.java), //camera1
-                MainBean("recordByCamera2", RecordByCamera2Activity::class.java),//camera2
+                MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
+                MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
+                MainBean("openel预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })

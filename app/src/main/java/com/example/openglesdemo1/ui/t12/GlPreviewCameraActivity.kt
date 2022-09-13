@@ -1,29 +1,24 @@
-package com.example.openglesdemo1.ui.t13
+package com.example.openglesdemo1.ui.t12
 
 import android.Manifest
 import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
-import kotlinx.android.synthetic.main.activity_record_by_camera2.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * camera2 + opengl
+ * camera1 + opengl
  */
-class RecordByCamera2Activity : BaseActivity2() {
-    private val TAG = "RecordByCamera2Activity"
+class GlPreviewCameraActivity : BaseActivity2() {
+    private val TAG = "RecordByCameraActivity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
-    private var mRecordByCameraRender: RecordByCamera2Render? = null
+    private var mGlPreviewCameraRender: GlPreviewCameraRender? = null
     private var mIsPreview = AtomicBoolean(false)
     private var mIsRenderCreated = AtomicBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_record_by_camera2)
         requestPermission(
             listOf(
                 Manifest.permission.CAMERA,
@@ -36,22 +31,17 @@ class RecordByCamera2Activity : BaseActivity2() {
         super.getPermissions(get, requestCode)
         if (0 == requestCode && get) {
             println("$TAG get permission")
-            mRecordByCameraRender ?: let {
+            mGlPreviewCameraRender ?: let {
                 mGlSurface.setEGLContextClientVersion(3)
-                mRecordByCameraRender =
-                    RecordByCamera2Render(mGlSurface, object : RecordByCamera2Render.Listener {
+                mGlPreviewCameraRender =
+                    GlPreviewCameraRender(mGlSurface, object : GlPreviewCameraRender.Listener {
                         override fun onSurfaceCreated() {
                             mIsRenderCreated.set(true)
                             startPreview()
                         }
                     })
-                mRecordByCameraRender?.mSize?.apply {
-                    val param = layout_preview.layoutParams as ConstraintLayout.LayoutParams
-                    param.dimensionRatio = "w,${width}:${height}"
-                }
-                mGlSurface.setRenderer(mRecordByCameraRender)
-                layout_preview.removeAllViews()
-                layout_preview.addView(mGlSurface)
+                mGlSurface.setRenderer(mGlPreviewCameraRender)
+                setContentView(mGlSurface)
             }
         } else {
             ToastUtil.showToast("no permission")
@@ -70,24 +60,8 @@ class RecordByCamera2Activity : BaseActivity2() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mRecordByCameraRender?.release()
+        mGlPreviewCameraRender?.release()
         println("$TAG release preview")
-    }
-
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.tv_record -> {
-                mRecordByCameraRender?.apply {
-                    if (!mIsRecord.get()) {
-                        startRecord()
-                        tv_record.text = if (mIsRecord.get()) "stop" else "start"
-                    } else {
-                        stopRecord()
-                        tv_record.text = if (mIsRecord.get()) "stop" else "start"
-                    }
-                }
-            }
-        }
     }
 
     private fun startPreview() {
@@ -95,7 +69,7 @@ class RecordByCamera2Activity : BaseActivity2() {
             return
         }
         println("$TAG start preview")
-        mRecordByCameraRender?.start()
+        mGlPreviewCameraRender?.start()
         mIsPreview.set(true)
     }
 
@@ -104,7 +78,7 @@ class RecordByCamera2Activity : BaseActivity2() {
             return
         }
         println("$TAG stop preview")
-        mRecordByCameraRender?.stop()
+        mGlPreviewCameraRender?.stop()
         mIsPreview.set(false)
     }
 }

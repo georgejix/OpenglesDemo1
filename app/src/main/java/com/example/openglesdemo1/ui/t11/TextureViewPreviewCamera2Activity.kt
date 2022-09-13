@@ -28,7 +28,7 @@ import java.util.concurrent.LinkedBlockingDeque
  * https://www.jianshu.com/u/1bda0082f088
  * camera2
  */
-class Camera2Activity : BaseActivity2() {
+class TextureViewPreviewCamera2Activity : BaseActivity2() {
     private val mCameraManager by lazy { getSystemService(CameraManager::class.java) }
     private val mSecondHandler: Handler by lazy { initHandler() }
     private var mCameraDevice: CameraDevice? = null
@@ -142,7 +142,7 @@ class Camera2Activity : BaseActivity2() {
     private fun openCamera(size: Size) {
         println("test $size")
         if (ActivityCompat.checkSelfPermission(
-                this@Camera2Activity,
+                this@TextureViewPreviewCamera2Activity,
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
