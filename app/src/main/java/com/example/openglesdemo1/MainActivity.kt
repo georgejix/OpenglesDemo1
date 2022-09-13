@@ -9,6 +9,7 @@ import com.example.openglesdemo1.ui.t12.GlPreviewCameraActivity
 import com.example.openglesdemo1.ui.t13.GlPreviewCameraActivity2Activity
 import com.example.openglesdemo1.ui.t14.NativeOpenGlesActivity
 import com.example.openglesdemo1.ui.t15.FilterActivity
+import com.example.openglesdemo1.ui.t16.GlPreviewCameraWithRecordActivity
 import com.example.openglesdemo1.ui.t2.ColorActivity
 import com.example.openglesdemo1.ui.t3.RectangleActivity
 import com.example.openglesdemo1.ui.t4.VertexBufferActivity
@@ -46,6 +47,7 @@ class MainActivity : Activity() {
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
                 MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
                 MainBean("openel预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
+                MainBean("openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java), //camera1
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })

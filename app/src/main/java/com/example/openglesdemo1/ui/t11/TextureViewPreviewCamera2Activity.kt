@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
-import kotlinx.android.synthetic.main.activity_camera2.*
+import kotlinx.android.synthetic.main.activity_textureview_preview_camera2.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,7 +44,7 @@ class TextureViewPreviewCamera2Activity : BaseActivity2() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera2)
+        setContentView(R.layout.activity_textureview_preview_camera2)
         changeStatusBars(false, btn_take_photo)
         //textureview可用时，申请权限
         textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {

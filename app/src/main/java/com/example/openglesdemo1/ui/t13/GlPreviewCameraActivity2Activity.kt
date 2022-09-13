@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
-import kotlinx.android.synthetic.main.activity_record_by_camera2.*
+import kotlinx.android.synthetic.main.activity_gl_preview_camera2.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -23,7 +23,7 @@ class GlPreviewCameraActivity2Activity : BaseActivity2() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_record_by_camera2)
+        setContentView(R.layout.activity_gl_preview_camera2)
         requestPermission(
             listOf(
                 Manifest.permission.CAMERA,
