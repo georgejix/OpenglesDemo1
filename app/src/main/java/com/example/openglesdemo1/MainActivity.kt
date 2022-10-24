@@ -2,22 +2,23 @@ package com.example.openglesdemo1
 
 import android.app.Activity
 import android.os.Bundle
-import com.example.openglesdemo1.ui.t0.TestActivity
-import com.example.openglesdemo1.ui.t1.TriangleActivity
-import com.example.openglesdemo1.ui.t10.TextureCameraActivity
-import com.example.openglesdemo1.ui.t11.TextureViewPreviewCamera2Activity
-import com.example.openglesdemo1.ui.t12.GlPreviewCameraActivity
-import com.example.openglesdemo1.ui.t13.GlPreviewCameraActivity2Activity
-import com.example.openglesdemo1.ui.t14.NativeOpenGlesActivity
-import com.example.openglesdemo1.ui.t15.FilterActivity
-import com.example.openglesdemo1.ui.t16.GlPreviewCameraWithRecordActivity
-import com.example.openglesdemo1.ui.t2.ColorActivity
-import com.example.openglesdemo1.ui.t3.RectangleActivity
-import com.example.openglesdemo1.ui.t4.VertexBufferActivity
-import com.example.openglesdemo1.ui.t5.VertexArrayActivity
-import com.example.openglesdemo1.ui.t6.SquareActivity
-import com.example.openglesdemo1.ui.t8.TextureActivity
-import com.example.openglesdemo1.ui.t9.SurfaceCameraActivity
+import com.example.openglesdemo1.ui.stu1.t1.TriangleActivity
+import com.example.openglesdemo1.ui.stu1.t10.TextureCameraActivity
+import com.example.openglesdemo1.ui.stu1.t14.NativeOpenGlesActivity
+import com.example.openglesdemo1.ui.stu1.t15.FilterActivity
+import com.example.openglesdemo1.ui.stu1.t2.ColorActivity
+import com.example.openglesdemo1.ui.stu1.t3.RectangleActivity
+import com.example.openglesdemo1.ui.stu1.t4.VertexBufferActivity
+import com.example.openglesdemo1.ui.stu1.t5.VertexArrayActivity
+import com.example.openglesdemo1.ui.stu1.t6.SquareActivity
+import com.example.openglesdemo1.ui.stu1.t8.TextureActivity
+import com.example.openglesdemo1.ui.stu1.t9.SurfaceCameraActivity
+import com.example.openglesdemo1.ui.stu2.t11.TextureViewPreviewCamera2Activity
+import com.example.openglesdemo1.ui.stu2.t12.GlPreviewCameraActivity
+import com.example.openglesdemo1.ui.stu2.t13.GlPreviewCameraActivity2Activity
+import com.example.openglesdemo1.ui.stu2.t16.GlPreviewCameraWithRecordActivity
+import com.example.openglesdemo1.ui.stu3.t1.Test1Activity
+import com.example.openglesdemo1.ui.stu3.t2.Test2Activity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -31,7 +32,6 @@ class MainActivity : Activity() {
         rv_list.adapter = MainAdapter(
             listOf(
                 //opengl
-                MainBean("测试", TestActivity::class.java),
                 MainBean("三角形", TriangleActivity::class.java),
                 MainBean("纯色", ColorActivity::class.java),
                 MainBean("矩形", RectangleActivity::class.java),
@@ -45,11 +45,20 @@ class MainActivity : Activity() {
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
                 MainBean("滤镜", FilterActivity::class.java),
 
+                MainBean("-----------------------", null),
                 //camera
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
                 MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
                 MainBean("openel预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
-                MainBean("openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java), //camera1
+                MainBean(
+                    "openel预览Camera,并存储",
+                    GlPreviewCameraWithRecordActivity::class.java
+                ), //camera1
+
+                MainBean("-----------------------", null),
+                //学习
+                MainBean("测试-画球桌", Test1Activity::class.java),
+                MainBean("测试-画球桌2", Test2Activity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })

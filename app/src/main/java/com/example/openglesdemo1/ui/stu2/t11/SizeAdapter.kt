@@ -1,43 +1,43 @@
-package com.example.openglesdemo1
+package com.example.openglesdemo1.ui.stu2.t11
 
-import android.app.Activity
-import android.content.Intent
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.openglesdemo1.ui.base.BaseActivity
+import com.example.openglesdemo1.R
 import kotlinx.android.synthetic.main.item_main.view.*
 
-class MainAdapter(private val list: List<MainBean<out Activity>>) :
-    RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class SizeAdapter(private val list: List<Size>, private val listener: Listener) :
+    RecyclerView.Adapter<SizeAdapter.ViewHolder>() {
+    private var mCheckedIndex = -1
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_size, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.tv_content.text = list[position].name
+        holder.itemView.tv_content.text = list[position].toString()
         holder.itemView.tv_content.setOnClickListener {
-            list[position].clazz?.let {
-                holder.itemView.context.startActivity(
-                    Intent(
-                        holder.itemView.context,
-                        it
-                    )
-                )
-            }
+            mCheckedIndex = position
+            notifyDataSetChanged()
+            listener?.onClicked(list[position])
         }
         holder.itemView.tv_content.setTextColor(
             holder.itemView.context.resources.getColor(
-                R.color.color_31d77b,
+                if (position == mCheckedIndex) R.color.color_31d77b else R.color.black,
                 null
             )
         )
     }
 
     override fun getItemCount(): Int = list.size
+
+    interface Listener {
+        fun onClicked(size: Size)
+    }
 }
