@@ -34,7 +34,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public final class CameraGLView extends GLSurfaceView {
 
-    private static final boolean DEBUG = false; // TODO set false on release
+    private static final boolean DEBUG = true; // TODO set false on release
     private static final String TAG = "CameraGLView";
 
     private static final int CAMERA_ID = 0;
@@ -181,8 +181,7 @@ public final class CameraGLView extends GLSurfaceView {
      * GLSurfaceViewのRenderer
      */
     private static final class CameraSurfaceRenderer
-            implements Renderer,
-            SurfaceTexture.OnFrameAvailableListener {    // API >= 11
+            implements Renderer, SurfaceTexture.OnFrameAvailableListener {    // API >= 11
 
         private final WeakReference<CameraGLView> mWeakParent;
         private SurfaceTexture mSTexture;    // API >= 11
@@ -426,11 +425,13 @@ public final class CameraGLView extends GLSurfaceView {
 
         public CameraHandler getHandler() {
             synchronized (mReadyFence) {
+                if (DEBUG) Log.d(TAG, "getHandler");
                 try {
                     mReadyFence.wait();
                 } catch (final InterruptedException e) {
                 }
             }
+            if (DEBUG) Log.d(TAG, "getHandler return");
             return mHandler;
         }
 

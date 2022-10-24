@@ -2,6 +2,7 @@ package com.example.openglesdemo1
 
 import android.app.Activity
 import android.os.Bundle
+import com.example.openglesdemo1.ui.t0.TestActivity
 import com.example.openglesdemo1.ui.t1.TriangleActivity
 import com.example.openglesdemo1.ui.t10.TextureCameraActivity
 import com.example.openglesdemo1.ui.t11.TextureViewPreviewCamera2Activity
@@ -30,6 +31,7 @@ class MainActivity : Activity() {
         rv_list.adapter = MainAdapter(
             listOf(
                 //opengl
+                MainBean("测试", TestActivity::class.java),
                 MainBean("三角形", TriangleActivity::class.java),
                 MainBean("纯色", ColorActivity::class.java),
                 MainBean("矩形", RectangleActivity::class.java),
