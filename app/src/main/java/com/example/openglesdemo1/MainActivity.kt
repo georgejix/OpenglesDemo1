@@ -19,6 +19,7 @@ import com.example.openglesdemo1.ui.stu2.t13.GlPreviewCameraActivity2Activity
 import com.example.openglesdemo1.ui.stu2.t16.GlPreviewCameraWithRecordActivity
 import com.example.openglesdemo1.ui.stu3.t1.Test1Activity
 import com.example.openglesdemo1.ui.stu3.t2.Test2Activity
+import com.example.openglesdemo1.ui.stu3.t3.Test3Activity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -59,6 +60,7 @@ class MainActivity : Activity() {
                 //学习
                 MainBean("测试-画球桌", Test1Activity::class.java),
                 MainBean("测试-画球桌2", Test2Activity::class.java),
+                MainBean("测试-画球桌3", Test3Activity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
