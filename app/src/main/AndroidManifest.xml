@@ -95,6 +95,9 @@
         <activity
             android:name="com.example.openglesdemo1.ui.stu3.t4.Test4Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.openglesdemo1.ui.stu3.t5.Test5Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
