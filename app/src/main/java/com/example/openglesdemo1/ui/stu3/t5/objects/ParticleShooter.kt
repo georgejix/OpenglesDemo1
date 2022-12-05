@@ -9,8 +9,7 @@
 
 package com.example.openglesdemo1.ui.stu3.t5.objects
 
-import android.opengl.Matrix.multiplyMV
-import android.opengl.Matrix.setRotateEulerM
+import android.opengl.Matrix
 import com.example.openglesdemo1.ui.stu3.t5.util.Geometry
 import java.util.*
 
@@ -35,14 +34,14 @@ class ParticleShooter(
     fun addParticles(particleSystem: ParticleSystem?, currentTime: Float, count: Int) {
         particleSystem ?: return
         for (i in 0 until count) {
-            setRotateEulerM(
+            Matrix.setRotateEulerM(
                 rotationMatrix, 0,
                 (random.nextFloat() - 0.5f) * angleVariance,
                 (random.nextFloat() - 0.5f) * angleVariance,
                 (random.nextFloat() - 0.5f) * angleVariance
             )
 
-            multiplyMV(
+            Matrix.multiplyMV(
                 resultVector, 0,
                 rotationMatrix, 0,
                 directionVector, 0

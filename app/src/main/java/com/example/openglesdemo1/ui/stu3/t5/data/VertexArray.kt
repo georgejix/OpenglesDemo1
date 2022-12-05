@@ -8,7 +8,7 @@
  ***/
 package com.example.openglesdemo1.ui.stu3.t5.data
 
-import android.opengl.GLES20.*
+import android.opengl.GLES30
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -25,10 +25,10 @@ class VertexArray(vertexData: FloatArray) {
         componentCount: Int, stride: Int
     ) {
         floatBuffer.position(dataOffset)
-        glVertexAttribPointer(
-            attributeLocation, componentCount, GL_FLOAT, false, stride, floatBuffer
+        GLES30.glVertexAttribPointer(
+            attributeLocation, componentCount, GLES30.GL_FLOAT, false, stride, floatBuffer
         )
-        glEnableVertexAttribArray(attributeLocation)
+        GLES30.glEnableVertexAttribArray(attributeLocation)
         floatBuffer.position(0)
     }
 
