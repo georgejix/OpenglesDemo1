@@ -52,20 +52,8 @@ class VertexBufferRender : GLSurfaceView.Renderer {
             mVertexBuf,
             GLES30.GL_STATIC_DRAW
         )
-
-        //4. 将顶点位置数据送入渲染管线
-        GLES30.glVertexAttribPointer(
-            VERTEX_POS_INDEX,
-            VERTEX_POS_SIZE,
-            GLES30.GL_FLOAT,
-            false,
-            VERTEX_STRIDE,
-            0
-        )
         //解绑VBO,切换到无用缓冲区
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
-        //5. 启用顶点位置属性
-        GLES30.glEnableVertexAttribArray(VERTEX_POS_INDEX)
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -75,6 +63,20 @@ class VertexBufferRender : GLSurfaceView.Renderer {
     override fun onDrawFrame(gl: GL10?) {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
         GLES30.glUseProgram(mProgram)
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vboIds[0])
+        GLES30.glVertexAttribPointer(
+            VERTEX_POS_INDEX,
+            VERTEX_POS_SIZE,
+            GLES30.GL_FLOAT,
+            false,
+            VERTEX_STRIDE,
+            0
+        )
+        GLES30.glEnableVertexAttribArray(VERTEX_POS_INDEX)
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
+        GLES30.glEnableVertexAttribArray(0)
     }
 }
