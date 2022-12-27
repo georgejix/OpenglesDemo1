@@ -129,6 +129,7 @@ class SurfaceCamera2Render(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Ren
         //加载SurfaceTexture
         //根据纹理ID创建SurfaceTexture
         mSurfaceTexture = SurfaceTexture(mTextureId)
+        mSurfaceTexture?.setDefaultBufferSize(1920, 1080)
         mSurfaceTexture?.setOnFrameAvailableListener {
             glSurfaceView.requestRender()
         }
@@ -202,7 +203,10 @@ class SurfaceCamera2Render(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Ren
 
         mCameraManager?.let {
             for (cid in it.cameraIdList) {
-                if (CameraCharacteristics.LENS_FACING_FRONT.toString() == cid) {
+                var cameraCharacteristics = it.getCameraCharacteristics(cid)
+                if (CameraCharacteristics.LENS_FACING_FRONT ==
+                    cameraCharacteristics[CameraCharacteristics.LENS_FACING]
+                ) {
                     openCamera(cid)
                     break
                 }

@@ -77,6 +77,6 @@ class VertexBufferRender : GLSurfaceView.Renderer {
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
 
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
-        GLES30.glEnableVertexAttribArray(0)
+        GLES30.glDisableVertexAttribArray(VERTEX_POS_INDEX)
     }
 }
