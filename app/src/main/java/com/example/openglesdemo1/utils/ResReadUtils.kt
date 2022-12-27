@@ -16,8 +16,7 @@ object ResReadUtils {
         val builder = StringBuilder()
         try {
             val inputStream = AppCore.getContext().resources.openRawResource(resourceId)
-            val streamReader = InputStreamReader(inputStream)
-            val bufferedReader = BufferedReader(streamReader)
+            val bufferedReader = inputStream.bufferedReader()
             var textLine: String?
             while (bufferedReader.readLine().also { textLine = it } != null) {
                 builder.append(textLine)

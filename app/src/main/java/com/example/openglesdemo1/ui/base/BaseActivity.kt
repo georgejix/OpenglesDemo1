@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.util.Log
 
 abstract class BaseActivity : Activity() {
-    private var CONTEXT_CLIENT_VERSION = 3;
+    private var CONTEXT_CLIENT_VERSION = 3
     private lateinit var mGLSurfaceView: GLSurfaceView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,25 +27,25 @@ abstract class BaseActivity : Activity() {
     }
 
     private fun initView() {
-        mGLSurfaceView = GLSurfaceView(this);
+        mGLSurfaceView = GLSurfaceView(this)
         if (detectOpenGLES30()) {
             // Tell the surface view we want to create an OpenGL ES 3.0-compatible
             // context, and set an OpenGL ES 3.0-compatible renderer.
-            mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION);
-            mGLSurfaceView.setRenderer(getRender());
+            mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION)
+            mGLSurfaceView.setRenderer(getRender())
         } else {
-            Log.e("HelloTriangle", "OpenGL ES 3.0 not supported on device.  Exiting...");
-            finish();
+            Log.e("HelloTriangle", "OpenGL ES 3.0 not supported on device.  Exiting...")
+            finish()
         }
 
-        setContentView(mGLSurfaceView);
+        setContentView(mGLSurfaceView)
     }
 
     abstract fun getRender(): GLSurfaceView.Renderer
 
     private fun detectOpenGLES30(): Boolean {
-        var am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager;
+        var am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         var info: ConfigurationInfo = am.deviceConfigurationInfo
-        return (info.reqGlEsVersion >= 0x30000);
+        return (info.reqGlEsVersion >= 0x30000)
     }
 }

@@ -48,8 +48,10 @@ class Test4Render(val mContext: Context) : GLSurfaceView.Renderer {
         aTextureLocation = GLES30.glGetAttribLocation(mProgramId, "aTexCoord")
         uTextureUnitLocation = GLES30.glGetUniformLocation(mProgramId, "u_textureUnit")
         mTextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_bg2)
-        Log.d(TAG,"aPositionLocation=${aPositionLocation} uMatrixLocation=${uMatrixLocation} " +
-                "aTextureLocation=${aTextureLocation} uTextureUnitLocation=${uTextureUnitLocation}")
+        Log.d(
+            TAG, "aPositionLocation=${aPositionLocation} uMatrixLocation=${uMatrixLocation} " +
+                    "aTextureLocation=${aTextureLocation} uTextureUnitLocation=${uTextureUnitLocation}"
+        )
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -74,6 +76,7 @@ class Test4Render(val mContext: Context) : GLSurfaceView.Renderer {
 
         GLES30.glDisableVertexAttribArray(aPositionLocation)
         GLES30.glDisableVertexAttribArray(aTextureLocation)
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
         GLES30.glUseProgram(0)
     }
 }
