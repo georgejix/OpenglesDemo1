@@ -140,7 +140,7 @@ class TextureEGLHelper :
             contextAttributes,
             0
         )
-        if (mEGLDisplay === EGL14.EGL_NO_DISPLAY || mEGLContext === EGL14.EGL_NO_CONTEXT) {
+        if (mEGLDisplay == EGL14.EGL_NO_DISPLAY || mEGLContext == EGL14.EGL_NO_CONTEXT) {
             throw RuntimeException("eglCreateContext fail error: " + EGL14.eglGetError())
         }
         if (!EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)) {
