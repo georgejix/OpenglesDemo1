@@ -103,11 +103,9 @@ class SurfaceCamera2Render(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Ren
             }
 
             override fun onDisconnected(camera: CameraDevice) {
-                TODO("Not yet implemented")
             }
 
             override fun onError(camera: CameraDevice, error: Int) {
-                TODO("Not yet implemented")
             }
         }, glSurfaceView.handler)
     }
@@ -147,7 +145,6 @@ class SurfaceCamera2Render(val glSurfaceView: GLSurfaceView) : GLSurfaceView.Ren
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
-                    TODO("Not yet implemented")
                 }
 
             },
