@@ -18,10 +18,26 @@ class TextureEGLHelper :
     private var mHandler: Handler? = null
     private var mTextureView: TextureView? = null
     private var mOESTextureId = 0//纹理ID
-    private var mEGLDisplay = EGL14.EGL_NO_DISPLAY//显示设备
-    private var mEGLContext: EGLContext? = null//EGL上下文
-    private var mConfigs = Array<EGLConfig?>(1) { _ -> null }//描述帧缓冲区配置参数
-    private var mEglSurface: EGLSurface? = null//EGL绘图表面
+
+    /**
+     * 显示设备
+     */
+    private var mEGLDisplay = EGL14.EGL_NO_DISPLAY
+
+    /**
+     * EGL上下文
+     */
+    private var mEGLContext: EGLContext? = null
+
+    /**
+     * 描述帧缓冲区配置参数
+     */
+    private var mConfigs = Array<EGLConfig?>(1) { _ -> null }
+
+    /**
+     * EGL绘图表面
+     */
+    private var mEglSurface: EGLSurface? = null
 
     /**
      * 自定义的SurfaceTexture
@@ -100,6 +116,7 @@ class TextureEGLHelper :
         ) {
             throw RuntimeException("eglChooseConfig error: " + EGL14.eglGetError())
         }
+        //获取TextureView内置的SurfaceTexture作为EGL的绘图表面，也就是跟系统屏幕打交道
         val surfaceTexture = mTextureView?.surfaceTexture
             ?: throw RuntimeException("surfaceTexture is null")
         //创建EGL显示窗口
@@ -140,8 +157,11 @@ class TextureEGLHelper :
 
     private fun drawFrame() {
         mTextureRenderer?.let {
+            //指定mEGLContext为当前系统的EGL上下文
             EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)
+            //调用渲染器绘制
             mTextureRenderer?.onDrawFrame(mOESSurfaceTexture)
+            //交换缓冲区,android使用双缓冲机制,所以我们绘制的都是在后台缓冲区,通过交换将后台缓冲区变为前台显示区,下一帧的绘制仍然在后台缓冲区
             EGL14.eglSwapBuffers(mEGLDisplay, mEglSurface)
         }
     }
@@ -151,6 +171,7 @@ class TextureEGLHelper :
     }
 
     fun loadOESTexture(): SurfaceTexture? {
+        //加载自定义的SurfaceTexture传递给相机
         mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
         mOESSurfaceTexture?.setOnFrameAvailableListener(this)
         return mOESSurfaceTexture

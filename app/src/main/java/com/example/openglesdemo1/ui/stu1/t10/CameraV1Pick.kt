@@ -20,21 +20,16 @@ class CameraV1Pick : SurfaceTextureListener {
     fun bindTextureView(textureView: TextureView?) {
         mTextureView = textureView
         mTextureEglHelper = TextureEGLHelper()
-        mTextureView!!.surfaceTextureListener = this
+        mTextureView?.surfaceTextureListener = this
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         //加载OES纹理ID
-
-        //加载OES纹理ID
         val textureId: Int = TextureUtils.loadOESTexture()
-        //初始化操作
         //初始化操作
         mTextureEglHelper?.initEgl(mTextureView!!, textureId)
         //自定义的SurfaceTexture
-        //自定义的SurfaceTexture
         val surfaceTexture = mTextureEglHelper!!.loadOESTexture()
-        //前置摄像头
         //前置摄像头
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
         mCamera = CameraV1((mTextureView?.context as Activity))
