@@ -1,5 +1,6 @@
 package com.example.openglesdemo1.ui.stu2.t16.encoder;
 
+import android.annotation.SuppressLint;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaCodec;
@@ -91,7 +92,8 @@ public class MediaAudioEncoder extends MediaEncoder {
 	 * and write them to the MediaCodec encoder
 	 */
     private class AudioThread extends Thread {
-    	@Override
+    	@SuppressLint("MissingPermission")
+		@Override
     	public void run() {
     		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
     		int cnt = 0;
