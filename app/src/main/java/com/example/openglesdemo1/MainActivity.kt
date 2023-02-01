@@ -22,6 +22,7 @@ import com.example.openglesdemo1.ui.stu3.t2.Test2Activity
 import com.example.openglesdemo1.ui.stu3.t3.Test3Activity
 import com.example.openglesdemo1.ui.stu3.t4.Test4Activity
 import com.example.openglesdemo1.ui.stu3.t5.Test5Activity
+import com.example.openglesdemo1.ui.stu3.t6.Test6Activity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -65,6 +66,7 @@ class MainActivity : Activity() {
                 MainBean("测试-画球桌3", Test3Activity::class.java),
                 MainBean("测试-画球桌4", Test4Activity::class.java),
                 MainBean("测试-画球桌5", Test5Activity::class.java),
+                MainBean("叠加滤镜", Test6Activity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
