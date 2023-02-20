@@ -1,8 +1,10 @@
 package com.example.openglesdemo1.ui.base
 
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import androidx.core.app.ActivityCompat
@@ -11,6 +13,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 open class BaseActivity2 : Activity() {
+    var mContext: Context? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mContext = this
+    }
+
     fun requestPermission(permissions: List<String>, requestCode: Int) {
         var needRequestPermissions = ArrayList<String>()
         permissions.forEach {

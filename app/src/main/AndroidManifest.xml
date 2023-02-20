@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.openglesdemo1">
 
     <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" />
@@ -7,7 +8,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <uses-feature
         android:glEsVersion="0x00030000"
@@ -66,22 +68,22 @@
             android:name="com.example.openglesdemo1.ui.stu1.t10.TextureCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu2.t11.TextureViewPreviewCamera2Activity"
+            android:name="com.example.openglesdemo1.ui.stu2.t1.TextureViewPreviewCamera2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu2.t12.GlPreviewCameraActivity"
+            android:name="com.example.openglesdemo1.ui.stu2.t2.GlPreviewCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu2.t13.GlPreviewCameraActivity2Activity"
+            android:name="com.example.openglesdemo1.ui.stu2.t3.GlPreviewCameraActivity2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu1.t14.NativeOpenGlesActivity"
+            android:name="com.example.openglesdemo1.ui.stu1.t11.NativeOpenGlesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu1.t15.FilterActivity"
+            android:name="com.example.openglesdemo1.ui.stu1.t12.FilterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.stu2.t16.GlPreviewCameraWithRecordActivity"
+            android:name="com.example.openglesdemo1.ui.stu2.t4.GlPreviewCameraWithRecordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.openglesdemo1.ui.stu3.t1.Test1Activity"
@@ -100,6 +102,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.openglesdemo1.ui.stu3.t6.Test6Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.openglesdemo1.ui.mytest1.t1.MyTest1Activity"
             android:screenOrientation="portrait" />
     </application>
 

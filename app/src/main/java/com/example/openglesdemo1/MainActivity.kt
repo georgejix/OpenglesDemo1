@@ -2,10 +2,11 @@ package com.example.openglesdemo1
 
 import android.app.Activity
 import android.os.Bundle
+import com.example.openglesdemo1.ui.mytest1.t1.MyTest1Activity
 import com.example.openglesdemo1.ui.stu1.t1.TriangleActivity
 import com.example.openglesdemo1.ui.stu1.t10.TextureCameraActivity
-import com.example.openglesdemo1.ui.stu1.t14.NativeOpenGlesActivity
-import com.example.openglesdemo1.ui.stu1.t15.FilterActivity
+import com.example.openglesdemo1.ui.stu1.t11.NativeOpenGlesActivity
+import com.example.openglesdemo1.ui.stu1.t12.FilterActivity
 import com.example.openglesdemo1.ui.stu1.t2.ColorActivity
 import com.example.openglesdemo1.ui.stu1.t3.RectangleActivity
 import com.example.openglesdemo1.ui.stu1.t4.VertexBufferActivity
@@ -13,10 +14,10 @@ import com.example.openglesdemo1.ui.stu1.t5.VertexArrayActivity
 import com.example.openglesdemo1.ui.stu1.t6.SquareActivity
 import com.example.openglesdemo1.ui.stu1.t8.TextureActivity
 import com.example.openglesdemo1.ui.stu1.t9.SurfaceCameraActivity
-import com.example.openglesdemo1.ui.stu2.t11.TextureViewPreviewCamera2Activity
-import com.example.openglesdemo1.ui.stu2.t12.GlPreviewCameraActivity
-import com.example.openglesdemo1.ui.stu2.t13.GlPreviewCameraActivity2Activity
-import com.example.openglesdemo1.ui.stu2.t16.GlPreviewCameraWithRecordActivity
+import com.example.openglesdemo1.ui.stu2.t1.TextureViewPreviewCamera2Activity
+import com.example.openglesdemo1.ui.stu2.t2.GlPreviewCameraActivity
+import com.example.openglesdemo1.ui.stu2.t3.GlPreviewCameraActivity2Activity
+import com.example.openglesdemo1.ui.stu2.t4.GlPreviewCameraWithRecordActivity
 import com.example.openglesdemo1.ui.stu3.t1.Test1Activity
 import com.example.openglesdemo1.ui.stu3.t2.Test2Activity
 import com.example.openglesdemo1.ui.stu3.t3.Test3Activity
@@ -36,6 +37,7 @@ class MainActivity : Activity() {
         rv_list.adapter = MainAdapter(
             listOf(
                 //opengl
+                MainBean("------stu1-----------------", null),
                 MainBean("三角形", TriangleActivity::class.java),
                 MainBean("纯色", ColorActivity::class.java),
                 MainBean("矩形", RectangleActivity::class.java),
@@ -49,17 +51,16 @@ class MainActivity : Activity() {
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
                 MainBean("滤镜", FilterActivity::class.java),
 
-                MainBean("-----------------------", null),
+                MainBean("------stu2-----------------", null),
                 //camera
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
                 MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
                 MainBean("openel预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
                 MainBean(
-                    "openel预览Camera,并存储",
-                    GlPreviewCameraWithRecordActivity::class.java
+                    "openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java
                 ), //camera1
 
-                MainBean("-----------------------", null),
+                MainBean("------stu3-----------------", null),
                 //学习
                 MainBean("测试-画球桌", Test1Activity::class.java),
                 MainBean("测试-画球桌2", Test2Activity::class.java),
@@ -67,6 +68,9 @@ class MainActivity : Activity() {
                 MainBean("测试-画球桌4", Test4Activity::class.java),
                 MainBean("测试-画球桌5", Test5Activity::class.java),
                 MainBean("叠加滤镜", Test6Activity::class.java),
+
+                MainBean("------mytest1-----------------", null),
+                MainBean("预览相机，滤镜", MyTest1Activity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
