@@ -1,6 +1,7 @@
 package com.example.openglesdemo1.utils
 
 import android.opengl.GLES30
+import android.util.Log
 
 object ShaderUtils {
     private val TAG = "ShaderUtils"
@@ -77,7 +78,7 @@ object ShaderUtils {
             GLES30.glGetProgramiv(programId, GLES30.GL_LINK_STATUS, linkStatus, 0)
             if (linkStatus[0] == 0) {
                 val logInfo = GLES30.glGetProgramInfoLog(programId)
-                System.err.println(logInfo)
+                Log.d(TAG, logInfo)
                 GLES30.glDeleteProgram(programId)
                 return 0
             }
