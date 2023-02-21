@@ -43,7 +43,17 @@ class MyTest01Render(val mContext: Context, val mListener: Listener?) : GLSurfac
         mByteBuffer.put(mPoints)
     }
 
+    fun setMatrix(back: Boolean) {
+        if (!back) {
+            Matrix.orthoM(mMatrix, 0, -1f, 1f, -1f, 1f, -1f, 1f)
+            Matrix.scaleM(mMatrix, 0, 1f, -1f, 1f)
+        } else {
+            Matrix.orthoM(mMatrix, 0, -1f, 1f, -1f, 1f, -1f, 1f)
+        }
+    }
+
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+        Log.d(MyTest1Activity.TAG, "onSurfaceCreated")
         val vertexId =
             ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.mytest1_vertex))
         val fragmentId =
@@ -61,12 +71,12 @@ class MyTest01Render(val mContext: Context, val mListener: Listener?) : GLSurfac
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+        Log.d(MyTest1Activity.TAG, "onSurfaceChanged")
         GLES30.glViewport(0, 0, width, height)
         mListener?.onOpenCamera()
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        Log.d(MyTest1Activity.TAG, "onDrawFrame")
         mCameraSurfaceTexture?.updateTexImage()
         //mCameraSurfaceTexture?.getTransformMatrix(mMatrix)
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)

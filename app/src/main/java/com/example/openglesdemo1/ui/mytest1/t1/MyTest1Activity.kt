@@ -3,6 +3,7 @@ package com.example.openglesdemo1.ui.mytest1.t1
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
@@ -11,7 +12,11 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
+import android.util.Size
 import android.view.Surface
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
@@ -20,10 +25,18 @@ import kotlinx.android.synthetic.main.activity_mytest1.*
 class MyTest1Activity : BaseActivity2() {
     private var mInitView = true
     private var mMyTest01Render: MyTest01Render? = null
-    private var mUseBackCamera = true
-    private var mCameraDevice: CameraDevice? = null
     private var mHandler: Handler? = null
     private var mHandlerThread: HandlerThread? = null
+    private val mCameraManager: CameraManager by lazy { getSystemService(Context.CAMERA_SERVICE) as CameraManager }
+
+    private var mCameraDevice: CameraDevice? = null
+
+    private var mUseBackCamera = true
+    private var mFrontCameraId = ""
+    private var mBackCameraId = ""
+    private var mFrontCameraSizeList: Array<Size>? = null
+    private var mBackCameraSizeList: Array<Size>? = null
+    private var mSizeIndex = 0
 
     companion object {
         val TAG = "MyTest1Activity"
@@ -48,6 +61,8 @@ class MyTest1Activity : BaseActivity2() {
                 ), 0
             )
             mInitView = false
+        } else {
+            openCamera()
         }
     }
 
@@ -71,70 +86,123 @@ class MyTest1Activity : BaseActivity2() {
         gl_surface.setEGLContextClientVersion(3)
         mMyTest01Render = MyTest01Render(this, object : MyTest01Render.Listener {
             override fun onOpenCamera() {
-                openCamera()
+                if (mFrontCameraId.isEmpty()) {
+                    getCameraParams()
+                    setCameraSize()
+                    openCamera()
+                }
             }
         })
         gl_surface.setRenderer(mMyTest01Render)
+        tv_change_size.setOnClickListener(this::onClick)
+        tv_change_camera.setOnClickListener(this::onClick)
+    }
+
+    private fun onClick(view: View) {
+        when (view.id) {
+            R.id.tv_change_size -> {
+                mSizeIndex++
+                setCameraSize()
+                openCamera()
+            }
+            R.id.tv_change_camera -> {
+                mCameraDevice?.close()
+                mUseBackCamera = !mUseBackCamera
+                mMyTest01Render?.setMatrix(mUseBackCamera)
+                mSizeIndex = 0
+                setCameraSize()
+                openCamera()
+            }
+        }
+    }
+
+    private fun getCameraParams() {
+        mCameraManager.cameraIdList.forEach { id ->
+            val ch = mCameraManager.getCameraCharacteristics(id)
+            when (ch.get(CameraCharacteristics.LENS_FACING)) {
+                CameraCharacteristics.LENS_FACING_BACK -> {
+                    mBackCameraId = id
+                    val map = ch.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                    mBackCameraSizeList = map?.getOutputSizes(SurfaceTexture::class.java)
+                }
+                CameraCharacteristics.LENS_FACING_FRONT -> {
+                    mFrontCameraId = id
+                    val map = ch.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                    mFrontCameraSizeList = map?.getOutputSizes(SurfaceTexture::class.java)
+                }
+            }
+        }
+    }
+
+    private fun setCameraSize() {
+        mCameraDevice?.close()
+        val size: Size? = if (mUseBackCamera) mBackCameraSizeList?.get(
+            mSizeIndex % (mBackCameraSizeList?.size ?: 1)
+        )
+        else mFrontCameraSizeList?.get(mSizeIndex % (mFrontCameraSizeList?.size ?: 1))
+        post {
+            tv_size.text = "${size?.width}x${size?.height}"
+            if (gl_surface.layoutParams is ConstraintLayout.LayoutParams) {
+                val param = gl_surface.layoutParams as ConstraintLayout.LayoutParams
+                param.dimensionRatio = "w,${size?.width}:${size?.height}"
+                gl_surface.layoutParams = param
+            }
+        }
     }
 
     private fun openCamera() {
+        Log.d(TAG, "openCamera")
+        val size: Size? = if (mUseBackCamera) mBackCameraSizeList?.get(
+            mSizeIndex % (mBackCameraSizeList?.size ?: 1)
+        )
+        else mFrontCameraSizeList?.get(mSizeIndex % (mFrontCameraSizeList?.size ?: 1))
+        mCameraDevice?.close()
         gl_surface.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
-        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        var cameraId = ""
-        cameraManager.cameraIdList.forEach { id ->
-            val ch = cameraManager.getCameraCharacteristics(id)
-            when (ch.get(CameraCharacteristics.LENS_FACING)) {
-                CameraCharacteristics.LENS_FACING_BACK -> {
-                    if (mUseBackCamera) {
-                        cameraId = id
-                    }
-                }
-                CameraCharacteristics.LENS_FACING_FRONT -> {
-                    if (!mUseBackCamera) {
-                        cameraId = id
-                    }
-                }
-
-            }
-        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
         ) {
             return
         }
-        cameraManager.openCamera(cameraId, object : CameraDevice.StateCallback() {
-            override fun onOpened(camera: CameraDevice) {
-                mCameraDevice = camera
-                val surfaceT = mMyTest01Render?.mCameraSurfaceTexture
-                surfaceT?.setOnFrameAvailableListener { gl_surface.requestRender() }
-                surfaceT?.setDefaultBufferSize(1080, 1920)
-                val surface = Surface(surfaceT)
-                camera.createCaptureSession(
-                    arrayListOf(surface),
-                    object : CameraCaptureSession.StateCallback() {
-                        override fun onConfigured(session: CameraCaptureSession) {
-                            val builder =
-                                mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-                            builder?.addTarget(surface)
-                            session.setRepeatingRequest(builder?.build()!!, null, mHandler)
-                        }
+        mCameraManager.openCamera(
+            if (mUseBackCamera) mBackCameraId else mFrontCameraId,
+            object : CameraDevice.StateCallback() {
+                override fun onOpened(camera: CameraDevice) {
+                    mCameraDevice = camera
+                    val surfaceT = mMyTest01Render?.mCameraSurfaceTexture
+                    surfaceT?.setOnFrameAvailableListener { gl_surface.requestRender() }
+                    surfaceT?.setDefaultBufferSize(size?.width ?: 1080, size?.height ?: 1920)
+                    val surface = Surface(surfaceT)
+                    camera.createCaptureSession(
+                        arrayListOf(surface),
+                        object : CameraCaptureSession.StateCallback() {
+                            override fun onConfigured(session: CameraCaptureSession) {
+                                val builder =
+                                    mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+                                builder?.addTarget(surface)
+                                session.setRepeatingRequest(builder?.build()!!, null, mHandler)
+                            }
 
-                        override fun onConfigureFailed(session: CameraCaptureSession) {
-                            session.close()
-                        }
+                            override fun onConfigureFailed(session: CameraCaptureSession) {
+                                session.close()
+                            }
 
-                    },
-                    mHandler
-                )
-            }
+                        },
+                        mHandler
+                    )
+                }
 
-            override fun onDisconnected(camera: CameraDevice) {
-                camera.close()
-            }
+                override fun onDisconnected(camera: CameraDevice) {
+                    camera.close()
+                }
 
-            override fun onError(camera: CameraDevice, error: Int) {
-                camera.close()
-            }
-        }, mHandler)
+                override fun onError(camera: CameraDevice, error: Int) {
+                    camera.close()
+                }
+            }, mHandler
+        )
+    }
+
+    private fun post(runnable: Runnable) {
+        runOnUiThread(runnable)
     }
 }
