@@ -16,7 +16,6 @@ import android.util.Log
 import android.util.Size
 import android.view.Surface
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
@@ -37,6 +36,7 @@ class MyTest1Activity : BaseActivity2() {
     private var mFrontCameraSizeList: Array<Size>? = null
     private var mBackCameraSizeList: Array<Size>? = null
     private var mSizeIndex = 0
+    private var mSize: Size? = null
 
     companion object {
         val TAG = "MyTest1Activity"
@@ -61,8 +61,6 @@ class MyTest1Activity : BaseActivity2() {
                 ), 0
             )
             mInitView = false
-        } else {
-            openCamera()
         }
     }
 
@@ -86,11 +84,11 @@ class MyTest1Activity : BaseActivity2() {
         gl_surface.setEGLContextClientVersion(3)
         mMyTest01Render = MyTest01Render(this, object : MyTest01Render.Listener {
             override fun onOpenCamera() {
+                Log.d(MyTest1Activity.TAG, "MyTest01Render.onOpenCamera")
                 if (mFrontCameraId.isEmpty()) {
                     getCameraParams()
-                    setCameraSize()
-                    openCamera()
                 }
+                setCameraSize()
             }
         })
         gl_surface.setRenderer(mMyTest01Render)
@@ -103,15 +101,12 @@ class MyTest1Activity : BaseActivity2() {
             R.id.tv_change_size -> {
                 mSizeIndex++
                 setCameraSize()
-                openCamera()
             }
             R.id.tv_change_camera -> {
                 mCameraDevice?.close()
                 mUseBackCamera = !mUseBackCamera
-                mMyTest01Render?.setMatrix(mUseBackCamera)
                 mSizeIndex = 0
                 setCameraSize()
-                openCamera()
             }
         }
     }
@@ -136,26 +131,22 @@ class MyTest1Activity : BaseActivity2() {
 
     private fun setCameraSize() {
         mCameraDevice?.close()
-        val size: Size? = if (mUseBackCamera) mBackCameraSizeList?.get(
+        mSize = if (mUseBackCamera) mBackCameraSizeList?.get(
             mSizeIndex % (mBackCameraSizeList?.size ?: 1)
         )
         else mFrontCameraSizeList?.get(mSizeIndex % (mFrontCameraSizeList?.size ?: 1))
-        post {
-            tv_size.text = "${size?.width}x${size?.height}"
-            if (gl_surface.layoutParams is ConstraintLayout.LayoutParams) {
-                val param = gl_surface.layoutParams as ConstraintLayout.LayoutParams
-                param.dimensionRatio = "w,${size?.width}:${size?.height}"
-                gl_surface.layoutParams = param
-            }
+        post { tv_size.text = "${mSize?.width}x${mSize?.height}" }
+        val height = (mSize?.width ?: 0) * gl_surface.width / (mSize?.height ?: 0)
+        val p = (gl_surface.height * 1.0 / height).toFloat()
+        Log.d(MyTest1Activity.TAG, "heightP = ${p}")
+        gl_surface.queueEvent {
+            mMyTest01Render?.setMatrix(mUseBackCamera, p)
+            openCamera()
         }
     }
 
     private fun openCamera() {
         Log.d(TAG, "openCamera")
-        val size: Size? = if (mUseBackCamera) mBackCameraSizeList?.get(
-            mSizeIndex % (mBackCameraSizeList?.size ?: 1)
-        )
-        else mFrontCameraSizeList?.get(mSizeIndex % (mFrontCameraSizeList?.size ?: 1))
         mCameraDevice?.close()
         gl_surface.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -170,7 +161,7 @@ class MyTest1Activity : BaseActivity2() {
                     mCameraDevice = camera
                     val surfaceT = mMyTest01Render?.mCameraSurfaceTexture
                     surfaceT?.setOnFrameAvailableListener { gl_surface.requestRender() }
-                    surfaceT?.setDefaultBufferSize(size?.width ?: 1080, size?.height ?: 1920)
+                    surfaceT?.setDefaultBufferSize(mSize?.width ?: 1080, mSize?.height ?: 1920)
                     val surface = Surface(surfaceT)
                     camera.createCaptureSession(
                         arrayListOf(surface),

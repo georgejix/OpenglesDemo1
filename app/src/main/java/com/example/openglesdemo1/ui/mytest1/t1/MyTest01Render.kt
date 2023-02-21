@@ -43,13 +43,15 @@ class MyTest01Render(val mContext: Context, val mListener: Listener?) : GLSurfac
         mByteBuffer.put(mPoints)
     }
 
-    fun setMatrix(back: Boolean) {
+    fun setMatrix(back: Boolean, p: Float) {
         if (!back) {
-            Matrix.orthoM(mMatrix, 0, -1f, 1f, -1f, 1f, -1f, 1f)
+            Matrix.orthoM(mMatrix, 0, -1f, 1f, -p, p, -1f, 1f)
             Matrix.scaleM(mMatrix, 0, 1f, -1f, 1f)
         } else {
-            Matrix.orthoM(mMatrix, 0, -1f, 1f, -1f, 1f, -1f, 1f)
+            Matrix.orthoM(mMatrix, 0, -1f, 1f, -p, p, -1f, 1f)
         }
+        mCameraTextId = loadTexture()
+        mCameraSurfaceTexture = SurfaceTexture(mCameraTextId)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
@@ -64,9 +66,6 @@ class MyTest01Render(val mContext: Context, val mListener: Listener?) : GLSurfac
         mTextLocation = GLES30.glGetAttribLocation(mProgramId, "aTextCoord")
         mImgLocation = GLES30.glGetUniformLocation(mProgramId, "img")
         mMatrixLocation = GLES30.glGetUniformLocation(mProgramId, "matrix")
-        mCameraTextId = loadTexture()
-        mCameraSurfaceTexture = SurfaceTexture(mCameraTextId)
-        Matrix.orthoM(mMatrix, 0, -1f, 1f, -1f, 1f, -1f, 1f)
         Log.d(MyTest1Activity.TAG, "${mProgramId} ${mCameraTextId}")
     }
 
