@@ -111,9 +111,7 @@ class MyTest1Activity : BaseActivity2() {
                 setCameraSize()
             }
             R.id.tv_change_filter -> gl_surface.queueEvent { mMyTest01Render?.changeFilter() }
-            R.id.tv_take_photo -> {
-
-            }
+            R.id.tv_take_photo -> mMyTest01Render?.takePhoto()
         }
     }
 

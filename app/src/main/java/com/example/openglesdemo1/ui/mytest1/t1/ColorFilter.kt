@@ -32,7 +32,10 @@ class ColorFilter(val mContext: Context) {
     private var mMatrix = FloatArray(16)
     private var mMatrixLocation = 0
     private var mFlag = 0
-    private val mFlagList = arrayListOf("无滤镜", "lut滤镜1", "lut滤镜2", "设置灰度")
+    private val mFlagList = arrayListOf(
+        "无滤镜", "lut滤镜1", "lut滤镜2", "设置灰度", "黑白",
+        "反向", "亮度", "亮度2", "色调分离"
+    )
 
     init {
         mByteBuffer = ByteBuffer.allocateDirect(mPoints.size * 4)
@@ -49,6 +52,10 @@ class ColorFilter(val mContext: Context) {
         } else {
             Matrix.orthoM(mMatrix, 0, -1f, 1f, -p, p, -1f, 1f)
         }
+    }
+
+    fun transYMatrix() {
+        Matrix.scaleM(mMatrix, 0, 1f, -1f, 1f)
     }
 
     fun changeFilter() {
