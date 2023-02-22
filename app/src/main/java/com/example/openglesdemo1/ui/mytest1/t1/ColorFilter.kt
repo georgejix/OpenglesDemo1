@@ -1,19 +1,23 @@
 package com.example.openglesdemo1.ui.mytest1.t1
 
+import android.content.Context
 import android.opengl.GLES30
 import android.opengl.Matrix
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.utils.ResReadUtils
 import com.example.openglesdemo1.utils.ShaderUtils
+import com.example.openglesdemo1.utils.TextureUtils
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-class ColorFilter {
+class ColorFilter(val mContext: Context) {
     private var mProgramId = 0
     private var mALocation = 0
     private var mTextLocation = 0
     private var mImgLocation = 0
+    private var mFlagLocation = 0
+    private var mLutLocation = 0
     private val mPoints = floatArrayOf(
         0f, 0f, 0.5f, 0.5f,
         -1f, -1f, 0f, 0f,
@@ -24,8 +28,10 @@ class ColorFilter {
     )
     private val mByteBuffer: FloatBuffer
     var mColorTextureId = 0
+    private var mLutTextureId = 0
     private var mMatrix = FloatArray(16)
     private var mMatrixLocation = 0
+    private var mFlag = 0
 
     init {
         mByteBuffer = ByteBuffer.allocateDirect(mPoints.size * 4)
@@ -44,6 +50,20 @@ class ColorFilter {
         }
     }
 
+    fun changeFilter() {
+        mFlag = ++mFlag % 3
+        when (mFlag) {
+            1 -> {
+                GLES30.glDeleteTextures(1, intArrayOf(mLutTextureId), 0)
+                mLutTextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_lut1)
+            }
+            2 -> {
+                GLES30.glDeleteTextures(1, intArrayOf(mLutTextureId), 0)
+                mLutTextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_lut3)
+            }
+        }
+    }
+
     fun onSurfaceCreate() {
         val vertexId =
             ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.mytest1_vertex2))
@@ -55,6 +75,8 @@ class ColorFilter {
         mTextLocation = GLES30.glGetAttribLocation(mProgramId, "aTextCoord")
         mImgLocation = GLES30.glGetUniformLocation(mProgramId, "img")
         mMatrixLocation = GLES30.glGetUniformLocation(mProgramId, "matrix")
+        mFlagLocation = GLES30.glGetUniformLocation(mProgramId, "filterFlag")
+        mLutLocation = GLES30.glGetUniformLocation(mProgramId, "lut")
     }
 
     fun onSurfaceChanged(width: Int, height: Int) {
@@ -73,9 +95,13 @@ class ColorFilter {
         GLES30.glVertexAttribPointer(mTextLocation, 2, GLES30.GL_FLOAT, false, 4 * 4, mByteBuffer)
         GLES30.glEnableVertexAttribArray(mTextLocation)
 
+        GLES30.glUniform1i(mFlagLocation, mFlag)
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mColorTextureId)
         GLES30.glUniform1i(mImgLocation, 0)
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE1)
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mLutTextureId)
+        GLES30.glUniform1i(mLutLocation, 1)
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, 6)
 

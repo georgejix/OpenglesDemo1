@@ -94,6 +94,8 @@ class MyTest1Activity : BaseActivity2() {
         gl_surface.setRenderer(mMyTest01Render)
         tv_change_size.setOnClickListener(this::onClick)
         tv_change_camera.setOnClickListener(this::onClick)
+        tv_change_filter.setOnClickListener(this::onClick)
+        tv_take_photo.setOnClickListener(this::onClick)
     }
 
     private fun onClick(view: View) {
@@ -107,6 +109,10 @@ class MyTest1Activity : BaseActivity2() {
                 mUseBackCamera = !mUseBackCamera
                 mSizeIndex = 0
                 setCameraSize()
+            }
+            R.id.tv_change_filter -> gl_surface.queueEvent { mMyTest01Render?.changeFilter() }
+            R.id.tv_take_photo -> {
+
             }
         }
     }

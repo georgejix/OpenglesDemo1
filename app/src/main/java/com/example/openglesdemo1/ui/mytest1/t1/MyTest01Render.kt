@@ -10,11 +10,15 @@ import javax.microedition.khronos.opengles.GL10
 class MyTest01Render(val mContext: Context, val mListener: Listener?) : GLSurfaceView.Renderer {
 
     private val mCameraFilter: CameraFilter by lazy { CameraFilter() }
-    private val mColorFilter: ColorFilter by lazy { ColorFilter() }
+    private val mColorFilter: ColorFilter by lazy { ColorFilter(mContext) }
 
     fun setMatrix(back: Boolean, p: Float) {
         mCameraFilter.setMatrix(back, p)
         mColorFilter.setMatrix(back, p)
+    }
+
+    fun changeFilter() {
+        mColorFilter.changeFilter()
     }
 
     fun getSurfaceTexture(): SurfaceTexture? = mCameraFilter.mCameraSurfaceTexture

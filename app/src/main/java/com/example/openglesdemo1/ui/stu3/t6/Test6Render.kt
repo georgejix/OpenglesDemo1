@@ -58,7 +58,7 @@ class Test6Render(val mContext: Context) : GLSurfaceView.Renderer {
         uImg1Location = GLES30.glGetUniformLocation(mProgramId, "img1")
         uImg2Location = GLES30.glGetUniformLocation(mProgramId, "img2")
         mImg1TextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_bg3)
-        mImg2TextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_filter2)
+        mImg2TextureId = TextureUtils.loadTexture(mContext, R.mipmap.img_lut2)
         Log.d(
             TAG, "aPositionLocation=${aPositionLocation} uMatrixLocation=${uMatrixLocation} " +
                     "aTextureLocation=${texturePointLocation} uTextureUnitLocation=${uImg1Location}"
