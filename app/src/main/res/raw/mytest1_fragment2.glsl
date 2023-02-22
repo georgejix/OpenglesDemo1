@@ -28,6 +28,12 @@ vec4 lookup(in vec4 textureColor, in float matchLut){
     return newColor;
 }
 
+//灰度
+void grey(inout vec4 color){
+    float weightMean = color.r * 0.3 + color.g * 0.59 + color.b * 0.11;
+    color.r = color.g = color.b = weightMean;
+}
+
 void main(){
     vec4 tempColor = texture(img, vTextCoord);
     if (0 == filterFlag){
@@ -40,6 +46,8 @@ void main(){
         //lut滤镜
         fragColor = lookup(tempColor, 8.0);
         return;
+    } else if (3==filterFlag){
+        grey(tempColor);
     }
     fragColor = tempColor;
 }

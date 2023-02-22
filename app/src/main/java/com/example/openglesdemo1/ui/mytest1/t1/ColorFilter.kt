@@ -32,6 +32,7 @@ class ColorFilter(val mContext: Context) {
     private var mMatrix = FloatArray(16)
     private var mMatrixLocation = 0
     private var mFlag = 0
+    private val mFlagList = arrayListOf("无滤镜", "lut滤镜1", "lut滤镜2", "设置灰度")
 
     init {
         mByteBuffer = ByteBuffer.allocateDirect(mPoints.size * 4)
@@ -51,7 +52,8 @@ class ColorFilter(val mContext: Context) {
     }
 
     fun changeFilter() {
-        mFlag = ++mFlag % 3
+        mFlag = ++mFlag % mFlagList.size
+        setFilter(mFlagList[mFlag])
         when (mFlag) {
             1 -> {
                 GLES30.glDeleteTextures(1, intArrayOf(mLutTextureId), 0)
@@ -109,6 +111,13 @@ class ColorFilter(val mContext: Context) {
         GLES30.glDisableVertexAttribArray(mTextLocation)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
         GLES30.glUseProgram(0)
+    }
+
+    private fun setFilter(str: String) {
+        if (mContext is MyTest1Activity) {
+            val activity = mContext as MyTest1Activity
+            activity.setFilterStr(str)
+        }
     }
 
 }

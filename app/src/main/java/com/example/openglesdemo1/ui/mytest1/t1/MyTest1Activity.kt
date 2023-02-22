@@ -200,6 +200,10 @@ class MyTest1Activity : BaseActivity2() {
         )
     }
 
+    fun setFilterStr(str: String) {
+        post { tv_filter.text = str }
+    }
+
     private fun post(runnable: Runnable) {
         runOnUiThread(runnable)
     }
