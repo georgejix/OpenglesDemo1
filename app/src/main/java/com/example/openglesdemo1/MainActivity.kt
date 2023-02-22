@@ -37,7 +37,7 @@ class MainActivity : Activity() {
         rv_list.adapter = MainAdapter(
             listOf(
                 //opengl
-                MainBean("------stu1-----------------", null),
+                MainBean("--------stu1--------", null),
                 MainBean("三角形", TriangleActivity::class.java),
                 MainBean("纯色", ColorActivity::class.java),
                 MainBean("矩形", RectangleActivity::class.java),
@@ -51,7 +51,7 @@ class MainActivity : Activity() {
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
                 MainBean("滤镜", FilterActivity::class.java),
 
-                MainBean("------stu2-----------------", null),
+                MainBean("--------stu2--------", null),
                 //camera
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
                 MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
@@ -60,7 +60,7 @@ class MainActivity : Activity() {
                     "openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java
                 ), //camera1
 
-                MainBean("------stu3-----------------", null),
+                MainBean("--------stu3--------", null),
                 //学习
                 MainBean("测试-画球桌", Test1Activity::class.java),
                 MainBean("测试-画球桌2", Test2Activity::class.java),
@@ -69,7 +69,7 @@ class MainActivity : Activity() {
                 MainBean("测试-画球桌5", Test5Activity::class.java),
                 MainBean("叠加滤镜", Test6Activity::class.java),
 
-                MainBean("------mytest1-----------------", null),
+                MainBean("--------mytest1--------", null),
                 MainBean("预览相机，滤镜", MyTest1Activity::class.java),
             )
         )

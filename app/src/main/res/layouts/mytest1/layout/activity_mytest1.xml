@@ -27,27 +27,30 @@
             android:layout_height="match_parent"
             android:background="#fff"
             android:gravity="center"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
             android:textColor="#333"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_change_size"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:background="#fff"
             android:gravity="center"
+            android:paddingHorizontal="5dp"
             android:text="分辨率"
             android:textColor="#333"
             android:textSize="15sp" />
+
         <TextView
             android:id="@+id/tv_change_camera"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:background="#fff"
             android:gravity="center"
+            android:paddingHorizontal="5dp"
             android:text="前后镜头"
             android:textColor="#333"
             android:textSize="15sp" />

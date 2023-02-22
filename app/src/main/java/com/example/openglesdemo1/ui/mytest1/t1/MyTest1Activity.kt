@@ -159,9 +159,10 @@ class MyTest1Activity : BaseActivity2() {
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
                     mCameraDevice = camera
-                    val surfaceT = mMyTest01Render?.mCameraSurfaceTexture
-                    surfaceT?.setOnFrameAvailableListener { gl_surface.requestRender() }
-                    surfaceT?.setDefaultBufferSize(mSize?.width ?: 1080, mSize?.height ?: 1920)
+                    val surfaceT = mMyTest01Render?.getSurfaceTexture()
+                    surfaceT ?: return
+                    surfaceT.setOnFrameAvailableListener { gl_surface.requestRender() }
+                    surfaceT.setDefaultBufferSize(mSize?.width ?: 1080, mSize?.height ?: 1920)
                     val surface = Surface(surfaceT)
                     camera.createCaptureSession(
                         arrayListOf(surface),
