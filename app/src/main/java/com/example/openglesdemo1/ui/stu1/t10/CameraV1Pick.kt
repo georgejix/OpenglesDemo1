@@ -29,11 +29,11 @@ class CameraV1Pick : SurfaceTextureListener {
         //初始化操作
         mTextureEglHelper?.initEgl(mTextureView!!, textureId)
         //自定义的SurfaceTexture
-        val surfaceTexture = mTextureEglHelper!!.loadOESTexture()
+        val surfaceTexture = mTextureEglHelper?.loadOESTexture()
         //前置摄像头
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
         mCamera = CameraV1((mTextureView?.context as Activity))
-        if (mCamera?.openCamera(mCameraId)!!) {
+        if (true == mCamera?.openCamera(mCameraId)) {
             mCamera?.setPreviewTexture(surfaceTexture)
             mCamera?.enablePreview(true)
         } else {

@@ -40,7 +40,6 @@ class TextureViewPreviewCamera2Activity : BaseActivity2() {
     private var mCapSurface: Surface? = null
     private var mCapBuilder: CaptureRequest.Builder? = null
     private val mCaptureResults: BlockingQueue<CaptureResult> = LinkedBlockingDeque()
-    private val mSaveImageExecutor: Executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

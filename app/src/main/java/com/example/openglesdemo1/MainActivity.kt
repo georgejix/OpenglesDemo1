@@ -46,16 +46,16 @@ class MainActivity : Activity() {
                 MainBean("立方体", SquareActivity::class.java),
                 MainBean("索引法立方体", SquareActivity::class.java),
                 MainBean("2d纹理显示bitmap", TextureActivity::class.java),
-                MainBean("surface camera", SurfaceCameraActivity::class.java),
-                MainBean("texture camera", TextureCameraActivity::class.java),
+                MainBean("GLSurfaceView+gl预览camera1、2", SurfaceCameraActivity::class.java),
+                MainBean("TextureView+gl预览Camera", TextureCameraActivity::class.java),
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
                 MainBean("滤镜", FilterActivity::class.java),
 
                 MainBean("--------stu2--------", null),
                 //camera
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
-                MainBean("openel预览Camera", GlPreviewCameraActivity::class.java), //camera1
-                MainBean("openel预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
+                MainBean("GLSurfaceView+gl预览Camera", GlPreviewCameraActivity::class.java), //camera1
+                MainBean("GLSurfaceView+gl预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
                 MainBean(
                     "openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java
                 ), //camera1
@@ -70,7 +70,7 @@ class MainActivity : Activity() {
                 MainBean("叠加滤镜", Test6Activity::class.java),
 
                 MainBean("--------mytest1--------", null),
-                MainBean("预览相机，滤镜", MyTest1Activity::class.java),
+                MainBean("GLSurfaceView+gl预览camera2，滤镜", MyTest1Activity::class.java),
             )
         )
         test(6, { a, b -> println("a+b=${a + b}") })
