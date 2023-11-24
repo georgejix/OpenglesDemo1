@@ -44,7 +44,7 @@ class MainActivity : Activity() {
                 MainBean("顶点缓冲区", VertexBufferActivity::class.java),
                 MainBean("顶点数组", VertexArrayActivity::class.java),
                 MainBean("立方体", SquareActivity::class.java),
-                MainBean("索引法立方体", SquareActivity::class.java),
+                MainBean("索引法立方体", com.example.openglesdemo1.ui.stu1.t7.SquareActivity::class.java),
                 MainBean("2d纹理显示bitmap", TextureActivity::class.java),
                 MainBean("GLSurfaceView+gl预览camera1、2", SurfaceCameraActivity::class.java),
                 MainBean("TextureView+gl预览Camera", TextureCameraActivity::class.java),
