@@ -46,19 +46,23 @@ class MainActivity : Activity() {
                 MainBean("立方体", SquareActivity::class.java),
                 MainBean("索引法立方体", com.example.openglesdemo1.ui.stu1.t7.SquareActivity::class.java),
                 MainBean("2d纹理显示bitmap", TextureActivity::class.java),
+                //自定义texture，传入相机预览，然后用glsurfaceview画
                 MainBean("GLSurfaceView+gl预览camera1、2", SurfaceCameraActivity::class.java),
+                //将自定义surfacetexture传入相机预览，textureview与egl绑定，手动把texture内容画到textureview
                 MainBean("TextureView+gl预览Camera", TextureCameraActivity::class.java),
                 MainBean("native opengles", NativeOpenGlesActivity::class.java),
                 MainBean("滤镜", FilterActivity::class.java),
 
                 MainBean("--------stu2--------", null),
                 //camera
+                //textureview的surfacetexture直接传入相机预览
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
+                //自定义texture，传入相机预览，然后用glsurfaceview画
                 MainBean("GLSurfaceView+gl预览Camera", GlPreviewCameraActivity::class.java), //camera1
                 MainBean("GLSurfaceView+gl预览Camera2", GlPreviewCameraActivity2Activity::class.java),//camera2
-                MainBean(
-                    "openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java
-                ), //camera1
+                //自定义texture，传入相机预览，glsurfaceview画回显帧，然后同时将texture给gl，画一份到mediacodec创建的surface
+                //mediacodec可直接获得编码后数据流
+                MainBean( "openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java),
 
                 MainBean("--------stu3--------", null),
                 //学习
