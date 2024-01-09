@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.openglesdemo1"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -50,8 +50,10 @@ android {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
             res.srcDirs = [
-                    'src/main/res/layouts/mytest1',
-                    'src/main/res/layouts/other',
+                    'src/main/res/layouts/normal',
+                    'src/main/res/layouts/normal2',
+                    'src/main/res/layouts/camera',
+                    'src/main/res/layouts/main',
                     'src/main/res'
             ]
         }
