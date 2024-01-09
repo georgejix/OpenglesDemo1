@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5.ui;
+package com.example.openglesdemo1.ui.camera.t6.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.openglesdemo1.R;
-import com.example.openglesdemo1.ui.camera.t5.encoder.MediaAudioEncoder;
-import com.example.openglesdemo1.ui.camera.t5.encoder.MediaEncoder;
-import com.example.openglesdemo1.ui.camera.t5.encoder.MediaMuxerWrapper;
-import com.example.openglesdemo1.ui.camera.t5.encoder.MediaVideoEncoder;
+import com.example.openglesdemo1.ui.camera.t6.encoder.MediaAudioEncoder;
+import com.example.openglesdemo1.ui.camera.t6.encoder.MediaEncoder;
+import com.example.openglesdemo1.ui.camera.t6.encoder.MediaMuxerWrapper;
+import com.example.openglesdemo1.ui.camera.t6.encoder.MediaVideoEncoder;
 
 import java.io.IOException;
 

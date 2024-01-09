@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t6
+package com.example.openglesdemo1.ui.camera.t7
 
 import android.content.Context
 import android.graphics.Bitmap

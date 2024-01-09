@@ -3,11 +3,12 @@ package com.example.openglesdemo1
 import android.app.Activity
 import android.os.Bundle
 import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
-import com.example.openglesdemo1.ui.camera.t2.GlPreviewCameraActivity
-import com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity2Activity
-import com.example.openglesdemo1.ui.camera.t4.TextureCameraActivity
-import com.example.openglesdemo1.ui.camera.t5.GlPreviewCameraWithRecordActivity
-import com.example.openglesdemo1.ui.camera.t6.ChangeFilterActivity
+import com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity
+import com.example.openglesdemo1.ui.camera.t4.GlPreviewCameraActivity2Activity
+import com.example.openglesdemo1.ui.camera.t5.TextureCameraActivity
+import com.example.openglesdemo1.ui.camera.t6.GlPreviewCameraWithRecordActivity
+import com.example.openglesdemo1.ui.camera.t7.ChangeFilterActivity
+import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -55,6 +56,7 @@ class MainActivity : Activity() {
                 MainBean("--------camera--------", null),
                 //textureview的surfacetexture直接传入相机预览
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
+                MainBean("surfaceview预览camera", SurfaceViewPreviewCameraActivity::class.java),
                 //自定义texture，传入相机预览，然后用glsurfaceview画
                 MainBean("GLSurfaceView+gl预览Camera", GlPreviewCameraActivity::class.java), //camera1
                 MainBean(

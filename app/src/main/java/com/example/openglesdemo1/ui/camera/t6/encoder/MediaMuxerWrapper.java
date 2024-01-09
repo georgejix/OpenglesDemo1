@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5.encoder;
+package com.example.openglesdemo1.ui.camera.t6.encoder;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;

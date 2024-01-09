@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t3
+package com.example.openglesdemo1.ui.camera.t4
 
 import android.Manifest
 import android.opengl.GLSurfaceView

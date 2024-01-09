@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5.glutilsOld;
+package com.example.openglesdemo1.ui.camera.t6.glutilsOld;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGLContext;

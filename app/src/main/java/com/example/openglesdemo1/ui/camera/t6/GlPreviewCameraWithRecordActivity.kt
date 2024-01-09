@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5
+package com.example.openglesdemo1.ui.camera.t6
 
 import android.Manifest
 import android.os.Bundle

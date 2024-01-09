@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5.ui;
+package com.example.openglesdemo1.ui.camera.t6.ui;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
@@ -17,8 +17,8 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
-import com.example.openglesdemo1.ui.camera.t5.encoder.MediaVideoEncoder;
-import com.example.openglesdemo1.ui.camera.t5.glutilsOld.GLDrawer2D;
+import com.example.openglesdemo1.ui.camera.t6.encoder.MediaVideoEncoder;
+import com.example.openglesdemo1.ui.camera.t6.glutilsOld.GLDrawer2D;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

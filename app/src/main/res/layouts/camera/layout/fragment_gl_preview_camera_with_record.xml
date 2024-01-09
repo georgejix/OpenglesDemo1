@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.openglesdemo1.ui.camera.t5.ui.CameraGLView
+    <com.example.openglesdemo1.ui.camera.t6.ui.CameraGLView
         android:id="@+id/cameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

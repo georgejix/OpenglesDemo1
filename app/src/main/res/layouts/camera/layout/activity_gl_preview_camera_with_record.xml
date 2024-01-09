@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/camera_fragment"
-        android:name="com.example.openglesdemo1.ui.camera.t5.ui.CameraFragment"
+        android:name="com.example.openglesdemo1.ui.camera.t6.ui.CameraFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,71 +39,79 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t1.TriangleActivity"
+            android:name=".ui.normal.t1.TriangleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t2.ColorActivity"
+            android:name=".ui.normal.t2.ColorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t3.RectangleActivity"
+            android:name=".ui.normal.t3.RectangleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t4.VertexBufferActivity"
+            android:name=".ui.normal.t4.VertexBufferActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t5.VertexArrayActivity"
+            android:name=".ui.normal.t5.VertexArrayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t6.SquareActivity"
+            android:name=".ui.normal.t6.SquareActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t7.SquareActivity"
+            android:name=".ui.normal.t7.SquareActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t8.TextureActivity"
+            android:name=".ui.normal.t8.TextureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.camera.t4.TextureCameraActivity"
+            android:name=".ui.normal.t9.NativeOpenGlesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity"
+            android:name=".ui.normal.t10.FilterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.camera.t2.GlPreviewCameraActivity"
+            android:name=".ui.normal.t11.TextureAndFilterActivity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.normal2.t1.Test1Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity2Activity"
+            android:name=".ui.normal2.t2.Test2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t9.NativeOpenGlesActivity"
+            android:name=".ui.normal2.t3.Test3Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t10.FilterActivity"
+            android:name=".ui.normal2.t4.Test4Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.camera.t5.GlPreviewCameraWithRecordActivity"
+            android:name=".ui.normal2.t5.Test5Activity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.camera.t1.TextureViewPreviewCamera2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal2.t1.Test1Activity"
+            android:name=".ui.camera.t2.SurfaceViewPreviewCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal2.t2.Test2Activity"
+            android:name=".ui.camera.t3.GlPreviewCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal2.t3.Test3Activity"
+            android:name=".ui.camera.t4.GlPreviewCameraActivity2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal2.t4.Test4Activity"
+            android:name=".ui.camera.t5.TextureCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal2.t5.Test5Activity"
+            android:name=".ui.camera.t6.GlPreviewCameraWithRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity"
+            android:name=".ui.camera.t7.ChangeFilterActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.openglesdemo1.ui.camera.t6.ChangeFilterActivity"
-            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

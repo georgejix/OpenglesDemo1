@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t5.encoder;
+package com.example.openglesdemo1.ui.camera.t6.encoder;
 
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
@@ -8,7 +8,7 @@ import android.opengl.EGLContext;
 import android.util.Log;
 import android.view.Surface;
 
-import com.example.openglesdemo1.ui.camera.t5.glutilsOld.RenderHandler;
+import com.example.openglesdemo1.ui.camera.t6.glutilsOld.RenderHandler;
 
 import java.io.IOException;
 
