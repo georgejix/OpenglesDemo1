@@ -100,7 +100,7 @@
             android:name=".ui.camera.t3.GlPreviewCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.camera.t4.GlPreviewCameraActivity2Activity"
+            android:name=".ui.camera.t4.GlPreviewCamera2Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.camera.t5.TextureCameraActivity"
@@ -110,6 +110,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.camera.t7.ChangeFilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.camera.t8.Camera2DataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.camera.t9.CameraDataActivity"
             android:screenOrientation="portrait" />
 
     </application>

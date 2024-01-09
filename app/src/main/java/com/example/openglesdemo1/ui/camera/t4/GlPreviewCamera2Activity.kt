@@ -14,10 +14,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * camera2 + opengl
  */
-class GlPreviewCameraActivity2Activity : BaseActivity2() {
+class GlPreviewCamera2Activity : BaseActivity2() {
     private val TAG = "RecordByCamera2Activity"
     private val mGlSurface: GLSurfaceView by lazy { GLSurfaceView(this) }
-    private var mGlPreviewCameraActivityRender: GlPreviewCameraActivity2Render? = null
+    private var mGlPreviewCameraActivityRender: GlPreviewCamera2Render? = null
     private var mIsPreview = AtomicBoolean(false)
     private var mIsRenderCreated = AtomicBoolean(false)
 
@@ -39,7 +39,7 @@ class GlPreviewCameraActivity2Activity : BaseActivity2() {
             mGlPreviewCameraActivityRender ?: let {
                 mGlSurface.setEGLContextClientVersion(3)
                 mGlPreviewCameraActivityRender =
-                    GlPreviewCameraActivity2Render(mGlSurface, object : GlPreviewCameraActivity2Render.Listener {
+                    GlPreviewCamera2Render(mGlSurface, object : GlPreviewCamera2Render.Listener {
                         override fun onSurfaceCreated() {
                             mIsRenderCreated.set(true)
                             startPreview()

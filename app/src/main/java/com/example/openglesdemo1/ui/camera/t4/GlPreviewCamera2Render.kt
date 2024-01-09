@@ -27,7 +27,7 @@ import java.nio.ShortBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class GlPreviewCameraActivity2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
+class GlPreviewCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: Listener) :
     GLSurfaceView.Renderer {
 
     interface Listener {

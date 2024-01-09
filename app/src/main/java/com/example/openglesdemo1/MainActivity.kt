@@ -3,12 +3,14 @@ package com.example.openglesdemo1
 import android.app.Activity
 import android.os.Bundle
 import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
+import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity
-import com.example.openglesdemo1.ui.camera.t4.GlPreviewCameraActivity2Activity
+import com.example.openglesdemo1.ui.camera.t4.GlPreviewCamera2Activity
 import com.example.openglesdemo1.ui.camera.t5.TextureCameraActivity
 import com.example.openglesdemo1.ui.camera.t6.GlPreviewCameraWithRecordActivity
 import com.example.openglesdemo1.ui.camera.t7.ChangeFilterActivity
-import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
+import com.example.openglesdemo1.ui.camera.t8.Camera2DataActivity
+import com.example.openglesdemo1.ui.camera.t9.CameraDataActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -56,19 +58,21 @@ class MainActivity : Activity() {
                 MainBean("--------camera--------", null),
                 //textureview的surfacetexture直接传入相机预览
                 MainBean("TextureView预览camera2", TextureViewPreviewCamera2Activity::class.java),
-                MainBean("surfaceview预览camera", SurfaceViewPreviewCameraActivity::class.java),
+                //surfaceview的holder.surface传入camera2
+                MainBean("surfaceview预览camera2", SurfaceViewPreviewCameraActivity::class.java),
                 //自定义texture，传入相机预览，然后用glsurfaceview画
-                MainBean("GLSurfaceView+gl预览Camera", GlPreviewCameraActivity::class.java), //camera1
-                MainBean(
-                    "GLSurfaceView+gl预览Camera2",
-                    GlPreviewCameraActivity2Activity::class.java
-                ),//camera2
+                MainBean("GLSurfaceView预览Camera", GlPreviewCameraActivity::class.java), //camera1
+                MainBean("GLSurfaceView预览Camera2", GlPreviewCamera2Activity::class.java),//camera2
                 //将自定义surfacetexture传入相机预览，textureview与egl绑定，手动把texture内容画到textureview
                 MainBean("TextureView+gl预览Camera", TextureCameraActivity::class.java),
-                //自定义texture，传入相机预览，glsurfaceview画回显帧，然后同时将texture给gl，画一份到mediacodec创建的surface
-                //mediacodec可直接获得编码后数据流
+                //创建texture，用于获取camera数据，用gl将texture画面画到glsurfaceview,同时也画到mediacodec的surface
+                //glsurfaceview和mediacodec.surface共享gl_context
                 MainBean("openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java),
-                MainBean("GLSurfaceView+gl预览camera2，滤镜", ChangeFilterActivity::class.java),
+                MainBean("GLSurfaceView预览camera2，滤镜", ChangeFilterActivity::class.java),
+                //nv21,jpeg数据都可以
+                MainBean("获取camera2每帧数据", Camera2DataActivity::class.java),
+                //nv21数据
+                MainBean("获取camera每帧数据", CameraDataActivity::class.java),
 
 
                 MainBean("--------normal2--------", null),
