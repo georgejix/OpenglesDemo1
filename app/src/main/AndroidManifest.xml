@@ -71,6 +71,9 @@
         <activity
             android:name=".ui.normal.t11.TextureAndFilterActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.normal.t12.FboFenceActivity"
+            android:screenOrientation="portrait" />
 
 
         <activity
