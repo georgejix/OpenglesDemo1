@@ -7,6 +7,9 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.widget.ImageView
 import com.example.openglesdemo1.R
+import com.example.openglesdemo1.utils.ResReadUtils
+import com.example.openglesdemo1.utils.ShaderUtils
+import com.example.openglesdemo1.utils.TextureUtils
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -16,9 +19,7 @@ import javax.microedition.khronos.opengles.GL10
 
 /**
  *
- *      Coded by kenney
- *
- *      http://www.github.com/kenneycode
+ *      http://www.github.com/kenneycode/OpenGLESPro
  *
  *      这是一个使用栅栏做GL命令同步的例子
  *      This is a sample of using fence to synchronize the GL commands
@@ -27,37 +28,24 @@ import javax.microedition.khronos.opengles.GL10
 
 class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer {
 
-    private val vertexShaderCode =
-        "#version 300 es\n" +
-                "precision mediump float;\n" +
-                "layout(location = 0) in vec4 a_Position;\n" +
-                "layout(location = 1) in vec2 a_textureCoordinate;\n" +
-                "out vec2 v_textureCoordinate;\n" +
-                "void main() {\n" +
-                "    v_textureCoordinate = a_textureCoordinate;\n" +
-                "    gl_Position = a_Position;\n" +
-                "}"
-
-    private val fragmentShaderCode =
-        "#version 300 es\n" +
-                "precision mediump float;\n" +
-                "layout(location = 0) out vec4 fragColor;\n" +
-                "in vec2 v_textureCoordinate;\n" +
-                "uniform sampler2D u_texture;\n" +
-                "void main() {\n" +
-                "    float offset = 0.01;\n" +
-                "    vec4 colorCenter = texture(u_texture, vec2(v_textureCoordinate.x, v_textureCoordinate.y));\n" +
-                "    vec4 colorLeft = texture(u_texture, vec2(v_textureCoordinate.x - offset, v_textureCoordinate.y));\n" +
-                "    vec4 colorTop = texture(u_texture, vec2(v_textureCoordinate.x, v_textureCoordinate.y + offset));\n" +
-                "    vec4 colorRight = texture(u_texture, vec2(v_textureCoordinate.x + offset, v_textureCoordinate.y));\n" +
-                "    vec4 colorBottom = texture(u_texture, vec2(v_textureCoordinate.x, v_textureCoordinate.y - offset));\n" +
-                "    fragColor = (colorCenter + colorLeft + colorTop + colorRight + colorBottom) / 5.0;\n" +
-                "}"
-
     // 三角形顶点数据
     // The vertex data of a triangle
-    private val vertexData = floatArrayOf(-1f, -1f, -1f, 1f, 1f, 1f, -1f, -1f, 1f, 1f, 1f, -1f)
-    private val textureCoordinateData = floatArrayOf(0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 1f, 0f, 1f, 1f)
+    private val vertexData = floatArrayOf(
+        -1f, -1f,
+        -1f, 1f,
+        1f, 1f,
+        -1f, -1f,
+        1f, 1f,
+        1f, -1f
+    )
+    private val textureCoordinateData = floatArrayOf(
+        0f, 1f,
+        0f, 0f,
+        1f, 0f,
+        0f, 1f,
+        1f, 0f,
+        1f, 1f
+    )
 
     lateinit var vertexDataBuffer: FloatBuffer
     lateinit var textureCoordinateDataBuffer: FloatBuffer
@@ -83,9 +71,9 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
     var imageTexture = 0
 
     override fun onDrawFrame(gl: GL10?) {
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE1)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, sharedTexture)
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffer)
+        //将纹理图像附加到帧缓冲对象
         GLES30.glFramebufferTexture2D(
             GLES30.GL_FRAMEBUFFER,
             GLES30.GL_COLOR_ATTACHMENT0,
@@ -93,6 +81,7 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
             sharedTexture,
             0
         )
+        //根据指定的参数，生成一个2D纹理
         GLES30.glTexImage2D(
             GLES30.GL_TEXTURE_2D,
             0,
@@ -118,13 +107,9 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         // Set the viewport to the full GLSurfaceView
         GLES30.glViewport(0, 0, glSurfaceViewWidth, glSurfaceViewHeight)
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE2)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, imageTexture)
-        vertexDataBuffer = ByteBuffer.allocateDirect(vertexData.size * java.lang.Float.SIZE)
-            .order(ByteOrder.nativeOrder())
-            .asFloatBuffer()
-        vertexDataBuffer.put(vertexData)
-        vertexDataBuffer.position(0)
+
         GLES30.glEnableVertexAttribArray(LOCATION_ATTRBUTE_POSITION)
         GLES30.glVertexAttribPointer(
             LOCATION_ATTRBUTE_POSITION,
@@ -135,12 +120,6 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
             vertexDataBuffer
         )
 
-        textureCoordinateDataBuffer =
-            ByteBuffer.allocateDirect(textureCoordinateData.size * java.lang.Float.SIZE)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer()
-        textureCoordinateDataBuffer.put(textureCoordinateData)
-        textureCoordinateDataBuffer.position(0)
         GLES30.glEnableVertexAttribArray(LOCATION_ATTRBUTE_TEXTURE_COORDINATE)
         GLES30.glVertexAttribPointer(
             LOCATION_ATTRBUTE_TEXTURE_COORDINATE,
@@ -175,7 +154,6 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
 
                 val frameBuffers = IntArray(1)
                 GLES30.glGenFramebuffers(frameBuffers.size, frameBuffers, 0)
-                GLES30.glActiveTexture(GLES30.GL_TEXTURE1)
                 GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, sharedTexture)
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffers[0])
                 GLES30.glFramebufferTexture2D(
@@ -219,7 +197,7 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         // Bind frame buffer to 0# and also render the result on screen
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0)
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE2)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, imageTexture)
 
         GLES30.glClearColor(0.9f, 0.9f, 0.9f, 1f)
@@ -240,31 +218,14 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         // Record the width and height of the GLSurfaceView
         glSurfaceViewWidth = width
         glSurfaceViewHeight = height
-
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        // 创建GL程序
-        // Create GL program
-        val programId = GLES30.glCreateProgram()
-
-        // 加载、编译vertex shader和fragment shader
-        // Load and compile vertex shader and fragment shader
-        val vertexShader = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER)
-        val fragmentShader = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER)
-        GLES30.glShaderSource(vertexShader, vertexShaderCode)
-        GLES30.glShaderSource(fragmentShader, fragmentShaderCode)
-        GLES30.glCompileShader(vertexShader)
-        GLES30.glCompileShader(fragmentShader)
-
-        // 将shader程序附着到GL程序上
-        // Attach the compiled shaders to the GL program
-        GLES30.glAttachShader(programId, vertexShader)
-        GLES30.glAttachShader(programId, fragmentShader)
-
-        // 链接GL程序
-        // Link the GL program
-        GLES30.glLinkProgram(programId)
+        val vertexId =
+            ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.normal_t12_vertex))
+        val fragmentId =
+            ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.normal_t12_fragment))
+        val programId = ShaderUtils.linkProgram(vertexId, fragmentId)
 
         // 将三角形顶点数据放入buffer中
         // Put the triangle vertex data into the vertexDataBuffer
@@ -274,10 +235,6 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         vertexDataBuffer.put(vertexData)
         vertexDataBuffer.position(0)
 
-        // 应用GL程序
-        // Use the GL program
-        GLES30.glUseProgram(programId)
-
         textureCoordinateDataBuffer =
             ByteBuffer.allocateDirect(textureCoordinateData.size * java.lang.Float.SIZE)
                 .order(ByteOrder.nativeOrder())
@@ -285,34 +242,12 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         textureCoordinateDataBuffer.put(textureCoordinateData)
         textureCoordinateDataBuffer.position(0)
 
-        val textures = IntArray(1)
-        GLES30.glGenTextures(textures.size, textures, 0)
+        // 应用GL程序
+        // Use the GL program
+        GLES30.glUseProgram(programId)
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
-        val bitmap = BitmapFactory.decodeResource(imageView.resources, R.mipmap.img_bg2)
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textures[0])
-        imageTexture = textures[0]
-        val b = ByteBuffer.allocate(bitmap.width * bitmap.height * 4)
-        bitmap.copyPixelsToBuffer(b)
-        b.position(0)
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR)
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR)
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_2D,
-            GLES30.GL_TEXTURE_WRAP_S,
-            GLES30.GL_CLAMP_TO_EDGE
-        )
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_2D,
-            GLES30.GL_TEXTURE_WRAP_T,
-            GLES30.GL_CLAMP_TO_EDGE
-        )
-        GLES30.glTexImage2D(
-            GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, bitmap.width,
-            bitmap.height, 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, b
-        )
-        bitmap.recycle()
-        GLES30.glUniform1i(LOCATION_UNIFORM_POSITION, 0)
+        imageTexture = TextureUtils.loadTexture(imageView.context,R.mipmap.img_bg2)
+        GLES30.glUniform1i(LOCATION_UNIFORM_POSITION, 2)
 
         val sharedTextures = IntArray(1)
         GLES30.glGenTextures(sharedTextures.size, sharedTextures, 0)
@@ -347,19 +282,13 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
                 throw RuntimeException()
             }
             val attribList = intArrayOf(
-                EGL14.EGL_RED_SIZE,
-                8,
-                EGL14.EGL_GREEN_SIZE,
-                8,
-                EGL14.EGL_BLUE_SIZE,
-                8,
-                EGL14.EGL_ALPHA_SIZE,
-                8,
+                EGL14.EGL_RED_SIZE, 8,
+                EGL14.EGL_GREEN_SIZE, 8,
+                EGL14.EGL_BLUE_SIZE, 8,
+                EGL14.EGL_ALPHA_SIZE, 8,
                 EGL14.EGL_RENDERABLE_TYPE,
                 EGL14.EGL_OPENGL_ES2_BIT or EGLExt.EGL_OPENGL_ES3_BIT_KHR,
-                EGL14.EGL_NONE,
-                0,
-                EGL14.EGL_NONE
+                EGL14.EGL_NONE, 0, EGL14.EGL_NONE
             )
             val eglConfig = arrayOfNulls<android.opengl.EGLConfig>(1)
             val numConfigs = IntArray(1)
