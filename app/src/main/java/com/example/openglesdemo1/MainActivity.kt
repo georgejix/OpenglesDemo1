@@ -15,6 +15,7 @@ import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
 import com.example.openglesdemo1.ui.normal.t12.FboFenceActivity
+import com.example.openglesdemo1.ui.normal.t13.TextureArrayActivity
 import com.example.openglesdemo1.ui.normal.t2.ColorActivity
 import com.example.openglesdemo1.ui.normal.t3.RectangleActivity
 import com.example.openglesdemo1.ui.normal.t4.VertexBufferActivity
@@ -56,6 +57,7 @@ class MainActivity : Activity() {
                 MainBean("滤镜", FilterActivity::class.java),
                 MainBean("纹理+滤镜", TextureAndFilterActivity::class.java),
                 MainBean("fbo,fence", FboFenceActivity::class.java),
+                MainBean("纹理数组", TextureArrayActivity::class.java),
 
                 MainBean("--------camera--------", null),
                 //textureview的surfacetexture直接传入相机预览
