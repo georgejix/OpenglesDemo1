@@ -162,6 +162,7 @@ class MultiTextureRenderer(val context: Context) : GLSurfaceView.Renderer {
         )
         val attachBuffer = IntBuffer.allocate(attachments.size)
         attachBuffer.put(attachments).position(0)
+        //加上会渲染GL_COLOR_ATTACHMENT1和GL_COLOR_ATTACHMENT2对应的纹理，不加只有GL_COLOR_ATTACHMENT0纹理有内容
         GLES30.glDrawBuffers(attachments.size, attachBuffer)
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0)
     }
