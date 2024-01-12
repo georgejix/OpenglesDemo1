@@ -229,14 +229,14 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
 
         // 将三角形顶点数据放入buffer中
         // Put the triangle vertex data into the vertexDataBuffer
-        vertexDataBuffer = ByteBuffer.allocateDirect(vertexData.size * java.lang.Float.SIZE)
+        vertexDataBuffer = ByteBuffer.allocateDirect(vertexData.size * java.lang.Float.SIZE / 8)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
         vertexDataBuffer.put(vertexData)
         vertexDataBuffer.position(0)
 
         textureCoordinateDataBuffer =
-            ByteBuffer.allocateDirect(textureCoordinateData.size * java.lang.Float.SIZE)
+            ByteBuffer.allocateDirect(textureCoordinateData.size * java.lang.Float.SIZE / 8)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
         textureCoordinateDataBuffer.put(textureCoordinateData)
@@ -246,7 +246,7 @@ class SampleFenceSyncRenderer(val imageView: ImageView) : GLSurfaceView.Renderer
         // Use the GL program
         GLES30.glUseProgram(programId)
 
-        imageTexture = TextureUtils.loadTexture(imageView.context,R.mipmap.img_bg2)
+        imageTexture = TextureUtils.loadTexture(imageView.context, R.mipmap.img_bg2)
         GLES30.glUniform1i(LOCATION_UNIFORM_POSITION, 2)
 
         val sharedTextures = IntArray(1)
