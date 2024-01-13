@@ -81,7 +81,10 @@
             android:name=".ui.normal.t14.MultiTextureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.normal.t15.FboIboActivity"
+            android:name=".ui.normal.t15.VboIboActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.normal.t16.EglActivity"
             android:screenOrientation="portrait" />
 
 

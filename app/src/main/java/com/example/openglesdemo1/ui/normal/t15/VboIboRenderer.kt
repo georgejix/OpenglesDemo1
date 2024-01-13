@@ -16,7 +16,7 @@ import java.nio.IntBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class FboIboRenderer(val context: Context) : GLSurfaceView.Renderer {
+class VboIboRenderer(val context: Context) : GLSurfaceView.Renderer {
 
     private var mVertexTextureBuffer: FloatBuffer
     private var mIndexBuffer: IntBuffer
@@ -44,10 +44,10 @@ class FboIboRenderer(val context: Context) : GLSurfaceView.Renderer {
 
     init {
         mVertexTextureBuffer =
-            ByteBuffer.allocateDirect(mVertexTextureArray.size * java.lang.Float.SIZE)
+            ByteBuffer.allocateDirect(mVertexTextureArray.size * java.lang.Float.SIZE / 8)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer()
         mVertexTextureBuffer.put(mVertexTextureArray).position(0)
-        mIndexBuffer = ByteBuffer.allocateDirect(mIndexArray.size * java.lang.Integer.SIZE)
+        mIndexBuffer = ByteBuffer.allocateDirect(mIndexArray.size * java.lang.Integer.SIZE / 8)
             .order(ByteOrder.nativeOrder()).asIntBuffer()
         mIndexBuffer.put(mIndexArray).position(0)
     }

@@ -17,7 +17,8 @@ import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
 import com.example.openglesdemo1.ui.normal.t12.FboFenceActivity
 import com.example.openglesdemo1.ui.normal.t13.TextureArrayActivity
 import com.example.openglesdemo1.ui.normal.t14.MultiTextureActivity
-import com.example.openglesdemo1.ui.normal.t15.FboIboActivity
+import com.example.openglesdemo1.ui.normal.t15.VboIboActivity
+import com.example.openglesdemo1.ui.normal.t16.EglActivity
 import com.example.openglesdemo1.ui.normal.t2.ColorActivity
 import com.example.openglesdemo1.ui.normal.t3.RectangleActivity
 import com.example.openglesdemo1.ui.normal.t4.VertexBufferActivity
@@ -61,7 +62,8 @@ class MainActivity : Activity() {
                 MainBean("fbo,fence", FboFenceActivity::class.java),
                 MainBean("纹理数组", TextureArrayActivity::class.java),
                 MainBean("多重纹理渲染", MultiTextureActivity::class.java),
-                MainBean("fbo ibo", FboIboActivity::class.java),
+                MainBean("vbo ibo", VboIboActivity::class.java),
+                MainBean("surfaceview用egl渲染", EglActivity::class.java),
 
                 MainBean("--------camera--------", null),
                 //textureview的surfacetexture直接传入相机预览

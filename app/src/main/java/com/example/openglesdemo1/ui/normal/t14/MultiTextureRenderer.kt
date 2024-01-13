@@ -81,7 +81,7 @@ class MultiTextureRenderer(val context: Context) : GLSurfaceView.Renderer {
             mDrawVertexBuffers.add(buffer)
         }
         mDrawTextureBuffer =
-            ByteBuffer.allocateDirect(mDrawTextureArray.size * java.lang.Float.SIZE)
+            ByteBuffer.allocateDirect(mDrawTextureArray.size * java.lang.Float.SIZE/8)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer()
         mDrawTextureBuffer.put(mDrawTextureArray).position(0)
     }
