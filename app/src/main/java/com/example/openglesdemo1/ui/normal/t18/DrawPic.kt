@@ -128,5 +128,9 @@ class DrawPic(val sv: SurfaceView, val img: Int) {
 
         GLES30.glUseProgram(0)
         EGL14.eglSwapBuffers(eglDisplay, eglSurface)
+
+        EGL14.eglDestroySurface(eglDisplay, eglSurface)
+        EGL14.eglDestroyContext(eglDisplay, eglContext)
+        EGL14.eglTerminate(eglDisplay)
     }
 }
