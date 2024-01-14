@@ -89,6 +89,9 @@
         <activity
             android:name=".ui.normal.t17.BlendActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.normal.t18.TwoThreadActivity"
+            android:screenOrientation="portrait" />
 
 
         <activity
