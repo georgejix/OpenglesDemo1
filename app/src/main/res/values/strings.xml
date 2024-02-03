@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">OpenglesDemo</string>
+
+    <string name="video_format">Video Format</string>
+    <string name="video_encode_config_h_264_avc">Video Encode Config (H.264 AVC)</string>
+    <string name="video_encoder">Video Encoder</string>
+    <string name="resolution">Resolution</string>
+    <string name="bitrate">Bitrate (kbps)</string>
+    <string name="frame_rate">Frame Rate (fps)</string>
+    <string name="frame_interval">I-Frame Interval</string>
+    <string name="video_profile">VideoProfile</string>
+    <string name="orientation">Orientation</string>
+    <string name="audio_encode_config_h_264_aac">Audio Encode Config (H.264 AAC)</string>
+    <string name="audio_encoder">Audio Encoder</string>
+    <string name="channels">Channels</string>
+    <string name="sample_rate">Sample Rate (HZ)</string>
+    <string name="audio_profile">Audio Profile</string>
+    <string name="without_audio">Without Audio</string>
+    <string name="with_audio">With Audio</string>
+    <string name="start_recorder">Start Recorder</string>
 </resources>
