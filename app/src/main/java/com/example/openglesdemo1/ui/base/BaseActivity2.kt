@@ -192,7 +192,7 @@ open class BaseActivity2 : Activity() {
     }
 
     private fun createRequest(surfaces: List<Surface>) {
-        mCamera?.createCaptureRequest(CameraDevice.TEMPLATE_RECORD)?.let { builder ->
+        mCamera?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)?.let { builder ->
             surfaces.forEach { builder.addTarget(it) }
             mFps?.let {
                 builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, it)

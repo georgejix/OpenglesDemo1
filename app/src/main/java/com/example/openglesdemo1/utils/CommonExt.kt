@@ -5,7 +5,9 @@ import android.util.Log
 import java.io.File
 
 fun Context.getVideoPath(name: String): String {
-    val path = File("${cacheDir.absolutePath}${File.separator}video", name).absolutePath
-    Log.d("path", path)
-    return path
+    val file = File(getExternalFilesDir("video")!!.absolutePath, name)
+    file.delete()
+    file.createNewFile()
+    Log.d("path", file.absolutePath)
+    return file.absolutePath
 }
