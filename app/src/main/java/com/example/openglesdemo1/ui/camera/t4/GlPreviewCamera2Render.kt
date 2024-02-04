@@ -83,7 +83,7 @@ class GlPreviewCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: L
     init {
         for (id in mCameraManager.cameraIdList) {
             var cameraInfo = mCameraManager.getCameraCharacteristics(id)
-            if (CameraCharacteristics.LENS_FACING_FRONT ==
+            if (CameraCharacteristics.LENS_FACING_BACK ==
                 cameraInfo[CameraCharacteristics.LENS_FACING]
             ) {
                 mCameraId = id
@@ -136,6 +136,7 @@ class GlPreviewCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: L
         GLES30.glUseProgram(mProgram)
         //更新纹理图像
         mSurfaceTexture?.updateTexImage()
+        //previewsize
         mSurfaceTexture?.getTransformMatrix(mMatrix)
         //激活纹理单元0
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
@@ -277,6 +278,7 @@ class GlPreviewCamera2Render(val mGLSurfaceView: GLSurfaceView, var mListener: L
 
     private fun initCameraSession() {
         mSize?.apply {
+            //previewsize
             mSurfaceTexture?.setDefaultBufferSize(width, height)
         }
         mSurfaceTexture?.let {

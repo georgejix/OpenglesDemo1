@@ -53,7 +53,7 @@ class GlPreviewCameraRender(val mGLSurfaceView: GLSurfaceView, var mListener: Li
     private var mTextureSamplerLocation = 0
 
     init {
-        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK
         mCamera = Camera.open(mCameraId)
         mCamera?.setDisplayOrientation(90)
 
@@ -93,6 +93,7 @@ class GlPreviewCameraRender(val mGLSurfaceView: GLSurfaceView, var mListener: Li
         GLES30.glUseProgram(mProgram)
         //更新纹理图像
         mSurfaceTexture?.updateTexImage()
+        //previewsize
         mSurfaceTexture?.getTransformMatrix(mMatrix)
         //激活纹理单元0
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)

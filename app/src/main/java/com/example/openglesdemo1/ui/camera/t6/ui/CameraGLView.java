@@ -514,6 +514,7 @@ public final class CameraGLView extends GLSurfaceView {
                         }
                     });
                     final SurfaceTexture st = parent.getSurfaceTexture();
+                    //previewsize
                     st.setDefaultBufferSize(previewSize.width, previewSize.height);
                     mCamera.setPreviewTexture(st);
                 } catch (final IOException e) {

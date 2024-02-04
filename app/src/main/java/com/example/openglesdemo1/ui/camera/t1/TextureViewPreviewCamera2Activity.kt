@@ -147,6 +147,7 @@ class TextureViewPreviewCamera2Activity : BaseActivity2() {
         }
         val param = textureView.layoutParams as ConstraintLayout.LayoutParams
         param?.dimensionRatio = "w,${size.width}:${size.height}"
+        //previewsize
         mSurfaceTexture?.setDefaultBufferSize(size.width, size.height)
         mCameraManager.openCamera(
             mCameraId,

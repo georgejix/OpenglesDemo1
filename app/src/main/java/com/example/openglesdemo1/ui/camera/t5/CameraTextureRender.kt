@@ -70,6 +70,7 @@ class CameraTextureRender(val OESTextureId: Int) : ITextureRenderer {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
         GLES30.glUseProgram(mProgram)
         surfaceTexture?.updateTexImage()
+        //previewsize
         surfaceTexture?.getTransformMatrix(mTransformMatrix)
 
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)

@@ -166,6 +166,7 @@ class ChangeFilterActivity : BaseActivity2() {
                     val surfaceT = mChangeFilterRender?.getSurfaceTexture()
                     surfaceT ?: return
                     surfaceT.setOnFrameAvailableListener { gl_surface.requestRender() }
+                    //previewsize
                     surfaceT.setDefaultBufferSize(mSize?.width ?: 1080, mSize?.height ?: 1920)
                     val surface = Surface(surfaceT)
                     camera.createCaptureSession(

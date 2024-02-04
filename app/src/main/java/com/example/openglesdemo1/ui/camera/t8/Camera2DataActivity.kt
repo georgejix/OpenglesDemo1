@@ -69,6 +69,7 @@ class Camera2DataActivity : BaseActivity2() {
                         if (720 == size.height) {
                             //resize layout
                             Log.d(TAG, "${size.width}  ${size.height}")
+                            //previewsize
                             mSurfaceTexture?.setDefaultBufferSize(size.width, size.height)
                             if (mTextureView.layoutParams is ConstraintLayout.LayoutParams) {
                                 val param =

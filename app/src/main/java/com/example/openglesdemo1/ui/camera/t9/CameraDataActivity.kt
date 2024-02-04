@@ -52,6 +52,7 @@ class CameraDataActivity : BaseActivity2() {
         camera.parameters.supportedPictureSizes.forEach { size ->
             if (720 == size.height) {
                 Log.d(TAG, "${size.width}  ${size.height}")
+                //previewsize
                 mSurfaceTexture?.setDefaultBufferSize(size.width, size.height)
                 if (mTextureView.layoutParams is ConstraintLayout.LayoutParams) {
                     val param =

@@ -142,6 +142,8 @@
         <activity
             android:name=".ui.mediacodec.t1.PrintMediaCodecActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.mediacodec.t2.MediaCodecSaveVideoActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -12,6 +12,7 @@ import com.example.openglesdemo1.ui.camera.t7.ChangeFilterActivity
 import com.example.openglesdemo1.ui.camera.t8.Camera2DataActivity
 import com.example.openglesdemo1.ui.camera.t9.CameraDataActivity
 import com.example.openglesdemo1.ui.mediacodec.t1.PrintMediaCodecActivity
+import com.example.openglesdemo1.ui.mediacodec.t2.MediaCodecSaveVideoActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -82,7 +83,7 @@ class MainActivity : Activity() {
                 MainBean("TextureView+gl预览Camera", TextureCameraActivity::class.java),
                 //创建texture，用于获取camera数据，用gl将texture画面画到glsurfaceview,同时也画到mediacodec的surface
                 //glsurfaceview和mediacodec.surface共享gl_context
-                MainBean("openel预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java),
+                MainBean("opengl预览Camera,并存储", GlPreviewCameraWithRecordActivity::class.java),
                 MainBean("GLSurfaceView预览camera2，滤镜", ChangeFilterActivity::class.java),
                 //nv21,jpeg数据都可以
                 MainBean("获取camera2每帧数据", Camera2DataActivity::class.java),
@@ -99,6 +100,7 @@ class MainActivity : Activity() {
 
                 MainBean("--------mediacodec--------", null),
                 MainBean("mediaMuxer,mediaCodec", PrintMediaCodecActivity::class.java),
+                MainBean("mediaCodec保存视频", MediaCodecSaveVideoActivity::class.java),
 
                 )
         )

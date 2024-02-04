@@ -31,7 +31,7 @@ class CameraV1Pick : SurfaceTextureListener {
         //自定义的SurfaceTexture
         val surfaceTexture = mTextureEglHelper?.loadOESTexture()
         //前置摄像头
-        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK
         mCamera = CameraV1((mTextureView?.context as Activity))
         if (true == mCamera?.openCamera(mCameraId)) {
             mCamera?.setPreviewTexture(surfaceTexture)
