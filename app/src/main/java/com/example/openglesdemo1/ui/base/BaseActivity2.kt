@@ -127,7 +127,7 @@ open class BaseActivity2 : Activity() {
     }
 
     @SuppressLint("MissingPermission")
-    fun openCamera(surface: Surface) {
+    fun openCamera(surfaces: List<Surface>) {
         mCameraManager.cameraIdList.find {
             CameraCharacteristics.LENS_FACING_BACK ==
                     mCameraManager.getCameraCharacteristics(it)
@@ -145,7 +145,7 @@ open class BaseActivity2 : Activity() {
             mCameraManager.openCamera(backCameraId, object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
                     mCamera = camera
-                    createSession(surface)
+                    createSession(surfaces)
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
@@ -160,7 +160,7 @@ open class BaseActivity2 : Activity() {
         }
     }
 
-    private fun createSession(surface: Surface) {
+    private fun createSession(surfaces: List<Surface>) {
         /*val config = SessionConfiguration(SessionConfiguration.SESSION_REGULAR,
             listOf(
                 OutputConfiguration(surface)
@@ -177,11 +177,11 @@ open class BaseActivity2 : Activity() {
             })
         mCamera?.createCaptureSession(config)*/
         mCamera?.createCaptureSession(
-            listOf(surface),
+            surfaces,
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mCameraCaptureSession = session
-                    createRequest(surface)
+                    createRequest(surfaces)
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
@@ -191,9 +191,9 @@ open class BaseActivity2 : Activity() {
         )
     }
 
-    private fun createRequest(surface: Surface) {
+    private fun createRequest(surfaces: List<Surface>) {
         mCamera?.createCaptureRequest(CameraDevice.TEMPLATE_RECORD)?.let { builder ->
-            builder.addTarget(surface)
+            surfaces.forEach { builder.addTarget(it) }
             mFps?.let {
                 builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, it)
                 Log.d(BASE_TAG, "fps = ${it.upper}-${it.upper}")

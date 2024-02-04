@@ -1,18 +1,22 @@
 package com.example.openglesdemo1.ui.mediacodec.t2
 
-import android.graphics.SurfaceTexture
 import android.os.Bundle
 import android.util.Log
-import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
+import com.example.openglesdemo1.utils.getVideoPath
+import kotlinx.android.synthetic.main.activity_mediacodec_save_video.btn_record
 import kotlinx.android.synthetic.main.activity_mediacodec_save_video.layout_preview
 
 class MediaCodecSaveVideoActivity : BaseActivity2() {
     private val TAG = "MediaCodecSaveVideoActivity"
+    private var mInit = false
+    private var mWidth = 0
+    private var mHeight = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediacodec_save_video)
@@ -36,8 +40,10 @@ class MediaCodecSaveVideoActivity : BaseActivity2() {
             ) {
                 Log.d(TAG, "surfaceChanged $width  $height")
                 holder.setFixedSize(width, height)
+                mWidth = width
+                mHeight = height
                 if (layout_preview.height > 0) {
-                    openCamera(holder.surface)
+                    openCamera(listOf(holder.surface))
                 }
             }
 
@@ -48,5 +54,33 @@ class MediaCodecSaveVideoActivity : BaseActivity2() {
 
         })
         layout_preview.addView(surfaceView)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!mInit) {
+            initListener()
+            mInit = true
+        }
+    }
+
+    private fun initListener() {
+        btn_record.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                startRecord()
+            } else {
+                stopRecord()
+            }
+        }
+    }
+
+    private fun startRecord() {
+        val path = getVideoPath("${System.currentTimeMillis()}.mp4")
+        val muxer = LocalVideoMuxer(path)
+        val videoFormat = LocalVideoEncoder(mWidth, mHeight, muxer)
+    }
+
+    private fun stopRecord() {
+
     }
 }

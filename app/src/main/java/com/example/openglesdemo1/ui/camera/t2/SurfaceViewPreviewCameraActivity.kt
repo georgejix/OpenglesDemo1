@@ -35,7 +35,7 @@ class SurfaceViewPreviewCameraActivity : BaseActivity2() {
                  */
                 holder.setFixedSize(width, height)
                 if (layout_preview.height > 0) {
-                    openCamera(holder.surface)
+                    openCamera(listOf(holder.surface))
                 }
             }
 
