@@ -17,7 +17,7 @@ public class MediaAudioEncoder extends MediaEncoder {
 	private static final boolean DEBUG = false;	// TODO set false on release
 	private static final String TAG = "MediaAudioEncoder";
 
-	private static final String MIME_TYPE = "audio/mp4a-latm";
+	private static final String MIME_TYPE = MediaFormat.MIMETYPE_AUDIO_AAC;
     private static final int SAMPLE_RATE = 44100;	// 44.1[KHz] is only setting guaranteed to be available on all devices.
     private static final int BIT_RATE = 64000;
 	public static final int SAMPLES_PER_FRAME = 1024;	// AAC, bytes/frame/channel

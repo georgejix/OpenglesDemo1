@@ -16,7 +16,7 @@ public class MediaVideoEncoder extends MediaEncoder {
 	private static final boolean DEBUG = false;	// TODO set false on release
 	private static final String TAG = "MediaVideoEncoder";
 
-	private static final String MIME_TYPE = "video/avc";
+	private static final String MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
 	// parameters for recording
     private static final int FRAME_RATE = 25;
     private static final float BPP = 0.25f;
