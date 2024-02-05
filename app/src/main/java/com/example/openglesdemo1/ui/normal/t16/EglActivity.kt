@@ -138,6 +138,7 @@ class EglActivity : Activity() {
         )
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextureId)
+        GLES30.glUniform1i(mTextureLocation, 0)
         GLES30.glUniformMatrix4fv(mMatrixLocation, 1, false, mMatrixArray, 0)
 
         GLES30.glClearColor(1f, 1f, 1f, 1f)

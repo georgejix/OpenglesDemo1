@@ -44,6 +44,9 @@ class MainActivity : Activity() {
         initView()
     }
 
+    /**
+     * 纹理坐标原点在左下，android坐标原点在左上，所以mipmap纹理贴图是反的
+     */
     private fun initView() {
         rv_list.adapter = MainAdapter(
             listOf(

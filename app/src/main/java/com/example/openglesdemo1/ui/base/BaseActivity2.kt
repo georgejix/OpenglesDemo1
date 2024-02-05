@@ -99,7 +99,6 @@ open class BaseActivity2 : Activity() {
     private var mFps: Range<Int>? = null
 
     fun closeCamera() {
-        mCameraCaptureSession?.stopRepeating()
         mCameraCaptureSession?.close()
         mCamera?.close()
     }
