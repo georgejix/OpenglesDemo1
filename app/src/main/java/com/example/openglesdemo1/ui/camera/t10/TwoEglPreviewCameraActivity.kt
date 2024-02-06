@@ -6,8 +6,8 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
-import kotlinx.android.synthetic.main.activity_mediacodec_save_video.sv1
-import kotlinx.android.synthetic.main.activity_mediacodec_save_video.sv2
+import kotlinx.android.synthetic.main.activity_two_egl_preview_camera.sv1
+import kotlinx.android.synthetic.main.activity_two_egl_preview_camera.sv2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

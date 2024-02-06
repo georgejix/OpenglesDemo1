@@ -104,6 +104,7 @@ class SvRenderer(val threadName: String, val width: Int, val height: Int) {
                 intArrayOf(EGL14.EGL_CONTEXT_CLIENT_VERSION, 3, EGL14.EGL_NONE),
                 0
             )
+
             mEglSurface = EGL14.eglCreateWindowSurface(
                 mEglDisplay, eglConfig[0],
                 sv, intArrayOf(EGL14.EGL_NONE), 0
@@ -177,7 +178,7 @@ class SvRenderer(val threadName: String, val width: Int, val height: Int) {
         mHandlerThread.quitSafely()
     }
 
-    fun draw(textureId: Int, sv: SurfaceTexture?, f: (() -> Unit)?) {
+    fun draw(textureId: Int, sv: SurfaceTexture?) {
         mHandler.post {
             EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext)
             GLES30.glUseProgram(mProgramId)
@@ -214,7 +215,6 @@ class SvRenderer(val threadName: String, val width: Int, val height: Int) {
 
             //交换缓冲区，将刚刚渲染的surface切换到屏幕
             EGL14.eglSwapBuffers(mEglDisplay, mEglSurface)
-            f?.invoke()
         }
     }
 }

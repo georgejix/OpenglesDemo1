@@ -6,8 +6,9 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
+import com.example.openglesdemo1.utils.getVideoPath
+import kotlinx.android.synthetic.main.activity_mediacodec_save_video.btn_record
 import kotlinx.android.synthetic.main.activity_mediacodec_save_video.sv1
-import kotlinx.android.synthetic.main.activity_mediacodec_save_video.sv2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,13 +21,14 @@ class MediaCodecSaveVideoActivity : BaseActivity2() {
     private var mSv: SurfaceTexture? = null
     private var mRender1: SvRenderer? = null
     private var mRender2: SvRenderer? = null
+    private var mVideoMuxer: VideoMuxer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediacodec_save_video)
         sv1.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
-                initEgl(1)
+                initEgl()
             }
 
             override fun surfaceChanged(
@@ -40,51 +42,49 @@ class MediaCodecSaveVideoActivity : BaseActivity2() {
                 stopPreview()
             }
         })
-        sv2.holder.addCallback(object : SurfaceHolder.Callback {
-            override fun surfaceCreated(holder: SurfaceHolder) {
-                initEgl(2)
-            }
-
-            override fun surfaceChanged(
-                holder: SurfaceHolder, format: Int,
-                width: Int, height: Int
-            ) {
-                mRender2?.changeView(width, height)
-            }
-
-            override fun surfaceDestroyed(holder: SurfaceHolder) {
-                stopPreview()
-            }
-        })
+        setListener()
     }
 
-    private fun initEgl(index: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            when (index) {
-                1 -> {
-                    mRender1 = SvRenderer("sv1", WIDTH, HEIGHT)
-                    mRender1?.initEgl(sv1.holder.surface, null)
+    private fun setListener() {
+        btn_record.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                mVideoMuxer = VideoMuxer(getVideoPath("camera_to_mp4.mp4"), 1080, 1920)
+                mVideoMuxer?.createMuxer(){
+                    initMuxerEgl()
                 }
+            } else {
+                mVideoMuxer?.stop()
+                mVideoMuxer?.release()
+            }
+        }
+    }
 
-                2 -> {
-                    mRender2 = SvRenderer("sv2", WIDTH, HEIGHT)
-                    mRender2?.initEgl(sv2.holder.surface, mRender1?.getEglContext())
+    private fun initEgl() {
+        CoroutineScope(Dispatchers.Main).launch {
+            mRender1 = SvRenderer("sv1", WIDTH, HEIGHT)
+            mRender1?.initEgl(sv1.holder.surface, null)
+
+            mRender1?.createSv { id ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    val sv = SurfaceTexture(id)
+                    sv.setDefaultBufferSize(HEIGHT, WIDTH)
+                    sv.setOnFrameAvailableListener {
+                        mRender1?.draw(mTId, mSv)
+                        mRender2?.draw(mTId, null)
+                    }
+                    openCamera(listOf(Surface(sv)))
+                    mTId = id
+                    mSv = sv
                 }
             }
-            if (null != mRender1 && null != mRender2) {
-                mRender1?.createSv { id ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val sv = SurfaceTexture(id)
-                        sv.setDefaultBufferSize(HEIGHT, WIDTH)
-                        sv.setOnFrameAvailableListener {
-                            mRender1?.draw(mTId, mSv, null)
-                            mRender2?.draw(mTId, null, null)
-                        }
-                        openCamera(listOf(Surface(sv)))
-                        mTId = id
-                        mSv = sv
-                    }
-                }
+        }
+    }
+
+    private fun initMuxerEgl() {
+        CoroutineScope(Dispatchers.Main).launch {
+            mVideoMuxer?.getSurface()?.let {
+                mRender2 = SvRenderer("sv2", WIDTH, HEIGHT)
+                mRender2?.initEgl(it, mRender1?.getEglContext())
             }
         }
     }
