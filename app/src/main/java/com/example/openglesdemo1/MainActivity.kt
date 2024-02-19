@@ -14,6 +14,7 @@ import com.example.openglesdemo1.ui.camera.t8.Camera2DataActivity
 import com.example.openglesdemo1.ui.camera.t9.CameraDataActivity
 import com.example.openglesdemo1.ui.mediacodec.t1.PrintMediaCodecActivity
 import com.example.openglesdemo1.ui.mediacodec.t2.MediaCodecSaveVideoActivity
+import com.example.openglesdemo1.ui.mediacodec.t3.MediaCodecPlayVideoActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -107,6 +108,10 @@ class MainActivity : Activity() {
                 MainBean("--------mediacodec--------", null),
                 MainBean("mediaMuxer,mediaCodec", PrintMediaCodecActivity::class.java),
                 MainBean("mediaCodec保存视频", MediaCodecSaveVideoActivity::class.java),
+                MainBean(
+                    "MediaExtractor,mediaCodec播放视频",
+                    MediaCodecPlayVideoActivity::class.java
+                ),
 
                 )
         )

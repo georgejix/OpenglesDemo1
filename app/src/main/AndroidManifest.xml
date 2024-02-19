@@ -148,6 +148,9 @@
         <activity
             android:name=".ui.mediacodec.t2.MediaCodecSaveVideoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mediacodec.t3.MediaCodecPlayVideoActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
