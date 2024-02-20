@@ -8,7 +8,7 @@ class VideoDecoder() {
 
     var mMediaCodec: MediaCodec? = null
 
-    fun initDecoder(surface: Surface, codecFormat: MediaFormat, listener: MediaCodec.Callback) {
+    fun initDecoder(surface: Surface?, codecFormat: MediaFormat, listener: MediaCodec.Callback) {
         mMediaCodec = MediaCodec.createDecoderByType(codecFormat.getString(MediaFormat.KEY_MIME)!!)
         mMediaCodec?.configure(codecFormat, surface, null, 0)
         mMediaCodec?.setCallback(listener)

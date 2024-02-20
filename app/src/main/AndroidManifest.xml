@@ -151,6 +151,9 @@
         <activity
             android:name=".ui.mediacodec.t3.MediaCodecPlayVideoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mediacodec.t4.MCAndGlPlayVideoActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
