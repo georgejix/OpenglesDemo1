@@ -110,10 +110,7 @@ class MainActivity : Activity() {
                 MainBean("--------mediacodec--------", null),
                 MainBean("mediaMuxer,mediaCodec", PrintMediaCodecActivity::class.java),
                 MainBean("mediaCodec保存视频", MediaCodecSaveVideoActivity::class.java),
-                MainBean(
-                    "硬解码+SurfaceView播放视频",
-                    MediaCodecPlayVideoActivity::class.java
-                ),
+                MainBean("硬解码+SurfaceView播放视频", MediaCodecPlayVideoActivity::class.java),
                 MainBean("硬解码+GlSurfaceView播放视频", MCAndGlPlayVideoActivity::class.java),
                 MainBean("硬解码+egl播放视频", MCAndEGlPlayVideoActivity::class.java),
 
