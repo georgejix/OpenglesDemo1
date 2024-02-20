@@ -16,6 +16,7 @@ import com.example.openglesdemo1.ui.mediacodec.t1.PrintMediaCodecActivity
 import com.example.openglesdemo1.ui.mediacodec.t2.MediaCodecSaveVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t3.MediaCodecPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t4.MCAndGlPlayVideoActivity
+import com.example.openglesdemo1.ui.mediacodec.t5.MCAndEGlPlayVideoActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -114,6 +115,7 @@ class MainActivity : Activity() {
                     MediaCodecPlayVideoActivity::class.java
                 ),
                 MainBean("mediacodec+opengl播放视频", MCAndGlPlayVideoActivity::class.java),
+                MainBean("mediacodec+egl播放视频", MCAndEGlPlayVideoActivity::class.java),
 
                 )
         )

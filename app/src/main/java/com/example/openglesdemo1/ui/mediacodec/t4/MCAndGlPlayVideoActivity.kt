@@ -53,54 +53,66 @@ class MCAndGlPlayVideoActivity : BaseActivity2() {
 
     private fun play() {
         mMediaParse?.getVideoFormat()?.let {
-            mVideoDecoder?.initDecoder(mRenderer?.getSurface(), it, object : MediaCodec.Callback() {
-                override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {
-                    //Log.d(TAG, "onInputBufferAvailable")
-                    mHandler.post {
-                        runCatching {
-                            codec.getInputBuffer(index)?.let {
-                                val result = mMediaParse?.readBuffer(mVideoTrackIndex, it) ?: -1
-                                Log.d(
-                                    TAG,
-                                    "read size =$result delay=${mMediaParse?.getDelayTime()}"
-                                )
-                                if (result > 0) {
-                                    Thread.sleep(mMediaParse?.getDelayTime() ?: 0)
-                                    Log.d(TAG, "time = ${mMediaParse?.getCurrentTimestamp()}")
-                                    mVideoDecoder?.mMediaCodec?.queueInputBuffer(
-                                        index, 0, result, mMediaParse?.getCurrentTimestamp() ?: 0,
-                                        0
-                                    )
-                                } else {
-                                    mVideoDecoder?.mMediaCodec?.queueInputBuffer(
-                                        index, 0, 0, 0,
-                                        MediaCodec.BUFFER_FLAG_END_OF_STREAM
-                                    )
+            mHandler.post {
+                mVideoDecoder?.initDecoder(
+                    mRenderer?.getSurface(),
+                    it,
+                    object : MediaCodec.Callback() {
+                        override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {
+                            //Log.d(TAG, "onInputBufferAvailable")
+                            mHandler.post {
+                                runCatching {
+                                    codec.getInputBuffer(index)?.let {
+                                        val result =
+                                            mMediaParse?.readBuffer(mVideoTrackIndex, it) ?: -1
+                                        Log.d(
+                                            TAG,
+                                            "read size =$result delay=${mMediaParse?.getDelayTime()}"
+                                        )
+                                        if (result > 0) {
+                                            Thread.sleep(mMediaParse?.getDelayTime() ?: 0)
+                                            Log.d(
+                                                TAG,
+                                                "time = ${mMediaParse?.getCurrentTimestamp()}"
+                                            )
+                                            mVideoDecoder?.mMediaCodec?.queueInputBuffer(
+                                                index,
+                                                0,
+                                                result,
+                                                mMediaParse?.getCurrentTimestamp() ?: 0,
+                                                0
+                                            )
+                                        } else {
+                                            mVideoDecoder?.mMediaCodec?.queueInputBuffer(
+                                                index, 0, 0, 0,
+                                                MediaCodec.BUFFER_FLAG_END_OF_STREAM
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                }
 
-                override fun onOutputBufferAvailable(
-                    codec: MediaCodec,
-                    index: Int,
-                    info: MediaCodec.BufferInfo
-                ) {
-                    //Log.d(TAG, "onOutputBufferAvailable")
-                    runCatching {
-                        mVideoDecoder?.mMediaCodec?.releaseOutputBuffer(index, true)
-                    }
-                }
+                        override fun onOutputBufferAvailable(
+                            codec: MediaCodec,
+                            index: Int,
+                            info: MediaCodec.BufferInfo
+                        ) {
+                            //Log.d(TAG, "onOutputBufferAvailable")
+                            runCatching {
+                                mVideoDecoder?.mMediaCodec?.releaseOutputBuffer(index, true)
+                            }
+                        }
 
-                override fun onError(codec: MediaCodec, e: MediaCodec.CodecException) {
-                    //Log.d(TAG, "onError")
-                }
+                        override fun onError(codec: MediaCodec, e: MediaCodec.CodecException) {
+                            //Log.d(TAG, "onError")
+                        }
 
-                override fun onOutputFormatChanged(codec: MediaCodec, format: MediaFormat) {
-                    //Log.d(TAG, "onOutputFormatChanged")
-                }
-            })
+                        override fun onOutputFormatChanged(codec: MediaCodec, format: MediaFormat) {
+                            //Log.d(TAG, "onOutputFormatChanged")
+                        }
+                    })
+            }
         }
     }
 }
