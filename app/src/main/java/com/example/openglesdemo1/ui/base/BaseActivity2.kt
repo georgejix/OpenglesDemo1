@@ -10,6 +10,8 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.params.OutputConfiguration
+import android.hardware.camera2.params.SessionConfiguration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -20,15 +22,21 @@ import android.util.Size
 import android.view.Surface
 import android.view.View
 import android.view.WindowInsets
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.scaleMatrix
+import androidx.core.graphics.translationMatrix
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Collections
+import java.util.concurrent.Executors
 
 open class BaseActivity2 : Activity() {
     private val BASE_TAG = "BaseActivity2"
     var mContext: Context? = null
+    val mCameraMap: HashMap<String, CameraDevice?> = HashMap()
+    val mSessionMap: HashMap<String, CameraCaptureSession?> = HashMap()
     private val mHandlerThread by lazy { HandlerThread("back") }
     private val mBackHandler by lazy {
         mHandlerThread.start()
@@ -126,13 +134,10 @@ open class BaseActivity2 : Activity() {
     }
 
     @SuppressLint("MissingPermission")
-    fun openCamera(surfaces: List<Surface>) {
-        mCameraManager.cameraIdList.find {
-            CameraCharacteristics.LENS_FACING_BACK ==
-                    mCameraManager.getCameraCharacteristics(it)
-                        .get(CameraCharacteristics.LENS_FACING)
-        }?.let { backCameraId ->
-            mCameraManager.getCameraCharacteristics(backCameraId)
+    fun openCamera(surfaces: List<Surface>, cameraId: String? = null) {
+        searchCamera { id ->
+            val cid = cameraId ?: id ?: ""
+            mCameraManager.getCameraCharacteristics(cid)
                 .get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
                 ?.forEach { range ->
                     mFps ?: let { mFps = range }
@@ -141,53 +146,82 @@ open class BaseActivity2 : Activity() {
                     }
                 }
 
-            mCameraManager.openCamera(backCameraId, object : CameraDevice.StateCallback() {
+            mCameraManager.openCamera(cid, object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
+                    Log.d(BASE_TAG, "openCamera onOpened")
                     mCamera = camera
-                    createSession(surfaces)
+                    mCameraMap[cid] = camera
+                    createSession(cid, surfaces)
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
+                    Log.d(BASE_TAG, "openCamera onDisconnected")
                     mCamera = null
+                    mCameraMap[cid] = null
                 }
 
                 override fun onError(camera: CameraDevice, error: Int) {
+                    Log.d(BASE_TAG, "openCamera onError")
                     camera.close()
+                    mCameraMap[cid] = null
                     mCamera = null
                 }
             }, mBackHandler)
         }
     }
 
-    private fun createSession(surfaces: List<Surface>) {
-        /*val config = SessionConfiguration(SessionConfiguration.SESSION_REGULAR,
-            listOf(
-                OutputConfiguration(surface)
-            ), Executors.newSingleThreadExecutor(),
-            object : CameraCaptureSession.StateCallback() {
-                override fun onConfigured(session: CameraCaptureSession) {
-                    mCameraCaptureSession = session
-                    createRequest(surface)
-                }
+    private fun searchCamera(f: ((cameraId: String?) -> Unit)) {
+        mCameraManager.cameraIdList.find {
+            CameraCharacteristics.LENS_FACING_BACK ==
+                    mCameraManager.getCameraCharacteristics(it)
+                        .get(CameraCharacteristics.LENS_FACING)
+        }?.let { f(it) }
+    }
 
-                override fun onConfigureFailed(session: CameraCaptureSession) {
-                    mCameraCaptureSession = null
-                }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun createSession(id: String, surfaces: List<Surface>) {
+        val configs = ArrayList<OutputConfiguration>()
+        surfaces.forEachIndexed { index, surface ->
+            configs.add(OutputConfiguration(surface).apply {
+                /*translationMatrix(
+                    if (index == surfaces.size - 1) 1f else -1f,
+                    if (index == surfaces.size - 1) -1f else 1f
+                )*/
+                //mirrorMode = OutputConfiguration.MIRROR_MODE_AUTO
             })
-        mCamera?.createCaptureSession(config)*/
-        mCamera?.createCaptureSession(
-            surfaces,
+        }
+        val config = SessionConfiguration(SessionConfiguration.SESSION_REGULAR,
+            configs,
+            Executors.newSingleThreadExecutor(),
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mCameraCaptureSession = session
+                    mSessionMap[id] = session
                     createRequest(surfaces)
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
                     mCameraCaptureSession = null
                 }
+            })
+        mCamera?.createCaptureSession(config)
+        /*mCamera?.createCaptureSession(
+            surfaces,
+            object : CameraCaptureSession.StateCallback() {
+                override fun onConfigured(session: CameraCaptureSession) {
+                    Log.d(BASE_TAG,"createSession onConfigured")
+                    mCameraCaptureSession = session
+                    mSessionMap[id] = session
+                    createRequest(surfaces)
+                }
+
+                override fun onConfigureFailed(session: CameraCaptureSession) {
+                    Log.d(BASE_TAG,"createSession onConfigureFailed")
+                    mSessionMap[id] = null
+                    mCameraCaptureSession = null
+                }
             }, null
-        )
+        )*/
     }
 
     private fun createRequest(surfaces: List<Surface>) {

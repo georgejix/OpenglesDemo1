@@ -157,6 +157,7 @@
         <activity
             android:name=".ui.mediacodec.t5.MCAndEGlPlayVideoActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.mediacodec.t6.BackRecordActivity" />
 
     </application>
 
