@@ -2,6 +2,7 @@ package com.example.openglesdemo1
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
 import com.example.openglesdemo1.ui.camera.t10.TwoEglPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
@@ -44,6 +45,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("MainActivity", "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
