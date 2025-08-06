@@ -44,6 +44,11 @@ class TextureViewPreviewCamera2Activity : BaseActivity2() {
         setContentView(R.layout.activity_textureview_preview_camera2)
         changeStatusBars(false, btn_take_photo)
         //textureview可用时，申请权限
+        //旋转画布
+        /*val matrix = Matrix()
+        matrix.setRotate(10f)
+        textureView.setTransform(matrix)*/
+        //textureView.rotation = 10f
         textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(
                 surface: SurfaceTexture,

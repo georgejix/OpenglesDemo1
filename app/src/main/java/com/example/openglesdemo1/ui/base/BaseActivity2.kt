@@ -25,8 +25,6 @@ import android.view.WindowInsets
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.scaleMatrix
-import androidx.core.graphics.translationMatrix
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Collections
@@ -182,12 +180,8 @@ open class BaseActivity2 : Activity() {
     private fun createSession(id: String, surfaces: List<Surface>) {
         val configs = ArrayList<OutputConfiguration>()
         surfaces.forEachIndexed { index, surface ->
-            configs.add(OutputConfiguration(surface).apply {
-                /*translationMatrix(
-                    if (index == surfaces.size - 1) 1f else -1f,
-                    if (index == surfaces.size - 1) -1f else 1f
-                )*/
-                //mirrorMode = OutputConfiguration.MIRROR_MODE_AUTO
+            configs.add(OutputConfiguration(surface).also {
+                //it.mirrorMode = OutputConfiguration.MIRROR_MODE_AUTO
             })
         }
         val config = SessionConfiguration(SessionConfiguration.SESSION_REGULAR,

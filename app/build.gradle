@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.openglesdemo1"
-        minSdkVersion 30
+        minSdkVersion 29
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"

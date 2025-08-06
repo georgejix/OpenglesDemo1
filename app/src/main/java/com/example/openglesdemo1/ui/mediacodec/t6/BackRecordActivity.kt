@@ -27,10 +27,10 @@ class BackRecordActivity : BaseActivity2() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_back_record)
         tv_toggle.setOnClickListener {
-            toggleCamera("2")
+            toggleCamera("1")
         }
         tv_refresh.setOnClickListener {
-            refreshCamera("2")
+            refreshCamera("1")
         }
         requestPermissions(arrayOf(Manifest.permission.CAMERA), 0)
     }
