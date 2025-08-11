@@ -12,6 +12,7 @@ import android.view.SurfaceView
 import android.view.ViewGroup
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
+import com.example.openglesdemo1.utils.getOutputVideoPath
 import kotlinx.android.synthetic.main.activity_back_record.frame3
 import kotlinx.android.synthetic.main.activity_back_record.tv_refresh
 import kotlinx.android.synthetic.main.activity_back_record.tv_toggle
@@ -35,7 +36,7 @@ class BackRecordActivity : BaseActivity2() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA), 0)
     }
 
-    private fun toggleCamera(id:String) {
+    private fun toggleCamera(id: String) {
         if (isPreviewed(frame3)) {
             tv_toggle.text = "start"
             mSessionMap[id]?.close()
@@ -153,7 +154,7 @@ class BackRecordActivity : BaseActivity2() {
             override fun onOutputFormatChanged(p0: MediaCodec, p1: MediaFormat) {
                 Log.d(TAG, "onOutputFormatChanged")
                 val time = mSdf.format(System.currentTimeMillis())
-                val path = "${getExternalFilesDir("video")?.absolutePath}/camera$id$time.mp4"
+                val path = getOutputVideoPath()
                 val mediaMuxer = MediaMuxer(path, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
                 mRecordMap[id]?.mMediaMuxer = mediaMuxer
                 mRecordMap[id]?.mMediaCodec?.outputFormat?.let {

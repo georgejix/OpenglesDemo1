@@ -6,7 +6,7 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
-import com.example.openglesdemo1.utils.getVideoPath
+import com.example.openglesdemo1.utils.getOutputVideoPath
 import kotlinx.android.synthetic.main.activity_mediacodec_save_video.btn_record
 import kotlinx.android.synthetic.main.activity_mediacodec_save_video.sv1
 import kotlinx.coroutines.CoroutineScope
@@ -48,8 +48,8 @@ class MediaCodecSaveVideoActivity : BaseActivity2() {
     private fun setListener() {
         btn_record.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                mVideoMuxer = VideoMuxer(getVideoPath("camera_to_mp4.mp4"), 1080, 1920)
-                mVideoMuxer?.createMuxer(){
+                mVideoMuxer = VideoMuxer(getOutputVideoPath(), 1080, 1920)
+                mVideoMuxer?.createMuxer() {
                     initMuxerEgl()
                 }
             } else {

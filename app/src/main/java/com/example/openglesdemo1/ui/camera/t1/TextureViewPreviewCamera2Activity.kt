@@ -2,10 +2,19 @@ package com.example.openglesdemo1.ui.camera.t1
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.*
-import android.hardware.camera2.*
+import android.graphics.ImageFormat
+import android.graphics.SurfaceTexture
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.CaptureResult
+import android.hardware.camera2.TotalCaptureResult
 import android.media.ImageReader
-import android.os.*
+import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
@@ -15,10 +24,12 @@ import androidx.core.app.ActivityCompat
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.utils.ToastUtil
-import kotlinx.android.synthetic.main.activity_textureview_preview_camera2.*
+import kotlinx.android.synthetic.main.activity_textureview_preview_camera2.btn_take_photo
+import kotlinx.android.synthetic.main.activity_textureview_preview_camera2.rv_size
+import kotlinx.android.synthetic.main.activity_textureview_preview_camera2.textureView
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
 
@@ -241,8 +252,6 @@ class TextureViewPreviewCamera2Activity : BaseActivity2() {
 
     private fun savePic(reader: ImageReader?) {
         val dateFormat: DateFormat = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
-        val cameraDir =
-            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)}/Camera"
 
         reader?.let {
             val image = reader.acquireNextImage()

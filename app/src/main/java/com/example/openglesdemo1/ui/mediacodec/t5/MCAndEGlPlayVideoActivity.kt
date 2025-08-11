@@ -4,7 +4,6 @@ import android.graphics.SurfaceTexture
 import android.media.MediaCodec
 import android.media.MediaFormat
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -14,10 +13,11 @@ import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import com.example.openglesdemo1.ui.mediacodec.t3.MediaParse
 import com.example.openglesdemo1.ui.mediacodec.t3.VideoDecoder
+import com.example.openglesdemo1.utils.getInputVideoPath
 import kotlinx.android.synthetic.main.activity_mc_and_egl_play_video.sv
 
 class MCAndEGlPlayVideoActivity : BaseActivity2() {
-    private val mVideoPath by lazy { Environment.getExternalStorageDirectory().absolutePath + "/Movies/mvtest.mp4" }
+    private val mVideoPath by lazy { getInputVideoPath() }
     private var mVideoDecoder: VideoDecoder? = null
     private var mMediaParse: MediaParse? = null
     private var mVideoTrackIndex = 0

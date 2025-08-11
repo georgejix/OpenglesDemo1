@@ -3,23 +3,17 @@ package com.example.openglesdemo1.ui.mediacodec.t3
 import android.media.MediaCodec
 import android.media.MediaFormat
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import android.view.SurfaceHolder
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
-import com.example.openglesdemo1.utils.getVideoPath
+import com.example.openglesdemo1.utils.getInputVideoPath
 import kotlinx.android.synthetic.main.activity_mediacodec_play_video.sv
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 
 class MediaCodecPlayVideoActivity : BaseActivity2() {
-    private val mVideoPath by lazy { Environment.getExternalStorageDirectory().absolutePath + "/Movies/mvtest.mp4" }
+    private val mVideoPath by lazy { getInputVideoPath() }
     private var mVideoDecoder: VideoDecoder? = null
     private var mMediaParse: MediaParse? = null
     private var mVideoTrackIndex = 0
