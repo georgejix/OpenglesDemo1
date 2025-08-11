@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="globalVm"
+            type="com.example.openglesdemo1.GlobalViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_000">
+
+        <SurfaceView
+            android:id="@+id/sv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.example.openglesdemo1.ui.mediacodec.t7.VideoFrontView
+            android:id="@+id/view_front"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#80000000"
+            android:onClick="onClick"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_video"
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_marginStart="30dp"
+                android:onClick="onClick"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_fff"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#80000000"
+            android:onClick="onClick"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center"
+                android:textColor="@color/color_fff"
+                app:layout_constraintBottom_toTopOf="@+id/img_pre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:max="1000"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+                app:layout_constraintEnd_toStartOf="@+id/tv_duration"
+                app:layout_constraintStart_toEndOf="@+id/tv_time"
+                app:layout_constraintTop_toTopOf="@+id/tv_time" />
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center"
+                android:textColor="@color/color_fff"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/seekBar"
+                app:layout_constraintTop_toTopOf="@+id/tv_time" />
+
+            <ImageView
+                android:id="@+id/img_pre"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:onClick="onClick"
+                android:src="@drawable/icon_player_pre"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/img_play_pause"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+            <ImageView
+                android:id="@+id/img_play_pause"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:onClick="onClick"
+                android:src="@drawable/icon_player_play"
+                app:layout_constraintBottom_toBottomOf="@+id/img_pre"
+                app:layout_constraintEnd_toStartOf="@+id/img_next"
+                app:layout_constraintStart_toEndOf="@+id/img_pre"
+                app:layout_constraintTop_toTopOf="@+id/img_pre" />
+
+            <ImageView
+                android:id="@+id/img_next"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:onClick="onClick"
+                android:src="@drawable/icon_player_next"
+                app:layout_constraintBottom_toBottomOf="@+id/img_pre"
+                app:layout_constraintEnd_toStartOf="@+id/img_speed"
+                app:layout_constraintStart_toEndOf="@+id/img_play_pause"
+                app:layout_constraintTop_toTopOf="@+id/img_pre" />
+
+            <ImageView
+                android:id="@+id/img_speed"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:onClick="onClick"
+                android:src="@drawable/icon_player_speed"
+                app:layout_constraintBottom_toBottomOf="@+id/img_pre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_next"
+                app:layout_constraintTop_toTopOf="@+id/img_pre" />
+
+            <TextView
+                android:id="@+id/tv_speed"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="1X"
+                android:textColor="@color/color_000"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_speed"
+                app:layout_constraintEnd_toEndOf="@+id/img_speed"
+                app:layout_constraintStart_toStartOf="@+id/img_speed"
+                app:layout_constraintTop_toTopOf="@+id/img_speed" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/layout_control"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:constraint_referenced_ids="layout_top,layout_bottom" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

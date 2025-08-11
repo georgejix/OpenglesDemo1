@@ -29,6 +29,11 @@ android {
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
+
+        buildFeatures {
+            dataBinding true
+            viewBinding true
+        }
     }
 
     buildTypes {

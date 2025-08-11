@@ -19,8 +19,8 @@ fun Context.getOutputVideoPath(name: String = "testVideo.mp4"): String {
     return file.absolutePath
 }
 
-fun Context.getInputVideoPath(): String {
-    val file = File(getExternalFilesDir("video")!!.absolutePath, "testVideo.mp4")
+fun Context.getInputVideoPath(name: String = "testVideo.mp4"): String {
+    val file = File(getExternalFilesDir("video")!!.absolutePath, name)
     Log.d("path", "getInputVideoPath ${file.absolutePath}")
     return file.absolutePath
 }

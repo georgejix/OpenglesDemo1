@@ -1,6 +1,7 @@
 package com.example.openglesdemo1
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
@@ -19,6 +20,7 @@ import com.example.openglesdemo1.ui.mediacodec.t3.MediaCodecPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t4.MCAndGlPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t5.MCAndEGlPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t6.BackRecordActivity
+import com.example.openglesdemo1.ui.mediacodec.t7.VideoPlayerActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -41,9 +43,11 @@ import com.example.openglesdemo1.ui.normal2.t2.Test2Activity
 import com.example.openglesdemo1.ui.normal2.t3.Test3Activity
 import com.example.openglesdemo1.ui.normal2.t4.Test4Activity
 import com.example.openglesdemo1.ui.normal2.t5.Test5Activity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.rv_list
 
 class MainActivity : Activity() {
+    private val TAG = javaClass.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("MainActivity", "onCreate")
         super.onCreate(savedInstanceState)
@@ -117,8 +121,14 @@ class MainActivity : Activity() {
                 MainBean("硬解码+GlSurfaceView播放视频", MCAndGlPlayVideoActivity::class.java),
                 MainBean("硬解码+egl+SurfaceView播放视频", MCAndEGlPlayVideoActivity::class.java),
                 MainBean("mediacodec后台录制不中断", BackRecordActivity::class.java),
+                MainBean("视频播放器", VideoPlayerActivity::class.java),
 
                 )
         )
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Log.d(TAG, "onConfigurationChanged")
     }
 }
