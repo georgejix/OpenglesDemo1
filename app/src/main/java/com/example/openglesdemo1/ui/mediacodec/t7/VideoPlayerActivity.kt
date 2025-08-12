@@ -73,13 +73,18 @@ class VideoPlayerActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun addListener() {
-        mBinding?.viewFront?.setClickListener {
+        mBinding?.viewFront?.setClickListener { doubleClick ->
             mBinding?.layoutControl?.let { controlView ->
-                if (View.VISIBLE == controlView.visibility) {
-                    controlView.visibility = View.GONE
-                    cancelHideControlJob()
+                if (doubleClick) {
+                    mLocalMediaPlayer.togglePlayPause()
                 } else {
-                    controlView.visibility = View.VISIBLE
+                    if (View.VISIBLE == controlView.visibility) {
+                        controlView.visibility = View.GONE
+                        cancelHideControlJob()
+                    } else {
+                        controlView.visibility = View.VISIBLE
+                        genHideControlJob()
+                    }
                 }
             }
         }
@@ -111,8 +116,14 @@ class VideoPlayerActivity : AppCompatActivity(), View.OnClickListener {
         })
         mLocalMediaPlayer.setCb { status, what, extra ->
             when (status) {
-                PlayerStatusEnum.COMPLETION -> play(getNextPath(1)) {
-                    mLocalMediaPlayer.setSurface(mBinding?.sv?.holder?.surface)
+                PlayerStatusEnum.COMPLETION -> {
+                    if (false == mBinding?.seekBar?.isPressed) {
+                        play(getNextPath(1)) {
+                            mLocalMediaPlayer.setSurface(mBinding?.sv?.holder?.surface)
+                        }
+                    } else {
+                        Log.d(TAG, "seekbar pressed")
+                    }
                 }
 
                 PlayerStatusEnum.ERROR -> play(getNextPath(1)) {
@@ -170,6 +181,7 @@ class VideoPlayerActivity : AppCompatActivity(), View.OnClickListener {
                 seekBar?.takeIf { mLocalMediaPlayer.getDuration() > 0 }?.let {
                     val duration = it.progress * mLocalMediaPlayer.getDuration() / it.max
                     mLocalMediaPlayer.seekTo(duration)
+                    mLocalMediaPlayer.start()
                 }
             }
 
@@ -243,9 +255,9 @@ class VideoPlayerActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setVolume(percent: Float) {
         val currentV = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        mAudioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC,
-            currentV + (percent * 10).toInt(), AudioManager.FLAG_SHOW_UI
-        )
+        val maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val value = currentV + (percent * maxVolume).toInt()
+        Log.d(TAG, "setVolume percent=$percent $currentV to $value maxVolume=$maxVolume")
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, value, AudioManager.FLAG_SHOW_UI)
     }
 }

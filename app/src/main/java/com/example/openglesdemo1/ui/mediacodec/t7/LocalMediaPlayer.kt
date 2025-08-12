@@ -15,6 +15,10 @@ class LocalMediaPlayer {
     private val TAG = javaClass.simpleName
     private var mDataSourcePath: String = ""
     private var mMediaPlayer: MediaPlayer? = null
+        set(value) {
+            if (null == value) mPrepared = false
+            field = value
+        }
     private var mCirculationJob: Job? = null
     private var mNeedQueryPlayStatus = false
     private val mSupportSpeedList = arrayListOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
@@ -25,6 +29,7 @@ class LocalMediaPlayer {
     var mDurationLD = MutableLiveData(0L)
     var mTitleLD = MutableLiveData("")
     var mSpeedLD = MutableLiveData(1f)
+    var mPrepared = false
 
     fun startListen() {
         Log.d(TAG, "startListen")
@@ -60,7 +65,9 @@ class LocalMediaPlayer {
                 it.release()
             }
         }
+        mMediaPlayer = null
         mMediaPlayer = MediaPlayer()
+        mPrepared = false
         Log.d(TAG, "initPlayer mMediaPlayer=$mMediaPlayer")
         mMediaPlayer?.setOnCompletionListener {
             Log.d(TAG, "onCompletion")
@@ -78,6 +85,7 @@ class LocalMediaPlayer {
         }
         mMediaPlayer?.setOnPreparedListener {
             Log.d(TAG, "onPrepared")
+            mPrepared = true
             mDurationLD.postValue(getDuration())
             mTitleLD.postValue(mDataSourcePath.substring(mDataSourcePath.lastIndexOf(File.separator) + 1))
             it.start()
@@ -139,6 +147,17 @@ class LocalMediaPlayer {
                 mMediaPlayer?.pause()
             }
         }.onFailure { Log.d(TAG, "pause fail") }
+    }
+
+    fun togglePlayPause() {
+        Log.d(TAG, "togglePlayPause mMediaPlayer=$mMediaPlayer")
+        if (mPrepared) {
+            if (isPlaying()) {
+                pause()
+            } else {
+                start()
+            }
+        }
     }
 
     fun stop() {
