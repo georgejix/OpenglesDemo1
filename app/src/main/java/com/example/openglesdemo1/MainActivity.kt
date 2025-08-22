@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
 import com.example.openglesdemo1.ui.camera.t10.TwoEglPreviewCameraActivity
+import com.example.openglesdemo1.ui.camera.t11.WaterMarkCameraActivity
 import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t4.GlPreviewCamera2Activity
@@ -105,7 +106,8 @@ class MainActivity : Activity() {
                 MainBean("获取camera每帧数据", CameraDataActivity::class.java),
                 //第一个egl线程创建texture，给相机进行预览，然后用它的eglcontext当作sharecontext创建第二个egl线程
                 MainBean("2个egl同时预览camera", TwoEglPreviewCameraActivity::class.java),
-
+                //camera2+surfaceview+egl+水印
+                MainBean("camera2+水印", WaterMarkCameraActivity::class.java),
 
                 MainBean("--------normal2--------", null),
                 MainBean("测试-画球桌", Test1Activity::class.java),
