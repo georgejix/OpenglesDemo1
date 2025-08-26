@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t11
+package com.example.openglesdemo1.ui.camera.t12
 
 import android.Manifest
 import android.graphics.SurfaceTexture
@@ -11,8 +11,9 @@ import com.example.openglesdemo1.R
 import com.example.openglesdemo1.ui.base.BaseActivity2
 import kotlinx.android.synthetic.main.activity_camera2_surfaceview.layout_preview
 
-class WaterMarkCameraActivity : BaseActivity2() {
-    private val mRender by lazy { PreviewRender("preview") }
+class WaterMarkCameraFboActivity : BaseActivity2() {
+    private val mCombineRender by lazy { CombineRender("combine") }
+    private val mPreviewRender by lazy { PreviewRender("preview") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +38,18 @@ class WaterMarkCameraActivity : BaseActivity2() {
                  */
                 holder.setFixedSize(width, height)
                 if (layout_preview.height > 0) {
-                    mRender.initEgl(holder.surface)
-                    mRender.changeView(width, height)
-                    mRender.createSv { tId ->
-                        val surface2 = Surface(SurfaceTexture(tId).also { st ->
-                            st.setDefaultBufferSize(1080, 1920)
-                            st.setOnFrameAvailableListener {
-                                mRender.draw(tId, st) {}
+                    mCombineRender.initEgl() { c ->
+                        mPreviewRender.initEgl(holder.surface, c)
+                        mPreviewRender.changeView(width, height)
+                    }
+                    mCombineRender.changeView(width, height)
+                    mCombineRender.createSv { st ->
+                        val surface2 = Surface(st.also { s ->
+                            s.setDefaultBufferSize(1080, 1920)
+                            s.setOnFrameAvailableListener {
+                                mCombineRender.draw() { sharedId, fence ->
+                                    mPreviewRender.draw(sharedId, fence)
+                                }
                             }
                         })
                         openCamera(listOf(surface2))

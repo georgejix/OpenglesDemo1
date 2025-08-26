@@ -1,4 +1,4 @@
-package com.example.openglesdemo1.ui.camera.t11
+package com.example.openglesdemo1.ui.camera.t12
 
 import android.graphics.SurfaceTexture
 import android.opengl.EGL14
@@ -12,7 +12,6 @@ import android.opengl.Matrix
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
-import android.view.Surface
 import com.example.openglesdemo1.BaseApplication
 import com.example.openglesdemo1.R
 import com.example.openglesdemo1.utils.ResReadUtils
@@ -23,11 +22,11 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class PreviewRender(val renderName: String) {
+class CombineRender(val renderName: String) {
     private val TAG = javaClass.simpleName
     private var mEglDisplay: EGLDisplay? = null
     private var mEglContext: EGLContext? = null
-    private var mEglSurface: EGLSurface? = null
+    private var mBufferSurface: EGLSurface? = null
     private val mHandlerThread by lazy { HandlerThread(renderName) }
     private val mHandler by lazy {
         mHandlerThread.start()
@@ -63,8 +62,12 @@ class PreviewRender(val renderName: String) {
     private var mIconTextureId = 0
     private var mVboId = 0
     private var mIboId = 0
+    private var mImgTextureId = 0
+    private var mImgSurfaceTexture: SurfaceTexture? = null
+    private var mOutputTextureId = 0
+    private var mFrameBufferId = 0
 
-    fun initEgl(sv: Surface) {
+    fun initEgl(f: ((context: EGLContext) -> Unit)) {
         mHandler.post {
             Log.d(TAG, "initEgl $TAG")
             mEglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
@@ -86,15 +89,13 @@ class PreviewRender(val renderName: String) {
                 mEglDisplay, eglConfig[0], EGL14.EGL_NO_CONTEXT,
                 intArrayOf(EGL14.EGL_CONTEXT_CLIENT_VERSION, 3, EGL14.EGL_NONE), 0
             )
-            mEglSurface = EGL14.eglCreateWindowSurface(
-                mEglDisplay, eglConfig[0], sv, intArrayOf(EGL14.EGL_NONE), 0
-            )
-
-            EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext)
+            mBufferSurface =
+                EGL14.eglCreatePbufferSurface(mEglDisplay, eglConfig[0], attr, 0)
+            EGL14.eglMakeCurrent(mEglDisplay, mBufferSurface, mBufferSurface, mEglContext)
             val vertexId =
-                ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.camera2_t11_vertex))
+                ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.camera2_t12_vertex))
             val fragmentId =
-                ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.camera2_t11_fragment))
+                ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.camera2_t12_fragment))
             mProgramId = ShaderUtils.linkProgram(vertexId, fragmentId)
 
             GLES30.glUseProgram(mProgramId)
@@ -130,26 +131,58 @@ class PreviewRender(val renderName: String) {
             BaseApplication.mContext?.let {
                 mIconTextureId = TextureUtils.loadTexture(it, R.mipmap.icon_acc)
             }
+            f?.invoke(mEglContext!!)
         }
     }
 
     fun changeView(w: Int, h: Int) {
         mHandler.post {
             Log.d(TAG, "changeView $renderName")
-            EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext)
+            EGL14.eglMakeCurrent(mEglDisplay, mBufferSurface, mBufferSurface, mEglContext)
             GLES30.glUseProgram(mProgramId)
             GLES30.glViewport(0, 0, w, h)
+            val sharedTextures = IntArray(1)
+            GLES30.glGenTextures(sharedTextures.size, sharedTextures, 0)
+            mOutputTextureId = sharedTextures[0]
+            val frameBuffers = IntArray(1)
+            GLES30.glGenFramebuffers(frameBuffers.size, frameBuffers, 0)
+            mFrameBufferId = frameBuffers[0]
+            GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFrameBufferId)
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mOutputTextureId)
+            GLES30.glTexParameteri(
+                GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR
+            )
+            GLES30.glTexParameteri(
+                GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR
+            )
+            GLES30.glTexParameteri(
+                GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE
+            )
+            GLES30.glTexParameteri(
+                GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE
+            )
+            GLES30.glTexImage2D(
+                GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, w, h,
+                0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null
+            )
+            GLES30.glFramebufferTexture2D(
+                GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0,
+                GLES30.GL_TEXTURE_2D, mOutputTextureId, 0
+            )
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
+            GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0)
             GLES30.glUseProgram(0)
         }
     }
 
-    fun createSv(f: ((id: Int) -> Unit)) {
+    fun createSv(f: ((st: SurfaceTexture) -> Unit)) {
         mHandler.post {
             Log.d(TAG, "createSv $renderName")
-            EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext)
+            EGL14.eglMakeCurrent(mEglDisplay, mBufferSurface, mBufferSurface, mEglContext)
             GLES30.glUseProgram(mProgramId)
-            val cameraTextureId = TextureUtils.loadOESTexture()
-            f.invoke(cameraTextureId)
+            mImgTextureId = TextureUtils.loadOESTexture()
+            mImgSurfaceTexture = SurfaceTexture(mImgTextureId)
+            f.invoke(mImgSurfaceTexture!!)
             GLES30.glUseProgram(0)
         }
     }
@@ -158,13 +191,14 @@ class PreviewRender(val renderName: String) {
         mHandlerThread.quitSafely()
     }
 
-    fun draw(textureId: Int, sv: SurfaceTexture?, f: (() -> Unit)?) {
+    fun draw(f: ((tid: Int, fence: Long) -> Unit)?) {
         mHandler.post {
-            EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext)
+            EGL14.eglMakeCurrent(mEglDisplay, mBufferSurface, mBufferSurface, mEglContext)
             GLES30.glUseProgram(mProgramId)
-            GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
-            runCatching { sv?.updateTexImage() }
+            //GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
+            runCatching { mImgSurfaceTexture?.updateTexImage() }
 
+            GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFrameBufferId)
             GLES30.glUniformMatrix4fv(mMatrixLocation, 1, false, mMatrixArray, 0)
             GLES30.glEnableVertexAttribArray(mPositionLocation)
             GLES30.glEnableVertexAttribArray(mTexturePositionLocation)
@@ -172,11 +206,11 @@ class PreviewRender(val renderName: String) {
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVboId)
             GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, mIboId)
             GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
-            GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureId)
+            GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mImgTextureId)
             GLES30.glUniform1i(mImgLocation, 0)
-            GLES30.glActiveTexture(GLES30.GL_TEXTURE2)
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE1)
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mIconTextureId)
-            GLES30.glUniform1i(mIconLocation, 2)
+            GLES30.glUniform1i(mIconLocation, 1)
             GLES30.glVertexAttribPointer(
                 mPositionLocation, 2, GLES30.GL_FLOAT, false, 16, 0
             )
@@ -186,14 +220,15 @@ class PreviewRender(val renderName: String) {
             GLES30.glDrawElements(
                 GLES30.GL_TRIANGLES, mIndexArray.size, GLES30.GL_UNSIGNED_INT, 0
             )
+            val fenceSyncObject = GLES30.glFenceSync(GLES30.GL_SYNC_GPU_COMMANDS_COMPLETE, 0)
+            f?.invoke(mOutputTextureId, fenceSyncObject)
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0)
             GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, 0)
             GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
             GLES30.glDisableVertexAttribArray(mPositionLocation)
             GLES30.glDisableVertexAttribArray(mTexturePositionLocation)
-            EGL14.eglSwapBuffers(mEglDisplay, mEglSurface)
-            f?.invoke()
+            GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0)
         }
     }
 }
