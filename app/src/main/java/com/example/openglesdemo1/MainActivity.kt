@@ -8,6 +8,7 @@ import com.example.openglesdemo1.ui.camera.t1.TextureViewPreviewCamera2Activity
 import com.example.openglesdemo1.ui.camera.t10.TwoEglPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t11.WaterMarkCameraActivity
 import com.example.openglesdemo1.ui.camera.t12.WaterMarkCameraFboActivity
+import com.example.openglesdemo1.ui.camera.t13.WaterMarkCameraFboYuvActivity
 import com.example.openglesdemo1.ui.camera.t2.SurfaceViewPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t3.GlPreviewCameraActivity
 import com.example.openglesdemo1.ui.camera.t4.GlPreviewCamera2Activity
@@ -110,6 +111,7 @@ class MainActivity : Activity() {
                 //camera2+surfaceview+egl+水印
                 MainBean("camera2+水印", WaterMarkCameraActivity::class.java),
                 MainBean("camera2+水印+fbo", WaterMarkCameraFboActivity::class.java),
+                MainBean("camera2+水印+fbo+yuv编码", WaterMarkCameraFboYuvActivity::class.java),
 
                 MainBean("--------normal2--------", null),
                 MainBean("测试-画球桌", Test1Activity::class.java),

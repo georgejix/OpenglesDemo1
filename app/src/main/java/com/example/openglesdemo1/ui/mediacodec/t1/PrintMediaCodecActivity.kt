@@ -26,6 +26,7 @@ class PrintMediaCodecActivity : Activity() {
 
     private fun initView() {
         getEncoderInfoList(VIDEO_CODEC).map {
+            Log.d(TAG, "video codec ${it.name} ${it.isHardwareAccelerated}")
             it.name
         }.let {
             video_codec.setEntries(it.toTypedArray())
