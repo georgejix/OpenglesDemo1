@@ -59,10 +59,9 @@ class WaterMarkUtil {
                     )
                 }
         }
-        val timeStr = mSdf.format(System.currentTimeMillis())
-        val timeBounds = getTextBounds(timeStr)
+        val timeBounds = getTextBounds("0000-00-00 00:00:00")
         canvas.drawText(
-            timeStr,
+            mSdf.format(System.currentTimeMillis()),
             width * 1f - timeBounds.width() - mMarginEnd,
             height / 2 + timeBounds.height() / 2f,
             mCarInfoTextPaint
