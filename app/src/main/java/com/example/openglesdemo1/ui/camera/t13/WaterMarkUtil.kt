@@ -26,11 +26,11 @@ class WaterMarkUtil {
             it.color = Color.WHITE
         }
     }
-    private val mSdf by lazy { SimpleDateFormat("yyyy-MM-dd mm:hh:ss") }
+    private val mSdf by lazy { SimpleDateFormat("yyyy-MM-dd hh:mm:ss") }
 
     fun genCarInfoBitmap(): Bitmap {
         val width = 1920
-        val height = 100
+        val height = 108
         val mIconWidth = 56
         val mIconHeight = 56
         val mMarginStart = 20
