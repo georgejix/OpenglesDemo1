@@ -8,7 +8,7 @@ in vec2 texturePosition;
 //将vertexPosition透传
 in vec2 vertexPosition;
 out vec4 fragColor;
-vec2 leftBottom = vec2(-1.0,0.86);
+vec2 leftBottom = vec2(-1.0,0.9);
 vec2 rightTop = vec2(1.0,1.0);
 void main() {
     if(vertexPosition.x >= leftBottom.x && vertexPosition.x <= rightTop.x &&
