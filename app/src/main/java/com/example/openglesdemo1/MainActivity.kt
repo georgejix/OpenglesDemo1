@@ -24,6 +24,7 @@ import com.example.openglesdemo1.ui.mediacodec.t4.MCAndGlPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t5.MCAndEGlPlayVideoActivity
 import com.example.openglesdemo1.ui.mediacodec.t6.BackRecordActivity
 import com.example.openglesdemo1.ui.mediacodec.t7.VideoPlayerActivity
+import com.example.openglesdemo1.ui.mediacodec.t8.CutVideoActivity
 import com.example.openglesdemo1.ui.normal.t1.TriangleActivity
 import com.example.openglesdemo1.ui.normal.t10.FilterActivity
 import com.example.openglesdemo1.ui.normal.t11.TextureAndFilterActivity
@@ -128,6 +129,7 @@ class MainActivity : Activity() {
                 MainBean("硬解码+egl+SurfaceView播放视频", MCAndEGlPlayVideoActivity::class.java),
                 MainBean("mediacodec后台录制不中断", BackRecordActivity::class.java),
                 MainBean("视频播放器", VideoPlayerActivity::class.java),
+                MainBean("拼接视频", CutVideoActivity::class.java),
 
                 )
         )
